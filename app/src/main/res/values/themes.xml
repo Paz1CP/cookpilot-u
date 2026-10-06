@@ -25,7 +25,8 @@
         <item name="android:windowBackground">@color/cook_layer_base</item>
         <item name="android:statusBarColor">@color/cook_layer_base</item>
         <item name="android:navigationBarColor">@color/cook_layer_base</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@font/outfit_family</item>
+        <item name="fontFamily">@font/outfit_family</item>
 
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.CookPilot.Small</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.CookPilot.Medium</item>
