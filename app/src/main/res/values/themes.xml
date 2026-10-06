@@ -23,8 +23,10 @@
 
         <item name="android:colorAccent">@color/cook_primary</item>
         <item name="android:windowBackground">@color/cook_layer_base</item>
-        <item name="android:statusBarColor">@color/cook_layer_base</item>
-        <item name="android:navigationBarColor">@color/cook_layer_base</item>
+        <item name="android:statusBarColor">@color/cook_dark_deep</item>
+        <item name="android:navigationBarColor">@color/cook_dark_deep</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
         <item name="android:fontFamily">@font/outfit_family</item>
         <item name="fontFamily">@font/outfit_family</item>
 
@@ -36,5 +38,13 @@
         <item name="materialCardViewStyle">@style/Widget.CookPilot.Card</item>
 
         <item name="android:forceDarkAllowed">false</item>
+    </style>
+
+    <style name="Theme.CookPilot.Splash" parent="Theme.CookPilot">
+        <item name="android:windowBackground">@color/cook_dark_deep</item>
+        <item name="android:statusBarColor">@color/cook_dark_deep</item>
+        <item name="android:navigationBarColor">@color/cook_dark_deep</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 </resources>

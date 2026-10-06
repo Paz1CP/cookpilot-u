@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CookPilot</string>
+
+    <string name="login_welcome">Bienvenido a</string>
+    <string name="login_tagline">Come saludable, ahorra dinero y tiempo.</string>
+    <string name="login_email">Correo</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_continue">Continuar</string>
+    <string name="login_video_url">https://media.cookpilot.pro/cookpilot_media/CookIntro.mp4</string>
+
+    <string name="nav_home">Inicio</string>
+    <string name="nav_recipes">Recetas</string>
+    <string name="nav_shopping">Compras</string>
+    <string name="nav_nutrition">Nutrición</string>
+    <string name="nav_cookpilot">CookPilot</string>
+    <string name="profile_avatar">Perfil</string>
 </resources>

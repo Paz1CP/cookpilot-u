@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cook_dark_deep">
+
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/loginVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:resize_mode="zoom"
+        app:use_controller="false" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_login_video_overlay" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loginContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/heroContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/loginForm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.34">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/outfit_bold"
+                android:gravity="center"
+                android:text="@string/login_welcome"
+                android:textColor="@color/cook_light"
+                android:textSize="48sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cook_spacing_4"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_bold"
+                    android:text="Cook"
+                    android:textColor="@color/cook_light"
+                    android:textSize="@dimen/cook_text_display_xl" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_bold"
+                    android:text="Pilot"
+                    android:textColor="@color/cook_primary"
+                    android:textSize="@dimen/cook_text_display_xl" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cook_spacing_12"
+                android:fontFamily="@font/outfit_regular"
+                android:gravity="center"
+                android:maxWidth="330dp"
+                android:text="@string/login_tagline"
+                android:textColor="@color/cook_light"
+                android:textSize="@dimen/cook_text_title_m" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/loginForm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailInputLayout"
+                style="@style/Widget.CookPilot.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_regular"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:minHeight="@dimen/cook_touch_56"
+                    android:textColor="@color/cook_light"
+                    android:textColorHint="@color/cook_light_strong"
+                    android:textSize="@dimen/cook_text_body" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordInputLayout"
+                style="@style/Widget.CookPilot.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cook_spacing_12"
+                android:hint="@string/login_password"
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_regular"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:minHeight="@dimen/cook_touch_56"
+                    android:textColor="@color/cook_light"
+                    android:textColorHint="@color/cook_light_strong"
+                    android:textSize="@dimen/cook_text_body" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/continueButton"
+                style="@style/Widget.CookPilot.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="@dimen/cook_spacing_16"
+                android:text="@string/login_continue" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
