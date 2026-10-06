@@ -98,4 +98,21 @@
     <string name="recipe_detail_cook_now">Cocinar</string>
     <string name="recipe_detail_cook_menu">Cocinar menú</string>
     <string name="recipe_detail_cookmode_next">El modo de cocina estará disponible pronto.</string>
+
+    <string name="cooklist_search_hint">Buscar ingredientes...</string>
+    <string name="cooklist_estimated_total">Precio estimado total:</string>
+    <string name="cooklist_empty">Tu lista aparecerá aquí cuando planifiques recetas o agregues un ingrediente.</string>
+    <string name="cooklist_add_item">Agregar ingrediente</string>
+    <string name="cooklist_edit_item">Editar ingrediente</string>
+    <string name="cooklist_save">Guardar</string>
+    <string name="cooklist_item_name">Ingrediente</string>
+    <string name="cooklist_item_quantity">Cantidad</string>
+    <string name="cooklist_item_unit">Unidad</string>
+    <string name="cooklist_manual_item">Agregado manualmente</string>
+    <string name="cooklist_toggle_item">Marcar ingrediente</string>
+    <string name="cooklist_clear_purchased">Limpiar comprados</string>
+    <plurals name="cooklist_recipe_sources">
+        <item quantity="one">%d receta</item>
+        <item quantity="other">%d recetas</item>
+    </plurals>
 </resources>
