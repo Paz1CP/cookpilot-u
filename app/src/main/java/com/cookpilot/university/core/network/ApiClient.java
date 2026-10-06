@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.FirebaseApp;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -33,8 +36,14 @@ public final class ApiClient {
                 + projectId
                 + ".cloudfunctions.net/api/";
 
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
+
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
