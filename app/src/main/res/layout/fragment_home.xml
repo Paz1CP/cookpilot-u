@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:paddingBottom="@dimen/cook_spacing_24">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/weekDays"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cook_week_strip_height"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingStart="@dimen/cook_padding_screen_x"
+            android:paddingEnd="@dimen/cook_padding_screen_x" />
+
+        <com.cookpilot.university.features.cookplan.presentation.view.CookPlanMealMomentView
+            android:id="@+id/breakfastCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cook_spacing_24" />
+
+        <com.cookpilot.university.features.cookplan.presentation.view.CookPlanMealMomentView
+            android:id="@+id/lunchCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cook_spacing_32" />
+
+        <com.cookpilot.university.features.cookplan.presentation.view.CookPlanMealMomentView
+            android:id="@+id/dinnerCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cook_spacing_32" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

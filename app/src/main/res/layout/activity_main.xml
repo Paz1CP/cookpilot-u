@@ -18,27 +18,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mainContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/cook_spacing_16"
+        android:layout_marginTop="@dimen/cook_spacing_12"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBar">
-
-        <TextView
-            android:id="@+id/screenTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/outfit_semibold"
-            android:text="@string/nav_home"
-            android:textColor="@color/cook_text_secondary"
-            android:textSize="@dimen/cook_text_title_m" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@id/appBar" />
 
     <com.cookpilot.university.core.design.components.navigation.CookBottomNavigationView
         android:id="@+id/bottomNavigation"

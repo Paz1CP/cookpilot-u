@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/cook_week_day_width"
+    android:layout_height="@dimen/cook_week_day_height"
+    android:layout_marginEnd="@dimen/cook_spacing_8">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dayCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/cook_layer_raised"
+        app:cardCornerRadius="@dimen/cook_radius_3xlarge"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dayName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.CookPilot.TitleS"
+                android:textColor="@color/cook_primary" />
+
+            <TextView
+                android:id="@+id/dayNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cook_spacing_4"
+                android:fontFamily="@font/outfit_semibold"
+                android:textColor="@color/cook_primary"
+                android:textSize="@dimen/cook_text_title_m" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>
