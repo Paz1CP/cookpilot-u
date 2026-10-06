@@ -69,6 +69,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchContainer">
 
+        <ImageView
+            android:id="@+id/estimatedPriceIcon"
+            android:layout_width="@dimen/cook_icon_24"
+            android:layout_height="@dimen/cook_icon_24"
+            android:layout_marginEnd="@dimen/cook_spacing_8"
+            android:contentDescription="@null"
+            android:tint="@color/cook_accent" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
