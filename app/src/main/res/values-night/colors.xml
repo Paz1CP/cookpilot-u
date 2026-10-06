@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cook_layer_base">@color/cook_dark</color>
+    <color name="cook_layer_raised">@color/cook_dark_raised</color>
+    <color name="cook_layer_floating">@color/cook_dark_floating</color>
+    <color name="cook_layer_dim">#A9080000</color>
+
+    <color name="cook_text_primary">@color/cook_light</color>
+    <color name="cook_text_secondary">@color/cook_light_strong</color>
+    <color name="cook_text_tertiary">@color/cook_gray_soft</color>
+    <color name="cook_text_inverse">@color/cook_dark</color>
+    <color name="cook_text_disabled">@color/cook_gray_soft</color>
+
+    <color name="cook_border_subtle">@color/cook_gray_strong</color>
+    <color name="cook_border_default">@color/cook_gray</color>
+    <color name="cook_border_strong">@color/cook_gray_soft</color>
+    <color name="cook_border_primary">@color/cook_primary</color>
+    <color name="cook_border_secondary">@color/cook_secondary</color>
+    <color name="cook_border_accent">@color/cook_accent</color>
+    <color name="cook_border_error">@color/cook_error</color>
+</resources>
