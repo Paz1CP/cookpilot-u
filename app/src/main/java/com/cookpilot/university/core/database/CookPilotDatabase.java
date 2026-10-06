@@ -28,7 +28,7 @@ import com.cookpilot.university.features.recipes.data.local.RecipeStepEntity;
                 RecipeIngredientEntity.class,
                 RecipeStepEntity.class
         },
-        version = 2,
+        version = 3,
         exportSchema = false
 )
 public abstract class CookPilotDatabase extends RoomDatabase {
@@ -108,6 +108,31 @@ public abstract class CookPilotDatabase extends RoomDatabase {
         }
     };
 
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // La versión anterior contenía datos de demostración sin usuario.
+            database.execSQL("DROP TABLE IF EXISTS planned_recipes");
+            database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS planned_recipes ("
+                            + "id TEXT NOT NULL, "
+                            + "user_id TEXT NOT NULL, "
+                            + "plan_date TEXT NOT NULL, "
+                            + "meal_moment TEXT NOT NULL, "
+                            + "recipe_id TEXT NOT NULL, "
+                            + "servings INTEGER NOT NULL, "
+                            + "created_at INTEGER NOT NULL, "
+                            + "updated_at INTEGER NOT NULL, "
+                            + "sync_state TEXT NOT NULL, "
+                            + "PRIMARY KEY(id))"
+            );
+            database.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_planned_recipes_user_id_plan_date "
+                            + "ON planned_recipes(user_id, plan_date)"
+            );
+        }
+    };
+
     public abstract PlannedRecipeDao plannedRecipeDao();
     public abstract RecipeDao recipeDao();
     public abstract IngredientDao ingredientDao();
@@ -120,7 +145,7 @@ public abstract class CookPilotDatabase extends RoomDatabase {
                 CookPilotDatabase.class,
                 "cookpilot_university.db"
         )
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build();
     }
 }

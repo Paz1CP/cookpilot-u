@@ -9,6 +9,8 @@ import com.cookpilot.university.core.network.ApiClient;
 import com.cookpilot.university.features.auth.data.remote.FirebaseAuthDataSource;
 import com.cookpilot.university.features.auth.data.remote.FirebaseUserDataSource;
 import com.cookpilot.university.features.auth.data.repository.AuthRepository;
+import com.cookpilot.university.features.cookplan.data.remote.CookPlanApiService;
+import com.cookpilot.university.features.cookplan.data.remote.CookPlanRemoteDataSource;
 import com.cookpilot.university.features.cookplan.data.repository.CookPlanRepository;
 import com.cookpilot.university.features.recipes.data.local.RecipeLocalDataSource;
 import com.cookpilot.university.features.recipes.data.remote.RecipeApiService;
@@ -16,6 +18,8 @@ import com.cookpilot.university.features.recipes.data.remote.RecipeRemoteDataSou
 import com.cookpilot.university.features.recipes.data.repository.RecipeRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import retrofit2.Retrofit;
 
 public final class CookPilotApplication extends Application {
 
@@ -32,16 +36,15 @@ public final class CookPilotApplication extends Application {
         database = CookPilotDatabase.create(this);
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        Retrofit retrofit = ApiClient.create();
 
         authRepository = new AuthRepository(
                 new FirebaseAuthDataSource(firebaseAuth),
                 new FirebaseUserDataSource(FirebaseFirestore.getInstance())
         );
 
-        RecipeApiService recipeApiService = ApiClient
-                .create()
-                .create(RecipeApiService.class);
-
+        RecipeApiService recipeApiService =
+                retrofit.create(RecipeApiService.class);
         recipeRepository = new RecipeRepository(
                 new RecipeLocalDataSource(database),
                 new RecipeRemoteDataSource(
@@ -50,9 +53,16 @@ public final class CookPilotApplication extends Application {
                 )
         );
 
+        CookPlanApiService cookPlanApiService =
+                retrofit.create(CookPlanApiService.class);
         cookPlanRepository = new CookPlanRepository(
                 database.plannedRecipeDao(),
-                recipeRepository
+                recipeRepository,
+                new CookPlanRemoteDataSource(
+                        firebaseAuth,
+                        cookPlanApiService
+                ),
+                firebaseAuth
         );
     }
 
