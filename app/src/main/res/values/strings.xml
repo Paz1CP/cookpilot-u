@@ -76,4 +76,25 @@
     <string name="recipe_picker_meta">%1$d min · %2$d porciones</string>
 
     <string name="cooking_pending">Esta opción estará disponible pronto.</string>
+
+    <string name="recipe_detail_back">Volver</string>
+    <string name="recipe_detail_tab_general">General</string>
+    <string name="recipe_detail_tab_recipe">Receta</string>
+    <string name="recipe_detail_tab_nutrition">Nutrición</string>
+    <string name="recipe_detail_ingredients">Ingredientes</string>
+    <string name="recipe_detail_steps">Pasos</string>
+    <string name="recipe_detail_nutrition">Nutrición</string>
+    <string name="recipe_detail_servings">%1$d porciones</string>
+    <string name="recipe_detail_minutes">%1$d min</string>
+    <string name="recipe_detail_rest_minutes">Reposo: %1$d min</string>
+    <string name="recipe_detail_savings">Ahorras: S/ %1$.1f</string>
+    <string name="recipe_detail_optional">Opcional</string>
+    <string name="recipe_detail_step_number">Paso %1$d</string>
+    <string name="recipe_detail_calories">Calorías</string>
+    <string name="recipe_detail_protein">Proteína</string>
+    <string name="recipe_detail_carbs">Carbohidratos</string>
+    <string name="recipe_detail_fat">Grasas</string>
+    <string name="recipe_detail_fiber">Fibra</string>
+    <string name="recipe_detail_cook_now">Cocinar</string>
+    <string name="recipe_detail_cookmode_next">CookMode será el siguiente flujo.</string>
 </resources>

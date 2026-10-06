@@ -83,4 +83,24 @@ public final class CookIcons {
     public static int close() {
         return LinearIcons.INSTANCE.getAdd();
     }
+
+    public static int back() {
+        return LinearIcons.INSTANCE.getArrowLeft1();
+    }
+
+    public static int money() {
+        return LinearIcons.INSTANCE.getMoneys();
+    }
+
+    public static int timer() {
+        return LinearIcons.INSTANCE.getTimer1();
+    }
+
+    public static int nutrition() {
+        return LinearIcons.INSTANCE.getHeartTick();
+    }
+
+    public static int steps() {
+        return LinearIcons.INSTANCE.getNote2();
+    }
 }
