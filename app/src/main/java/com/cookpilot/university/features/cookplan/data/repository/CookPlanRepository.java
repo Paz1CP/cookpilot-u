@@ -245,11 +245,14 @@ public final class CookPlanRepository {
                     @Override
                     public void onSuccess(@NonNull PlanEntryDto entry) {
                         executor.execute(() -> {
-                            dao.markSyncedIfVersion(
+                            int updated = dao.markSyncedIfVersion(
                                     entity.id,
                                     entity.updatedAt,
                                     System.currentTimeMillis()
                             );
+                            if (updated == 0) {
+                                syncPending();
+                            }
                         });
                     }
 

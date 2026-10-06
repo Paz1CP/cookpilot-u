@@ -60,6 +60,19 @@ public final class HomeFragment extends Fragment
         application = (CookPilotApplication) requireActivity()
                 .getApplication();
 
+        application.getRecipeRepository().refresh(
+                new com.cookpilot.university.features.recipes.data.repository.RecipeRepository.RefreshCallback() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError(@NonNull Exception exception) {
+                        // Room conserva el catálogo y CookPlan sigue operativo.
+                    }
+                }
+        );
+
         viewModel = new ViewModelProvider(
                 this,
                 new CookPlanViewModelFactory(
