@@ -38,11 +38,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/outfit_bold"
                 android:gravity="center"
                 android:text="@string/login_welcome"
-                android:textColor="@color/cook_light"
-                android:textSize="48sp" />
+                android:textAppearance="@style/TextAppearance.CookPilot.DisplayXL"
+                android:textColor="@color/cook_light" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -54,30 +53,27 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/outfit_bold"
                     android:text="@string/brand_cook"
-                    android:textColor="@color/cook_light"
-                    android:textSize="@dimen/cook_text_display_xl" />
+                    android:textAppearance="@style/TextAppearance.CookPilot.DisplayXL"
+                    android:textColor="@color/cook_light" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/outfit_bold"
                     android:text="@string/brand_pilot"
-                    android:textColor="@color/cook_primary"
-                    android:textSize="@dimen/cook_text_display_xl" />
+                    android:textAppearance="@style/TextAppearance.CookPilot.DisplayXL"
+                    android:textColor="@color/cook_primary" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/cook_spacing_12"
-                android:fontFamily="@font/outfit_regular"
                 android:gravity="center"
                 android:maxWidth="330dp"
                 android:text="@string/login_tagline"
-                android:textColor="@color/cook_light"
-                android:textSize="@dimen/cook_text_title_m" />
+                android:textAppearance="@style/TextAppearance.CookPilot.TitleM"
+                android:textColor="@color/cook_light" />
 
         </LinearLayout>
 
@@ -117,8 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/cook_spacing_12"
-                android:hint="@string/login_password"
-                app:endIconMode="password_toggle">
+                android:hint="@string/login_password">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwordEditText"

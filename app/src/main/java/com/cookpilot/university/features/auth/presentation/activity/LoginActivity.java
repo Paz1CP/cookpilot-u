@@ -1,10 +1,14 @@
 package com.cookpilot.university.features.auth.presentation.activity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -17,14 +21,17 @@ import androidx.media3.ui.AspectRatioFrameLayout;
 
 import com.cookpilot.university.MainActivity;
 import com.cookpilot.university.R;
+import com.cookpilot.university.core.design.icons.CookIcons;
 import com.cookpilot.university.databinding.ActivityLoginBinding;
 import com.cookpilot.university.features.auth.presentation.viewmodel.LoginViewModel;
+import com.google.android.material.textfield.TextInputLayout;
 
 public final class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
     private LoginViewModel viewModel;
     private ExoPlayer videoPlayer;
+    private boolean passwordVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +41,10 @@ public final class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Se conserva para conectar Firebase Auth después sin rehacer la pantalla.
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         applySystemBarInsets();
+        configurePasswordToggle();
         bindActions();
     }
 
@@ -68,14 +75,49 @@ public final class LoginActivity extends AppCompatActivity {
                             WindowInsetsCompat.Type.systemBars()
                     );
                     view.setPadding(
-                            horizontalPadding,
+                            bars.left + horizontalPadding,
                             bars.top + verticalPadding,
-                            horizontalPadding,
+                            bars.right + horizontalPadding,
                             bars.bottom + verticalPadding
                     );
                     return windowInsets;
                 }
         );
+        ViewCompat.requestApplyInsets(binding.loginContent);
+    }
+
+    private void configurePasswordToggle() {
+        binding.passwordInputLayout.setEndIconMode(
+                TextInputLayout.END_ICON_CUSTOM
+        );
+        binding.passwordInputLayout.setEndIconDrawable(CookIcons.eye());
+        binding.passwordInputLayout.setEndIconTintList(
+                ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                                this,
+                                R.color.cook_light_strong
+                        )
+                )
+        );
+        binding.passwordInputLayout.setEndIconOnClickListener(view -> {
+            passwordVisible = !passwordVisible;
+            binding.passwordEditText.setTransformationMethod(
+                    passwordVisible
+                            ? HideReturnsTransformationMethod.getInstance()
+                            : PasswordTransformationMethod.getInstance()
+            );
+            binding.passwordInputLayout.setEndIconDrawable(
+                    passwordVisible
+                            ? CookIcons.eyeSlash()
+                            : CookIcons.eye()
+            );
+
+            if (binding.passwordEditText.getText() != null) {
+                binding.passwordEditText.setSelection(
+                        binding.passwordEditText.getText().length()
+                );
+            }
+        });
     }
 
     private void bindActions() {

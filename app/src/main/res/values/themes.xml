@@ -23,8 +23,11 @@
 
         <item name="android:colorAccent">@color/cook_primary</item>
         <item name="android:windowBackground">@color/cook_layer_base</item>
-        <item name="android:statusBarColor">@color/cook_dark_deep</item>
-        <item name="android:navigationBarColor">@color/cook_dark_deep</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:fontFamily">@font/outfit_family</item>
@@ -42,8 +45,8 @@
 
     <style name="Theme.CookPilot.Splash" parent="Theme.CookPilot">
         <item name="android:windowBackground">@color/cook_dark_deep</item>
-        <item name="android:statusBarColor">@color/cook_dark_deep</item>
-        <item name="android:navigationBarColor">@color/cook_dark_deep</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
     </style>
