@@ -32,6 +32,7 @@ public final class CookTextRevealShimmerView extends AppCompatTextView {
     private float shimmerProgress = 0f;
     private boolean revealPhase = true;
     private boolean revealCompletionDispatched = false;
+    private boolean revealCancelled = false;
 
     private long revealDurationMs = CookAnimationTokens.SPLASH_REVEAL_MS;
     private long shimmerDurationMs = CookAnimationTokens.SPLASH_SHIMMER_MS;
@@ -57,19 +58,27 @@ public final class CookTextRevealShimmerView extends AppCompatTextView {
     }
 
     public void setBrandTitle() {
-        SpannableString title = new SpannableString("CookPilot");
+        String cook = getContext().getString(R.string.brand_cook);
+        String pilot = getContext().getString(R.string.brand_pilot);
+        SpannableString title = new SpannableString(cook + pilot);
+
         title.setSpan(
-                new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.cook_light)),
+                new ForegroundColorSpan(
+                        ContextCompat.getColor(getContext(), R.color.cook_light)
+                ),
                 0,
-                4,
+                cook.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
         title.setSpan(
-                new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.cook_primary)),
-                4,
+                new ForegroundColorSpan(
+                        ContextCompat.getColor(getContext(), R.color.cook_primary)
+                ),
+                cook.length(),
                 title.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
+
         setText(title);
     }
 
@@ -93,6 +102,7 @@ public final class CookTextRevealShimmerView extends AppCompatTextView {
     public void startReveal() {
         cancelAnimations();
         revealCompletionDispatched = false;
+        revealCancelled = false;
 
         if (!ValueAnimator.areAnimatorsEnabled()) {
             revealProgress = 1f;
@@ -117,7 +127,16 @@ public final class CookTextRevealShimmerView extends AppCompatTextView {
         });
         revealAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
+            public void onAnimationCancel(Animator animation) {
+                revealCancelled = true;
+            }
+
+            @Override
             public void onAnimationEnd(Animator animation) {
+                if (revealCancelled) {
+                    return;
+                }
+
                 revealProgress = 1f;
                 revealPhase = false;
                 dispatchRevealCompletion();
@@ -171,10 +190,15 @@ public final class CookTextRevealShimmerView extends AppCompatTextView {
             return;
         }
 
-        float bandSize = revealPhase ? REVEAL_BAND_SIZE : AMBIENT_BAND_SIZE;
+        float bandSize = revealPhase
+                ? REVEAL_BAND_SIZE
+                : AMBIENT_BAND_SIZE;
         float sweepCenter = -0.20f + (shimmerProgress * 1.40f);
         float centerX = sweepCenter * getWidth();
-        float halfBand = Math.max(getWidth() * bandSize * 0.5f, 1f);
+        float halfBand = Math.max(
+                getWidth() * bandSize * 0.5f,
+                1f
+        );
 
         int transparent = ColorUtils.setAlphaComponent(shimmerColor, 0);
         int soft = ColorUtils.setAlphaComponent(
@@ -198,7 +222,10 @@ public final class CookTextRevealShimmerView extends AppCompatTextView {
         ));
 
         int layoutSave = canvas.save();
-        canvas.translate(getCompoundPaddingLeft(), getExtendedPaddingTop());
+        canvas.translate(
+                getCompoundPaddingLeft(),
+                getExtendedPaddingTop()
+        );
         getLayout().draw(canvas);
         canvas.restoreToCount(layoutSave);
 
@@ -209,6 +236,7 @@ public final class CookTextRevealShimmerView extends AppCompatTextView {
         if (revealCompletionDispatched) {
             return;
         }
+
         revealCompletionDispatched = true;
         if (onRevealCompleted != null) {
             post(onRevealCompleted);
@@ -220,6 +248,7 @@ public final class CookTextRevealShimmerView extends AppCompatTextView {
             revealAnimator.cancel();
             revealAnimator = null;
         }
+
         if (ambientAnimator != null) {
             ambientAnimator.cancel();
             ambientAnimator = null;

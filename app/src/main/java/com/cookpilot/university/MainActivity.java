@@ -27,12 +27,23 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     private void renderDestination(CookBottomNavigationView.Item item) {
-        int label = switch (item) {
-            case HOME -> R.string.nav_home;
-            case RECIPES -> R.string.nav_recipes;
-            case SHOPPING -> R.string.nav_shopping;
-            case NUTRITION -> R.string.nav_nutrition;
-        };
+        int label;
+
+        switch (item) {
+            case RECIPES:
+                label = R.string.nav_recipes;
+                break;
+            case SHOPPING:
+                label = R.string.nav_shopping;
+                break;
+            case NUTRITION:
+                label = R.string.nav_nutrition;
+                break;
+            case HOME:
+            default:
+                label = R.string.nav_home;
+                break;
+        }
 
         binding.screenTitle.setText(label);
     }

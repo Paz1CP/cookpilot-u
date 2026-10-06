@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -146,15 +145,21 @@ public final class CookBottomNavigationView extends FrameLayout {
             MaterialCardView card = actionCards[index];
             ImageView icon = actionIcons[index];
 
-            card.setCardBackgroundColor(selected ? activeSurface : Color.TRANSPARENT);
-            card.setStrokeColor(selected ? primary : Color.TRANSPARENT);
+            card.setCardBackgroundColor(
+                    selected ? activeSurface : Color.TRANSPARENT
+            );
+            card.setStrokeColor(
+                    selected ? primary : Color.TRANSPARENT
+            );
             card.setStrokeWidth(selected ? borderWidth : 0);
 
             icon.setImageResource(
                     selected ? selectedIcons[index] : outlineIcons[index]
             );
             icon.setColorFilter(iconColor);
-            card.setContentDescription(contentDescriptionFor(Item.values()[index]));
+            card.setContentDescription(
+                    contentDescriptionFor(Item.values()[index])
+            );
         }
 
         if (notify) {
@@ -166,12 +171,17 @@ public final class CookBottomNavigationView extends FrameLayout {
     }
 
     private String contentDescriptionFor(Item item) {
-        return switch (item) {
-            case HOME -> getContext().getString(R.string.nav_home);
-            case RECIPES -> getContext().getString(R.string.nav_recipes);
-            case SHOPPING -> getContext().getString(R.string.nav_shopping);
-            case NUTRITION -> getContext().getString(R.string.nav_nutrition);
-        };
+        switch (item) {
+            case RECIPES:
+                return getContext().getString(R.string.nav_recipes);
+            case SHOPPING:
+                return getContext().getString(R.string.nav_shopping);
+            case NUTRITION:
+                return getContext().getString(R.string.nav_nutrition);
+            case HOME:
+            default:
+                return getContext().getString(R.string.nav_home);
+        }
     }
 
     private void loadCookPilotAvatar() {

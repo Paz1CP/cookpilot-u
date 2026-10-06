@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/outfit_bold"
-                    android:text="Cook"
+                    android:text="@string/brand_cook"
                     android:textColor="@color/cook_light"
                     android:textSize="@dimen/cook_text_display_xl" />
 
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/outfit_bold"
-                    android:text="Pilot"
+                    android:text="@string/brand_pilot"
                     android:textColor="@color/cook_primary"
                     android:textSize="@dimen/cook_text_display_xl" />
             </LinearLayout>

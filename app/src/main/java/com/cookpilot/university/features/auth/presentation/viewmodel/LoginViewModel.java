@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cookpilot.university.R;
+
 public final class LoginViewModel extends ViewModel {
 
     private static final int MIN_PASSWORD_LENGTH = 6;
@@ -21,23 +23,25 @@ public final class LoginViewModel extends ViewModel {
         String email = rawEmail == null ? "" : rawEmail.trim();
         String password = rawPassword == null ? "" : rawPassword;
 
-        String emailError = null;
-        String passwordError = null;
+        int emailError = 0;
+        int passwordError = 0;
 
         if (email.isEmpty()) {
-            emailError = "Ingresa tu correo";
+            emailError = R.string.login_error_email_required;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailError = "Ingresa un correo válido";
+            emailError = R.string.login_error_email_invalid;
         }
 
         if (password.isEmpty()) {
-            passwordError = "Ingresa tu contraseña";
+            passwordError = R.string.login_error_password_required;
         } else if (password.length() < MIN_PASSWORD_LENGTH) {
-            passwordError = "Usa al menos 6 caracteres";
+            passwordError = R.string.login_error_password_short;
         }
 
-        if (emailError != null || passwordError != null) {
-            uiState.setValue(LoginUiState.validationError(emailError, passwordError));
+        if (emailError != 0 || passwordError != 0) {
+            uiState.setValue(
+                    LoginUiState.validationError(emailError, passwordError)
+            );
             return;
         }
 

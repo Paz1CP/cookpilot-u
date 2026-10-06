@@ -1,41 +1,50 @@
 package com.cookpilot.university.features.auth.presentation.viewmodel;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 public final class LoginUiState {
 
+    private static final int NO_ERROR = 0;
+
     private final boolean valid;
     private final boolean submitted;
-    @Nullable
-    private final String emailError;
-    @Nullable
-    private final String passwordError;
+
+    @StringRes
+    private final int emailErrorResId;
+
+    @StringRes
+    private final int passwordErrorResId;
 
     private LoginUiState(
             boolean valid,
             boolean submitted,
-            @Nullable String emailError,
-            @Nullable String passwordError
+            @StringRes int emailErrorResId,
+            @StringRes int passwordErrorResId
     ) {
         this.valid = valid;
         this.submitted = submitted;
-        this.emailError = emailError;
-        this.passwordError = passwordError;
+        this.emailErrorResId = emailErrorResId;
+        this.passwordErrorResId = passwordErrorResId;
     }
 
     public static LoginUiState idle() {
-        return new LoginUiState(false, false, null, null);
+        return new LoginUiState(false, false, NO_ERROR, NO_ERROR);
     }
 
     public static LoginUiState validationError(
-            @Nullable String emailError,
-            @Nullable String passwordError
+            @StringRes int emailErrorResId,
+            @StringRes int passwordErrorResId
     ) {
-        return new LoginUiState(false, true, emailError, passwordError);
+        return new LoginUiState(
+                false,
+                true,
+                emailErrorResId,
+                passwordErrorResId
+        );
     }
 
     public static LoginUiState validSubmission() {
-        return new LoginUiState(true, true, null, null);
+        return new LoginUiState(true, true, NO_ERROR, NO_ERROR);
     }
 
     public boolean isValid() {
@@ -46,13 +55,13 @@ public final class LoginUiState {
         return submitted;
     }
 
-    @Nullable
-    public String getEmailError() {
-        return emailError;
+    @StringRes
+    public int getEmailErrorResId() {
+        return emailErrorResId;
     }
 
-    @Nullable
-    public String getPasswordError() {
-        return passwordError;
+    @StringRes
+    public int getPasswordErrorResId() {
+        return passwordErrorResId;
     }
 }

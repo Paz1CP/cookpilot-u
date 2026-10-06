@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -62,28 +63,35 @@ public final class LoginActivity extends AppCompatActivity {
                 R.dimen.cook_spacing_24
         );
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.loginContent, (view, windowInsets) -> {
-            Insets bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            view.setPadding(
-                    horizontalPadding,
-                    bars.top + verticalPadding,
-                    horizontalPadding,
-                    bars.bottom + verticalPadding
-            );
-            return windowInsets;
-        });
+        ViewCompat.setOnApplyWindowInsetsListener(
+                binding.loginContent,
+                (view, windowInsets) -> {
+                    Insets bars = windowInsets.getInsets(
+                            WindowInsetsCompat.Type.systemBars()
+                    );
+                    view.setPadding(
+                            horizontalPadding,
+                            bars.top + verticalPadding,
+                            horizontalPadding,
+                            bars.bottom + verticalPadding
+                    );
+                    return windowInsets;
+                }
+        );
     }
 
     private void bindActions() {
         binding.continueButton.setOnClickListener(view -> submit());
 
-        binding.passwordEditText.setOnEditorActionListener((view, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                submit();
-                return true;
-            }
-            return false;
-        });
+        binding.passwordEditText.setOnEditorActionListener(
+                (view, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        submit();
+                        return true;
+                    }
+                    return false;
+                }
+        );
     }
 
     private void observeState() {
@@ -102,8 +110,12 @@ public final class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        binding.emailInputLayout.setError(state.getEmailError());
-        binding.passwordInputLayout.setError(state.getPasswordError());
+        binding.emailInputLayout.setError(
+                resolveError(state.getEmailErrorResId())
+        );
+        binding.passwordInputLayout.setError(
+                resolveError(state.getPasswordErrorResId())
+        );
 
         if (!state.isValid()) {
             return;
@@ -111,6 +123,10 @@ public final class LoginActivity extends AppCompatActivity {
 
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    private CharSequence resolveError(@StringRes int errorResId) {
+        return errorResId == 0 ? null : getString(errorResId);
     }
 
     private void startBackgroundVideo() {
@@ -126,7 +142,9 @@ public final class LoginActivity extends AppCompatActivity {
         );
 
         binding.loginVideo.setUseController(false);
-        binding.loginVideo.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+        binding.loginVideo.setResizeMode(
+                AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+        );
         binding.loginVideo.setKeepContentOnPlayerReset(true);
         binding.loginVideo.setPlayer(videoPlayer);
 
@@ -138,12 +156,15 @@ public final class LoginActivity extends AppCompatActivity {
         if (videoPlayer == null) {
             return;
         }
+
         binding.loginVideo.setPlayer(null);
         videoPlayer.release();
         videoPlayer = null;
     }
 
     private String textOf(android.widget.EditText editText) {
-        return editText.getText() == null ? "" : editText.getText().toString();
+        return editText.getText() == null
+                ? ""
+                : editText.getText().toString();
     }
 }

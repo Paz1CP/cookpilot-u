@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_bold"
             android:includeFontPadding="false"
-            android:text="Cook"
+            android:text="@string/brand_cook"
             android:textColor="@color/cook_text_primary"
             android:textSize="@dimen/cook_text_display_m" />
 
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_bold"
             android:includeFontPadding="false"
-            android:text="Pilot"
+            android:text="@string/brand_pilot"
             android:textColor="@color/cook_primary"
             android:textSize="@dimen/cook_text_display_m" />
     </LinearLayout>
@@ -39,9 +39,9 @@
         android:layout_width="@dimen/cook_app_bar_avatar_size"
         android:layout_height="@dimen/cook_app_bar_avatar_size"
         android:clickable="true"
+        android:contentDescription="@string/profile_avatar"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/profile_avatar"
         app:cardBackgroundColor="@color/cook_layer_floating"
         app:cardCornerRadius="@dimen/cook_radius_full"
         app:cardElevation="0dp"
