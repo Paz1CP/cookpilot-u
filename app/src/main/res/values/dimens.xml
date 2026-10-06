@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing -->
+    <dimen name="cook_spacing_4">4dp</dimen>
+    <dimen name="cook_spacing_8">8dp</dimen>
+    <dimen name="cook_spacing_12">12dp</dimen>
+    <dimen name="cook_spacing_16">16dp</dimen>
+    <dimen name="cook_spacing_20">20dp</dimen>
+    <dimen name="cook_spacing_24">24dp</dimen>
+    <dimen name="cook_spacing_32">32dp</dimen>
+    <dimen name="cook_spacing_36">36dp</dimen>
+    <dimen name="cook_spacing_40">40dp</dimen>
+    <dimen name="cook_spacing_48">48dp</dimen>
+    <dimen name="cook_spacing_56">56dp</dimen>
+    <dimen name="cook_spacing_64">64dp</dimen>
+
+    <!-- Layout padding -->
+    <dimen name="cook_padding_screen_x">24dp</dimen>
+    <dimen name="cook_padding_screen_top">0dp</dimen>
+    <dimen name="cook_padding_screen_top_desktop">32dp</dimen>
+    <dimen name="cook_padding_screen_bottom">32dp</dimen>
+    <dimen name="cook_padding_card">20dp</dimen>
+    <dimen name="cook_padding_card_compact">16dp</dimen>
+    <dimen name="cook_padding_card_ultra_compact">12dp</dimen>
+    <dimen name="cook_padding_sheet_top">12dp</dimen>
+    <dimen name="cook_padding_sheet_x">16dp</dimen>
+    <dimen name="cook_padding_sheet_bottom">24dp</dimen>
+    <dimen name="cook_padding_dialog">24dp</dimen>
+    <dimen name="cook_padding_button_y">12dp</dimen>
+    <dimen name="cook_padding_button_x">20dp</dimen>
+    <dimen name="cook_padding_button_large_y">14dp</dimen>
+    <dimen name="cook_padding_button_large_x">24dp</dimen>
+    <dimen name="cook_padding_input_y">14dp</dimen>
+    <dimen name="cook_padding_input_x">16dp</dimen>
+    <dimen name="cook_padding_chip_y">6dp</dimen>
+    <dimen name="cook_padding_chip_x">12dp</dimen>
+    <dimen name="cook_padding_list_item_y">12dp</dimen>
+    <dimen name="cook_padding_list_item_x">16dp</dimen>
+
+    <!-- Radius -->
+    <dimen name="cook_radius_none">0dp</dimen>
+    <dimen name="cook_radius_xsmall">2dp</dimen>
+    <dimen name="cook_radius_small">4dp</dimen>
+    <dimen name="cook_radius_medium">8dp</dimen>
+    <dimen name="cook_radius_large">12dp</dimen>
+    <dimen name="cook_radius_xlarge">16dp</dimen>
+    <dimen name="cook_radius_2xlarge">20dp</dimen>
+    <dimen name="cook_radius_2xxlarge">24dp</dimen>
+    <dimen name="cook_radius_3xlarge">32dp</dimen>
+    <dimen name="cook_radius_3xxlarge">36dp</dimen>
+    <dimen name="cook_radius_full">999dp</dimen>
+
+    <!-- Touch targets -->
+    <dimen name="cook_touch_44">44dp</dimen>
+    <dimen name="cook_touch_48">48dp</dimen>
+    <dimen name="cook_touch_56">56dp</dimen>
+    <dimen name="cook_touch_64">64dp</dimen>
+
+    <!-- Border widths -->
+    <dimen name="cook_border_0">0dp</dimen>
+    <dimen name="cook_border_1">1dp</dimen>
+    <dimen name="cook_border_2">2dp</dimen>
+    <dimen name="cook_border_4">4dp</dimen>
+
+    <!-- Icon sizes -->
+    <dimen name="cook_icon_12">12dp</dimen>
+    <dimen name="cook_icon_16">16dp</dimen>
+    <dimen name="cook_icon_20">20dp</dimen>
+    <dimen name="cook_icon_24">24dp</dimen>
+    <dimen name="cook_icon_32">32dp</dimen>
+    <dimen name="cook_icon_36">36dp</dimen>
+    <dimen name="cook_icon_40">40dp</dimen>
+    <dimen name="cook_icon_48">48dp</dimen>
+    <dimen name="cook_icon_56">56dp</dimen>
+    <dimen name="cook_icon_64">64dp</dimen>
+
+    <!-- Typography -->
+    <dimen name="cook_text_display_xxl">56sp</dimen>
+    <dimen name="cook_text_display_xl">48sp</dimen>
+    <dimen name="cook_text_display_l">40sp</dimen>
+    <dimen name="cook_text_display_m">32sp</dimen>
+    <dimen name="cook_text_title_xl">28sp</dimen>
+    <dimen name="cook_text_title_l">24sp</dimen>
+    <dimen name="cook_text_title_m">20sp</dimen>
+    <dimen name="cook_text_title_s">16sp</dimen>
+    <dimen name="cook_text_body">16sp</dimen>
+    <dimen name="cook_text_body_s">14sp</dimen>
+    <dimen name="cook_text_label">14sp</dimen>
+    <dimen name="cook_text_label_s">12sp</dimen>
+    <dimen name="cook_text_caption">10sp</dimen>
+    <dimen name="cook_text_highlight_l">24sp</dimen>
+    <dimen name="cook_text_highlight_m">16sp</dimen>
+</resources>
