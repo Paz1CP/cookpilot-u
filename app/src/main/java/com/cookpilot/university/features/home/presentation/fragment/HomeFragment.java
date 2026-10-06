@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +22,7 @@ import com.cookpilot.university.features.cookplan.presentation.viewmodel.CookPla
 import com.cookpilot.university.features.cookplan.presentation.viewmodel.CookPlanViewModelFactory;
 import com.cookpilot.university.features.home.presentation.adapter.WeekDayAdapter;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
+import com.cookpilot.university.features.recipes.presentation.activity.RecipeDetailActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -208,12 +208,14 @@ public final class HomeFragment extends Fragment
     }
 
     @Override
-    public void onCook(@NonNull MealMoment mealMoment) {
-        Toast.makeText(
-                requireContext(),
-                R.string.cooking_pending,
-                Toast.LENGTH_SHORT
-        ).show();
+    public void onCook(@NonNull PlannedRecipe plannedRecipe) {
+        startActivity(
+                RecipeDetailActivity.createIntent(
+                        requireContext(),
+                        plannedRecipe.getRecipe().getId(),
+                        plannedRecipe.getServings()
+                )
+        );
     }
 
     @Override

@@ -17,7 +17,16 @@ import java.util.List;
 public final class RecipeAdapter
         extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
+    public interface OnRecipeClickListener {
+        void onRecipeClick(@NonNull Recipe recipe);
+    }
+
     private final List<Recipe> recipes = new ArrayList<>();
+    private final OnRecipeClickListener clickListener;
+
+    public RecipeAdapter(@NonNull OnRecipeClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     public void submitRecipes(@NonNull List<Recipe> values) {
         recipes.clear();
@@ -36,7 +45,7 @@ public final class RecipeAdapter
                 parent,
                 false
         );
-        return new RecipeViewHolder(binding);
+        return new RecipeViewHolder(binding, clickListener);
     }
 
     @Override
@@ -56,10 +65,15 @@ public final class RecipeAdapter
             extends RecyclerView.ViewHolder {
 
         private final ItemRecipeCardBinding binding;
+        private final OnRecipeClickListener clickListener;
 
-        RecipeViewHolder(@NonNull ItemRecipeCardBinding binding) {
+        RecipeViewHolder(
+                @NonNull ItemRecipeCardBinding binding,
+                @NonNull OnRecipeClickListener clickListener
+        ) {
             super(binding.getRoot());
             this.binding = binding;
+            this.clickListener = clickListener;
         }
 
         void bind(@NonNull Recipe recipe) {
@@ -79,6 +93,9 @@ public final class RecipeAdapter
 
             binding.getRoot().setContentDescription(
                     recipe.getTitle()
+            );
+            binding.getRoot().setOnClickListener(
+                    view -> clickListener.onRecipeClick(recipe)
             );
         }
 

@@ -17,6 +17,7 @@ import com.cookpilot.university.CookPilotApplication;
 import com.cookpilot.university.R;
 import com.cookpilot.university.databinding.FragmentRecipesBinding;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
+import com.cookpilot.university.features.recipes.presentation.activity.RecipeDetailActivity;
 import com.cookpilot.university.features.recipes.presentation.adapter.RecipeAdapter;
 import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipesUiState;
 import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipesViewModel;
@@ -148,7 +149,15 @@ public final class RecipesFragment extends Fragment {
     }
 
     private void configureGrid() {
-        adapter = new RecipeAdapter();
+        adapter = new RecipeAdapter(recipe ->
+                startActivity(
+                        RecipeDetailActivity.createIntent(
+                                requireContext(),
+                                recipe.getId(),
+                                recipe.getBaseServings()
+                        )
+                )
+        );
         binding.recipeGrid.setLayoutManager(
                 new GridLayoutManager(requireContext(), 2)
         );

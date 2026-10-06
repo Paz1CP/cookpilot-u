@@ -40,7 +40,7 @@ public final class CookPlanMealMomentView extends LinearLayout {
                 @NonNull PlannedRecipe plannedRecipe,
                 int servings
         );
-        void onCook(@NonNull MealMoment mealMoment);
+        void onCook(@NonNull PlannedRecipe plannedRecipe);
     }
 
     private final ImageView momentIcon;
@@ -126,9 +126,15 @@ public final class CookPlanMealMomentView extends LinearLayout {
                 view -> changeFocusedServings(1)
         );
         cookButton.setOnClickListener(view -> {
-            if (listener != null && !currentRecipes.isEmpty()) {
-                listener.onCook(mealMoment);
+            if (listener == null || currentRecipes.isEmpty()) {
+                return;
             }
+
+            PlannedRecipe selected = focusedRecipe();
+            if (selected == null) {
+                selected = currentRecipes.get(0);
+            }
+            listener.onCook(selected);
         });
     }
 
