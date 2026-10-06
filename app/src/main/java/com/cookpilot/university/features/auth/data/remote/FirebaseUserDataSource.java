@@ -6,6 +6,7 @@ import com.cookpilot.university.features.auth.domain.model.User;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +43,7 @@ public final class FirebaseUserDataSource {
                         data.put("createdAt", FieldValue.serverTimestamp());
                     }
 
-                    reference.set(data)
+                    reference.set(data, SetOptions.merge())
                             .addOnSuccessListener(unused -> callback.onSuccess())
                             .addOnFailureListener(callback::onError);
                 })

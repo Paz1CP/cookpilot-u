@@ -8,12 +8,20 @@
     <string name="login_tagline">Come saludable, ahorra dinero y tiempo.</string>
     <string name="login_email">Correo</string>
     <string name="login_password">Contraseña</string>
-    <string name="login_continue">Continuar</string>
+    <string name="login_sign_in">Iniciar sesión</string>
+    <string name="login_create_account">Crear cuenta</string>
+    <string name="login_switch_to_register">¿No tienes una cuenta? Crear cuenta</string>
+    <string name="login_switch_to_login">¿Ya tienes una cuenta? Iniciar sesión</string>
     <string name="login_error_email_required">Ingresa tu correo</string>
     <string name="login_error_email_invalid">Ingresa un correo válido</string>
     <string name="login_error_password_required">Ingresa tu contraseña</string>
     <string name="login_error_password_short">Usa al menos 6 caracteres</string>
     <string name="login_video_url">https://media.cookpilot.pro/cookpilot_media/CookIntro.mp4</string>
+
+    <string name="auth_session_title">Cuenta</string>
+    <string name="auth_logout_confirm">¿Quieres cerrar tu sesión actual?</string>
+    <string name="auth_logout">Cerrar sesión</string>
+    <string name="auth_cancel">Cancelar</string>
 
     <string name="nav_home">Inicio</string>
     <string name="nav_recipes">Recetas</string>

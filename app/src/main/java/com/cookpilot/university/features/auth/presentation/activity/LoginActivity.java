@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +20,14 @@ import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.AspectRatioFrameLayout;
 
+import com.cookpilot.university.CookPilotApplication;
 import com.cookpilot.university.MainActivity;
 import com.cookpilot.university.R;
 import com.cookpilot.university.core.design.icons.CookIcons;
 import com.cookpilot.university.databinding.ActivityLoginBinding;
+import com.cookpilot.university.features.auth.presentation.viewmodel.LoginUiState;
 import com.cookpilot.university.features.auth.presentation.viewmodel.LoginViewModel;
+import com.cookpilot.university.features.auth.presentation.viewmodel.LoginViewModelFactory;
 import com.google.android.material.textfield.TextInputLayout;
 
 public final class LoginActivity extends AppCompatActivity {
@@ -32,6 +36,7 @@ public final class LoginActivity extends AppCompatActivity {
     private LoginViewModel viewModel;
     private ExoPlayer videoPlayer;
     private boolean passwordVisible;
+    private boolean openingHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +46,18 @@ public final class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        CookPilotApplication application =
+                (CookPilotApplication) getApplication();
+
+        viewModel = new ViewModelProvider(
+                this,
+                new LoginViewModelFactory(application.getAuthRepository())
+        ).get(LoginViewModel.class);
 
         applySystemBarInsets();
         configurePasswordToggle();
         bindActions();
+        observeState();
     }
 
     @Override
@@ -121,12 +133,15 @@ public final class LoginActivity extends AppCompatActivity {
     }
 
     private void bindActions() {
-        binding.continueButton.setOnClickListener(view -> continueToApp());
+        binding.continueButton.setOnClickListener(view -> submit());
+        binding.authModeToggle.setOnClickListener(
+                view -> viewModel.toggleMode()
+        );
 
         binding.passwordEditText.setOnEditorActionListener(
                 (view, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        continueToApp();
+                        submit();
                         return true;
                     }
                     return false;
@@ -134,7 +149,73 @@ public final class LoginActivity extends AppCompatActivity {
         );
     }
 
-    private void continueToApp() {
+    private void observeState() {
+        viewModel.getUiState().observe(this, this::renderState);
+    }
+
+    private void submit() {
+        String email = binding.emailEditText.getText() == null
+                ? ""
+                : binding.emailEditText.getText().toString();
+        String password = binding.passwordEditText.getText() == null
+                ? ""
+                : binding.passwordEditText.getText().toString();
+
+        viewModel.submit(email, password);
+    }
+
+    private void renderState(LoginUiState state) {
+        if (state == null) {
+            return;
+        }
+
+        binding.emailInputLayout.setError(
+                state.getEmailErrorResId() == 0
+                        ? null
+                        : getString(state.getEmailErrorResId())
+        );
+        binding.passwordInputLayout.setError(
+                state.getPasswordErrorResId() == 0
+                        ? null
+                        : getString(state.getPasswordErrorResId())
+        );
+
+        String authError = state.getAuthError();
+        binding.authErrorText.setText(authError);
+        binding.authErrorText.setVisibility(
+                authError == null ? View.GONE : View.VISIBLE
+        );
+
+        boolean loading = state.isLoading();
+        binding.loginProgress.setVisibility(
+                loading ? View.VISIBLE : View.GONE
+        );
+        binding.continueButton.setEnabled(!loading);
+        binding.authModeToggle.setEnabled(!loading);
+        binding.emailEditText.setEnabled(!loading);
+        binding.passwordEditText.setEnabled(!loading);
+
+        binding.continueButton.setText(
+                state.isRegisterMode()
+                        ? R.string.login_create_account
+                        : R.string.login_sign_in
+        );
+        binding.authModeToggle.setText(
+                state.isRegisterMode()
+                        ? R.string.login_switch_to_login
+                        : R.string.login_switch_to_register
+        );
+
+        if (state.isAuthenticated()) {
+            openHome();
+        }
+    }
+
+    private void openHome() {
+        if (openingHome) {
+            return;
+        }
+        openingHome = true;
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

@@ -1,5 +1,6 @@
 package com.cookpilot.university;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +15,37 @@ import androidx.fragment.app.Fragment;
 import com.cookpilot.university.core.common.PlaceholderFragment;
 import com.cookpilot.university.core.design.components.navigation.CookBottomNavigationView;
 import com.cookpilot.university.databinding.ActivityMainBinding;
+import com.cookpilot.university.features.auth.data.repository.AuthRepository;
+import com.cookpilot.university.features.auth.presentation.activity.LoginActivity;
 import com.cookpilot.university.features.home.presentation.fragment.HomeFragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public final class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private AuthRepository authRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
+        CookPilotApplication application =
+                (CookPilotApplication) getApplication();
+        authRepository = application.getAuthRepository();
+
+        if (!authRepository.getAuthState().isAuthenticated()) {
+            openLogin();
+            return;
+        }
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         applySystemBarInsets();
+        binding.appBar.setAvatarOnClickListener(
+                view -> showSessionDialog()
+        );
         binding.bottomNavigation.setOnItemSelectedListener(
                 this::renderDestination
         );
@@ -120,5 +137,25 @@ public final class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.mainContainer, fragment)
                 .commit();
+    }
+
+    private void showSessionDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.auth_session_title)
+                .setMessage(R.string.auth_logout_confirm)
+                .setNegativeButton(R.string.auth_cancel, null)
+                .setPositiveButton(
+                        R.string.auth_logout,
+                        (dialog, which) -> {
+                            authRepository.logout();
+                            openLogin();
+                        }
+                )
+                .show();
+    }
+
+    private void openLogin() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }

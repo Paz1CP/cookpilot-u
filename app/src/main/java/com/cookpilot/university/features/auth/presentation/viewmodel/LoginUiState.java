@@ -1,13 +1,15 @@
 package com.cookpilot.university.features.auth.presentation.viewmodel;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 public final class LoginUiState {
 
     private static final int NO_ERROR = 0;
 
-    private final boolean valid;
-    private final boolean submitted;
+    private final boolean registerMode;
+    private final boolean loading;
+    private final boolean authenticated;
 
     @StringRes
     private final int emailErrorResId;
@@ -15,44 +17,101 @@ public final class LoginUiState {
     @StringRes
     private final int passwordErrorResId;
 
+    @Nullable
+    private final String authError;
+
     private LoginUiState(
-            boolean valid,
-            boolean submitted,
+            boolean registerMode,
+            boolean loading,
+            boolean authenticated,
             @StringRes int emailErrorResId,
-            @StringRes int passwordErrorResId
+            @StringRes int passwordErrorResId,
+            @Nullable String authError
     ) {
-        this.valid = valid;
-        this.submitted = submitted;
+        this.registerMode = registerMode;
+        this.loading = loading;
+        this.authenticated = authenticated;
         this.emailErrorResId = emailErrorResId;
         this.passwordErrorResId = passwordErrorResId;
+        this.authError = authError;
     }
 
-    public static LoginUiState idle() {
-        return new LoginUiState(false, false, NO_ERROR, NO_ERROR);
+    public static LoginUiState initial() {
+        return idle(false);
+    }
+
+    public static LoginUiState idle(boolean registerMode) {
+        return new LoginUiState(
+                registerMode,
+                false,
+                false,
+                NO_ERROR,
+                NO_ERROR,
+                null
+        );
+    }
+
+    public static LoginUiState loading(boolean registerMode) {
+        return new LoginUiState(
+                registerMode,
+                true,
+                false,
+                NO_ERROR,
+                NO_ERROR,
+                null
+        );
     }
 
     public static LoginUiState validationError(
+            boolean registerMode,
             @StringRes int emailErrorResId,
             @StringRes int passwordErrorResId
     ) {
         return new LoginUiState(
+                registerMode,
                 false,
-                true,
+                false,
                 emailErrorResId,
-                passwordErrorResId
+                passwordErrorResId,
+                null
         );
     }
 
-    public static LoginUiState validSubmission() {
-        return new LoginUiState(true, true, NO_ERROR, NO_ERROR);
+    public static LoginUiState authError(
+            boolean registerMode,
+            @Nullable String message
+    ) {
+        return new LoginUiState(
+                registerMode,
+                false,
+                false,
+                NO_ERROR,
+                NO_ERROR,
+                message
+        );
     }
 
-    public boolean isValid() {
-        return valid;
+    public static LoginUiState authenticated(boolean registerMode) {
+        return new LoginUiState(
+                registerMode,
+                false,
+                true,
+                NO_ERROR,
+                NO_ERROR,
+                null
+        );
     }
 
-    public boolean isSubmitted() {
-        return submitted;
+    public boolean isRegisterMode() {
+        return registerMode;
+    }
+
+    public boolean isLoading() {
+        return loading;
+    }
+
+    public boolean isAuthenticated() {
+        return authenticated;
     }
 
     @StringRes
@@ -63,5 +122,10 @@ public final class LoginUiState {
     @StringRes
     public int getPasswordErrorResId() {
         return passwordErrorResId;
+    }
+
+    @Nullable
+    public String getAuthError() {
+        return authError;
     }
 }
