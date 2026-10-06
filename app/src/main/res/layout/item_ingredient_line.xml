@@ -38,11 +38,4 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/ingredientSelectedIcon"
-        android:layout_width="@dimen/cook_icon_32"
-        android:layout_height="@dimen/cook_icon_32"
-        android:contentDescription="@null"
-        android:tint="@color/cook_secondary" />
-
 </LinearLayout>

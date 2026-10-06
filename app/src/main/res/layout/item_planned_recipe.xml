@@ -7,6 +7,7 @@
     android:layout_marginEnd="@dimen/cook_spacing_12">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/plannedRecipeCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="@dimen/cook_radius_2xlarge"

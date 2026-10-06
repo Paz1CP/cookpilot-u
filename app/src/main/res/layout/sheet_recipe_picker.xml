@@ -17,6 +17,7 @@
         android:background="@drawable/bg_sheet_handle" />
 
     <TextView
+        android:id="@+id/pickerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/cook_spacing_20"
@@ -25,6 +26,7 @@
         android:textColor="@color/cook_text_primary" />
 
     <TextView
+        android:id="@+id/pickerSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/cook_spacing_4"
