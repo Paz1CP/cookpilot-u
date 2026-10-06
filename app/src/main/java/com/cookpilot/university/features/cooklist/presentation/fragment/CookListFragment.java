@@ -81,6 +81,9 @@ public final class CookListFragment extends Fragment
         binding.addItemButton.setImageResource(
                 CookIcons.addCircle()
         );
+        binding.estimatedPriceIcon.setImageResource(
+                CookIcons.money()
+        );
         binding.addItemButton.setOnClickListener(
                 ignored -> showItemDialog(null)
         );
