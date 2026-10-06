@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.CookPilot" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/cook_primary</item>
+        <item name="colorOnPrimary">@color/cook_dark</item>
+        <item name="colorPrimaryContainer">@color/cook_primary_soft</item>
+        <item name="colorOnPrimaryContainer">@color/cook_primary_deep</item>
 
-    <style name="Theme.CookPilot" parent="android:Theme.Material.Light.NoActionBar" />
+        <item name="colorSecondary">@color/cook_secondary</item>
+        <item name="colorOnSecondary">@color/cook_dark</item>
+        <item name="colorSecondaryContainer">@color/cook_secondary_soft</item>
+        <item name="colorOnSecondaryContainer">@color/cook_secondary_deep</item>
+
+        <item name="colorTertiary">@color/cook_accent</item>
+        <item name="colorError">@color/cook_error</item>
+
+        <item name="colorSurface">@color/cook_layer_base</item>
+        <item name="colorSurfaceContainer">@color/cook_layer_raised</item>
+        <item name="colorOnSurface">@color/cook_text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/cook_text_secondary</item>
+        <item name="colorOutline">@color/cook_border_default</item>
+        <item name="colorOutlineVariant">@color/cook_border_subtle</item>
+
+        <item name="android:colorAccent">@color/cook_primary</item>
+        <item name="android:windowBackground">@color/cook_layer_base</item>
+        <item name="android:statusBarColor">@color/cook_layer_base</item>
+        <item name="android:navigationBarColor">@color/cook_layer_base</item>
+        <item name="android:fontFamily">sans-serif</item>
+
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.CookPilot.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.CookPilot.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.CookPilot.Large</item>
+
+        <item name="materialButtonStyle">@style/Widget.CookPilot.Button.Primary</item>
+        <item name="materialCardViewStyle">@style/Widget.CookPilot.Card</item>
+
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
 </resources>
