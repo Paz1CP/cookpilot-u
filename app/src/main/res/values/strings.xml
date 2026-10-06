@@ -29,6 +29,18 @@
     <string name="nav_cookpilot">CookPilot</string>
     <string name="profile_avatar">Perfil</string>
 
+    <string name="recipes_count_zero">0 recetas disponibles</string>
+    <string name="recipes_count">%1$d recetas disponibles</string>
+    <string name="recipes_cached_notice">Sin conexión · mostrando datos guardados</string>
+    <string name="recipes_card_meta">%1$d min · %2$s</string>
+    <string name="recipes_card_servings">%1$d porciones</string>
+    <string name="recipe_difficulty_easy">Fácil</string>
+    <string name="recipe_difficulty_medium">Media</string>
+    <string name="recipe_difficulty_hard">Difícil</string>
+    <string name="recipes_error">No se pudo cargar el catálogo.</string>
+    <string name="recipes_retry">Reintentar</string>
+    <string name="recipes_empty">Todavía no hay recetas disponibles.</string>
+
     <string name="meal_breakfast">Desayuno</string>
     <string name="meal_lunch">Almuerzo</string>
     <string name="meal_dinner">Cena</string>
