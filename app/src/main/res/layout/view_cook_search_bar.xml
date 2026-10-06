@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/cook_touch_56"
+    android:background="@drawable/bg_cook_search_bar"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/cook_padding_input_x"
+    android:paddingEnd="@dimen/cook_padding_input_x">
+
+    <ImageView
+        android:id="@+id/searchIcon"
+        android:layout_width="@dimen/cook_icon_24"
+        android:layout_height="@dimen/cook_icon_24"
+        android:contentDescription="@null"
+        android:tint="@color/cook_text_tertiary" />
+
+    <EditText
+        android:id="@+id/searchInput"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/cook_spacing_12"
+        android:layout_weight="1"
+        android:background="@null"
+        android:fontFamily="@font/outfit_regular"
+        android:hint="@string/recipes_search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="0dp"
+        android:singleLine="true"
+        android:textColor="@color/cook_text_primary"
+        android:textColorHint="@color/cook_text_tertiary"
+        android:textSize="@dimen/cook_text_body" />
+
+    <ImageView
+        android:id="@+id/clearSearchButton"
+        android:layout_width="@dimen/cook_icon_24"
+        android:layout_height="@dimen/cook_icon_24"
+        android:contentDescription="@string/recipes_clear_search"
+        android:padding="2dp"
+        android:tint="@color/cook_text_tertiary"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/filterSearchButton"
+        android:layout_width="@dimen/cook_icon_24"
+        android:layout_height="@dimen/cook_icon_24"
+        android:layout_marginStart="@dimen/cook_spacing_12"
+        android:contentDescription="@string/recipes_filters"
+        android:tint="@color/cook_text_tertiary" />
+
+</LinearLayout>

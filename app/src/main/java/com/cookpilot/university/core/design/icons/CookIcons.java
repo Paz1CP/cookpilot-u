@@ -20,6 +20,18 @@ public final class CookIcons {
         return LinearIcons.INSTANCE.getSearchNormal1();
     }
 
+    public static int searchFilled() {
+        return BoldIcons.INSTANCE.getSearchNormal1();
+    }
+
+    public static int filter() {
+        return LinearIcons.INSTANCE.getFilterSquare();
+    }
+
+    public static int filterFilled() {
+        return BoldIcons.INSTANCE.getFilter();
+    }
+
     public static int shoppingList() {
         return LinearIcons.INSTANCE.getShoppingBag();
     }
