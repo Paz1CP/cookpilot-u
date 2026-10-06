@@ -182,7 +182,7 @@ public final class HomeFragment extends Fragment
     public void onCook(@NonNull MealMoment mealMoment) {
         Toast.makeText(
                 requireContext(),
-                R.string.cookmode_pending,
+                R.string.cooking_pending,
                 Toast.LENGTH_SHORT
         ).show();
     }

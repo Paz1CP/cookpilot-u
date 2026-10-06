@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cookpilot.university.R;
+import com.cookpilot.university.core.design.icons.CookIcons;
 import com.cookpilot.university.databinding.ItemRecipePickerBinding;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
 
@@ -44,6 +45,7 @@ public final class RecipePickerAdapter
                 parent,
                 false
         );
+        binding.selectedBadge.setImageResource(CookIcons.selected());
         return new RecipeViewHolder(binding);
     }
 

@@ -9,11 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Catálogo temporal para el MVP universitario.
- *
- * Los IDs, imágenes, tiempos, nutrición, precios e ingredientes provienen
- * de CookPilot DEV. La fuente remota podrá sustituir esta clase cuando entre
- * Retrofit sin cambiar los consumidores del dominio.
+ * Proporciona el catálogo local de recetas usado por la capa de datos.
  */
 public final class RecipeFixtures {
 

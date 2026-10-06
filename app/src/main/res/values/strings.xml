@@ -25,7 +25,6 @@
     <string name="meal_lunch">Almuerzo</string>
     <string name="meal_dinner">Cena</string>
 
-    <string name="cookplan_create_menu">✦ Crear menú</string>
     <string name="cookplan_cook">Cocinar</string>
     <string name="cookplan_empty_meal">Agrega recetas a este momento</string>
     <string name="cookplan_choose_recipes">Elige una o varias recetas</string>
@@ -35,7 +34,7 @@
     <string name="recipe_picker_title">Elige tus recetas</string>
     <string name="recipe_picker_subtitle">Selecciona una o varias para este momento.</string>
     <string name="recipe_picker_add">Agregar</string>
-    <string name="recipe_picker_meta">%1$d min · %2$d porciones base</string>
+    <string name="recipe_picker_meta">%1$d min · %2$d porciones</string>
 
-    <string name="cookmode_pending">CookMode se conectará en su pantalla correspondiente.</string>
+    <string name="cooking_pending">Esta opción estará disponible pronto.</string>
 </resources>

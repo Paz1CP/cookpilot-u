@@ -45,11 +45,11 @@
         app:cardElevation="0dp">
 
         <ImageView
+            android:id="@+id/removeRecipeIcon"
             android:layout_width="@dimen/cook_icon_20"
             android:layout_height="@dimen/cook_icon_20"
             android:layout_gravity="center"
             android:contentDescription="@string/cookplan_remove_recipe"
-            android:src="@drawable/ic_close"
             app:tint="@color/cook_light" />
 
     </com.google.android.material.card.MaterialCardView>

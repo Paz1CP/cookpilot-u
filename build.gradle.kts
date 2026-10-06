@@ -1,4 +1,4 @@
-// Top-level build file for the CookPilot University Android app.
+// Configuración raíz del proyecto Android.
 plugins {
     alias(libs.plugins.android.application) apply false
 }

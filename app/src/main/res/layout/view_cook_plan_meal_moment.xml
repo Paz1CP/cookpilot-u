@@ -29,10 +29,10 @@
             android:textColor="@color/cook_text_primary" />
 
         <ImageView
+            android:id="@+id/mealMomentMoreIcon"
             android:layout_width="@dimen/cook_icon_24"
             android:layout_height="@dimen/cook_icon_24"
             android:contentDescription="@null"
-            android:src="@drawable/ic_more_vertical"
             app:tint="@color/cook_text_primary" />
 
     </LinearLayout>
@@ -53,49 +53,21 @@
             android:orientation="vertical"
             android:padding="@dimen/cook_padding_card">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/mealPrice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:text="S/ —"
+                android:textAppearance="@style/TextAppearance.CookPilot.HighlightXL"
+                android:textColor="@color/cook_primary" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/mealPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="S/ —"
-                        android:textAppearance="@style/TextAppearance.CookPilot.HighlightXL"
-                        android:textColor="@color/cook_primary" />
-
-                    <TextView
-                        android:id="@+id/mealMeta"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/cook_spacing_4"
-                        android:textAppearance="@style/TextAppearance.CookPilot.BodySmall"
-                        android:textColor="@color/cook_text_tertiary" />
-
-                </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/createMenuButton"
-                    style="@style/Widget.CookPilot.Button.Secondary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/cook_touch_48"
-                    android:minWidth="0dp"
-                    android:paddingHorizontal="@dimen/cook_spacing_16"
-                    android:text="@string/cookplan_create_menu"
-                    android:textColor="@color/cook_text_primary"
-                    app:icon="@drawable/ic_sparkles"
-                    app:iconTint="@color/cook_primary" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/mealMeta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cook_spacing_4"
+                android:textAppearance="@style/TextAppearance.CookPilot.BodySmall"
+                android:textColor="@color/cook_text_tertiary" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -138,7 +110,6 @@
                     android:padding="0dp"
                     android:text=""
                     android:visibility="gone"
-                    app:icon="@drawable/ic_ingredients"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:iconTint="@color/cook_text_primary" />
@@ -151,7 +122,6 @@
                     android:layout_marginStart="@dimen/cook_spacing_12"
                     android:layout_weight="1"
                     android:text=""
-                    app:icon="@drawable/ic_add"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:iconTint="@color/cook_text_primary" />

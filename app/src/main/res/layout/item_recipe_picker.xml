@@ -59,10 +59,7 @@
         android:layout_height="@dimen/cook_icon_32"
         android:layout_gravity="top|end"
         android:layout_margin="@dimen/cook_spacing_8"
-        android:background="@drawable/bg_ingredient_check"
-        android:padding="@dimen/cook_spacing_8"
-        android:src="@drawable/ic_check"
-        android:tint="@color/cook_dark"
+        android:tint="@color/cook_secondary"
         android:visibility="gone" />
 
 </FrameLayout>

@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.cookpilot.university.R;
+import com.cookpilot.university.core.design.icons.CookIcons;
 import com.cookpilot.university.features.cookplan.domain.model.MealMoment;
 import com.cookpilot.university.features.cookplan.domain.model.PlannedRecipe;
 import com.cookpilot.university.features.recipes.domain.model.Ingredient;
@@ -40,7 +41,6 @@ public final class CookPlanMealMomentView extends LinearLayout {
     private final TextView metaText;
     private final LinearLayout recipeRail;
     private final LinearLayout ingredientsList;
-    private final MaterialButton createMenuButton;
     private final MaterialButton ingredientsButton;
     private final MaterialButton addButton;
     private final MaterialButton cookButton;
@@ -81,12 +81,17 @@ public final class CookPlanMealMomentView extends LinearLayout {
         metaText = findViewById(R.id.mealMeta);
         recipeRail = findViewById(R.id.recipeRail);
         ingredientsList = findViewById(R.id.ingredientsList);
-        createMenuButton = findViewById(R.id.createMenuButton);
         ingredientsButton = findViewById(R.id.ingredientsButton);
         addButton = findViewById(R.id.addRecipeButton);
         cookButton = findViewById(R.id.cookButton);
 
-        createMenuButton.setOnClickListener(view -> requestAdd());
+        ImageView moreIcon = findViewById(R.id.mealMomentMoreIcon);
+        moreIcon.setImageResource(CookIcons.more());
+        moreIcon.setRotation(90f);
+
+        ingredientsButton.setIconResource(CookIcons.ingredients());
+        addButton.setIconResource(CookIcons.add());
+
         addButton.setOnClickListener(view -> requestAdd());
         ingredientsButton.setOnClickListener(view -> toggleIngredients());
         cookButton.setOnClickListener(view -> {
@@ -131,18 +136,18 @@ public final class CookPlanMealMomentView extends LinearLayout {
 
         switch (mealMoment) {
             case BREAKFAST:
-                icon = R.drawable.ic_sun;
+                icon = CookIcons.breakfast();
                 tint = R.color.cook_primary;
                 title = R.string.meal_breakfast;
                 break;
             case DINNER:
-                icon = R.drawable.ic_moon_filled;
+                icon = CookIcons.dinner();
                 tint = R.color.cook_accent_soft;
                 title = R.string.meal_dinner;
                 break;
             case LUNCH:
             default:
-                icon = R.drawable.ic_sun_fog;
+                icon = CookIcons.lunch();
                 tint = R.color.cook_primary_strong;
                 title = R.string.meal_lunch;
                 break;
@@ -183,10 +188,13 @@ public final class CookPlanMealMomentView extends LinearLayout {
             );
 
             ImageView image = item.findViewById(R.id.recipeImage);
+            ImageView removeIcon = item.findViewById(R.id.removeRecipeIcon);
             TextView servings = item.findViewById(R.id.servingsBadge);
             View remove = item.findViewById(R.id.removeRecipeButton);
 
+            removeIcon.setImageResource(CookIcons.closeCircle());
             servings.setText(String.valueOf(plannedRecipe.getServings()));
+
             Glide.with(image)
                     .load(plannedRecipe.getRecipe().getImageUrl())
                     .centerCrop()
@@ -229,9 +237,13 @@ public final class CookPlanMealMomentView extends LinearLayout {
             );
 
             ImageView icon = row.findViewById(R.id.ingredientIcon);
+            ImageView selectedIcon = row.findViewById(
+                    R.id.ingredientSelectedIcon
+            );
             TextView name = row.findViewById(R.id.ingredientName);
             TextView quantity = row.findViewById(R.id.ingredientQuantity);
 
+            selectedIcon.setImageResource(CookIcons.selected());
             name.setText(ingredient.getName());
             quantity.setText(formatQuantity(
                     ingredient.getQuantity() * scale,
