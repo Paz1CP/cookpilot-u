@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
@@ -23,7 +25,10 @@ import com.bumptech.glide.Glide;
 import com.cookpilot.university.CookPilotApplication;
 import com.cookpilot.university.R;
 import com.cookpilot.university.core.design.icons.CookIcons;
+import com.cookpilot.university.core.utils.TextUtil;
 import com.cookpilot.university.databinding.ActivityRecipeDetailBinding;
+import com.cookpilot.university.features.cookplan.domain.model.MealMoment;
+import com.cookpilot.university.features.cookplan.domain.model.PlannedRecipe;
 import com.cookpilot.university.features.recipes.domain.model.Ingredient;
 import com.cookpilot.university.features.recipes.domain.model.NutritionInfo;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
@@ -32,17 +37,29 @@ import com.cookpilot.university.features.recipes.domain.model.RecipeStep;
 import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipeDetailViewModel;
 import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipeDetailViewModelFactory;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public final class RecipeDetailActivity extends AppCompatActivity {
 
-    private static final String EXTRA_RECIPE_ID = "recipe_id";
+    private static final String EXTRA_RECIPE_IDS = "recipe_ids";
     private static final String EXTRA_SERVINGS = "servings";
+    private static final String EXTRA_MENU_MODE = "menu_mode";
+    private static final String EXTRA_MEAL_MOMENT = "meal_moment";
 
     private ActivityRecipeDetailBinding binding;
     private RecipeDetailViewModel viewModel;
-    private RecipeDetail currentDetail;
-    private int currentServings = 1;
+
+    private List<RecipeDetail> currentDetails = Collections.emptyList();
+    private Map<String, Integer> currentServings =
+            Collections.emptyMap();
+    @Nullable
+    private String selectedRecipeId;
+    private boolean menuMode;
 
     @NonNull
     public static Intent createIntent(
@@ -50,9 +67,40 @@ public final class RecipeDetailActivity extends AppCompatActivity {
             @NonNull String recipeId,
             int servings
     ) {
+        ArrayList<String> recipeIds = new ArrayList<>();
+        recipeIds.add(recipeId);
+
+        ArrayList<Integer> portions = new ArrayList<>();
+        portions.add(Math.max(1, servings));
+
         return new Intent(context, RecipeDetailActivity.class)
-                .putExtra(EXTRA_RECIPE_ID, recipeId)
-                .putExtra(EXTRA_SERVINGS, Math.max(1, servings));
+                .putStringArrayListExtra(EXTRA_RECIPE_IDS, recipeIds)
+                .putIntegerArrayListExtra(EXTRA_SERVINGS, portions)
+                .putExtra(EXTRA_MENU_MODE, false);
+    }
+
+    @NonNull
+    public static Intent createMenuIntent(
+            @NonNull Context context,
+            @NonNull MealMoment mealMoment,
+            @NonNull List<PlannedRecipe> plannedRecipes
+    ) {
+        ArrayList<String> recipeIds = new ArrayList<>();
+        ArrayList<Integer> portions = new ArrayList<>();
+
+        for (PlannedRecipe plannedRecipe : plannedRecipes) {
+            recipeIds.add(plannedRecipe.getRecipe().getId());
+            portions.add(plannedRecipe.getServings());
+        }
+
+        return new Intent(context, RecipeDetailActivity.class)
+                .putStringArrayListExtra(EXTRA_RECIPE_IDS, recipeIds)
+                .putIntegerArrayListExtra(EXTRA_SERVINGS, portions)
+                .putExtra(EXTRA_MENU_MODE, true)
+                .putExtra(
+                        EXTRA_MEAL_MOMENT,
+                        mealMoment.getStorageKey()
+                );
     }
 
     @Override
@@ -60,14 +108,29 @@ public final class RecipeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         enableFullscreen();
 
-        binding = ActivityRecipeDetailBinding.inflate(getLayoutInflater());
+        binding = ActivityRecipeDetailBinding.inflate(
+                getLayoutInflater()
+        );
         setContentView(binding.getRoot());
 
-        String recipeId = getIntent().getStringExtra(EXTRA_RECIPE_ID);
-        if (recipeId == null || recipeId.trim().isEmpty()) {
+        ArrayList<String> recipeIds =
+                getIntent().getStringArrayListExtra(EXTRA_RECIPE_IDS);
+        ArrayList<Integer> servings =
+                getIntent().getIntegerArrayListExtra(EXTRA_SERVINGS);
+
+        if (recipeIds == null || recipeIds.isEmpty()) {
             finish();
             return;
         }
+
+        if (servings == null) {
+            servings = new ArrayList<>();
+        }
+
+        menuMode = getIntent().getBooleanExtra(
+                EXTRA_MENU_MODE,
+                false
+        );
 
         CookPilotApplication application =
                 (CookPilotApplication) getApplication();
@@ -76,8 +139,8 @@ public final class RecipeDetailActivity extends AppCompatActivity {
                 this,
                 new RecipeDetailViewModelFactory(
                         application.getRecipeRepository(),
-                        recipeId,
-                        getIntent().getIntExtra(EXTRA_SERVINGS, 1)
+                        recipeIds,
+                        servings
                 )
         ).get(RecipeDetailViewModel.class);
 
@@ -97,10 +160,12 @@ public final class RecipeDetailActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             getWindow().setNavigationBarContrastEnforced(false);
             getWindow().setStatusBarContrastEnforced(false);
         }
+
         hideSystemBars();
     }
 
@@ -121,10 +186,16 @@ public final class RecipeDetailActivity extends AppCompatActivity {
         binding.backButton.setImageResource(CookIcons.back());
         binding.metricMoneyIcon.setImageResource(CookIcons.money());
         binding.metricTimeIcon.setImageResource(CookIcons.timer());
-        binding.metricNutritionIcon.setImageResource(CookIcons.nutrition());
-        binding.ingredientsIcon.setImageResource(CookIcons.ingredients());
+        binding.metricNutritionIcon.setImageResource(
+                CookIcons.nutrition()
+        );
+        binding.ingredientsIcon.setImageResource(
+                CookIcons.ingredients()
+        );
         binding.stepsIcon.setImageResource(CookIcons.steps());
-        binding.nutritionIcon.setImageResource(CookIcons.nutrition());
+        binding.nutritionIcon.setImageResource(
+                CookIcons.nutrition()
+        );
 
         binding.backButton.setOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed()
@@ -136,11 +207,22 @@ public final class RecipeDetailActivity extends AppCompatActivity {
                 view -> viewModel.increaseServings()
         );
 
-        binding.tabGeneral.setOnClickListener(view -> selectTab(0));
-        binding.tabRecipe.setOnClickListener(view -> selectTab(1));
-        binding.tabNutrition.setOnClickListener(view -> selectTab(2));
+        binding.tabGeneral.setOnClickListener(
+                view -> selectTab(0)
+        );
+        binding.tabRecipe.setOnClickListener(
+                view -> selectTab(1)
+        );
+        binding.tabNutrition.setOnClickListener(
+                view -> selectTab(2)
+        );
         selectTab(0);
 
+        binding.cookButton.setText(
+                menuMode
+                        ? R.string.recipe_detail_cook_menu
+                        : R.string.recipe_detail_cook_now
+        );
         binding.cookButton.setOnClickListener(view ->
                 Toast.makeText(
                         this,
@@ -151,87 +233,190 @@ public final class RecipeDetailActivity extends AppCompatActivity {
     }
 
     private void observeState() {
-        viewModel.getDetail().observe(this, detail -> {
-            currentDetail = detail;
-            renderDetail();
+        viewModel.getDetails().observe(this, details -> {
+            currentDetails = details == null
+                    ? Collections.emptyList()
+                    : details;
+            renderAll();
         });
-        viewModel.getServings().observe(this, servings -> {
-            currentServings = servings == null ? 1 : Math.max(1, servings);
-            renderScaledContent();
+
+        viewModel.getServingsByRecipe().observe(this, servings -> {
+            currentServings = servings == null
+                    ? Collections.emptyMap()
+                    : servings;
+            renderAll();
+        });
+
+        viewModel.getSelectedRecipeId().observe(this, recipeId -> {
+            selectedRecipeId = recipeId;
+            renderAll();
         });
     }
 
-    private void renderDetail() {
-        if (currentDetail == null) {
+    private void renderAll() {
+        RecipeDetail selected = selectedDetail();
+        if (selected == null) {
             return;
         }
 
-        Recipe recipe = currentDetail.getRecipe();
+        renderRecipeSelector();
+        renderSelectedRecipe(selected);
+        renderMenuSummary();
+    }
+
+    private void renderSelectedRecipe(
+            @NonNull RecipeDetail detail
+    ) {
+        Recipe recipe = detail.getRecipe();
+        int servings = servingsFor(recipe);
+        double scale = scaleFor(recipe, servings);
+
         binding.recipeTitle.setText(recipe.getTitle());
-        binding.recipeDescription.setText(recipe.getDescription());
+        binding.recipeDescription.setText(
+                TextUtil.boldMarkdown(recipe.getDescription())
+        );
 
         Glide.with(binding.heroImage)
                 .load(recipe.getImageUrl())
                 .centerCrop()
                 .into(binding.heroImage);
 
-        renderSteps(currentDetail);
-        renderScaledContent();
+        binding.servingsValue.setText(
+                getString(
+                        R.string.recipe_detail_servings,
+                        servings
+                )
+        );
+        binding.decreaseServingsButton.setEnabled(servings > 1);
+        binding.decreaseServingsButton.setAlpha(
+                servings > 1 ? 1f : 0.45f
+        );
+
+        renderIngredients(detail, scale);
+        renderSteps(detail);
+        renderNutrition(detail.getNutrition(), scale);
     }
 
-    private void renderScaledContent() {
-        if (currentDetail == null) {
+    private void renderMenuSummary() {
+        if (currentDetails.isEmpty()) {
             return;
         }
 
-        Recipe recipe = currentDetail.getRecipe();
-        double scale = (double) currentServings
-                / Math.max(1, recipe.getBaseServings());
+        double cost = 0;
+        double savings = 0;
+        double calories = 0;
+        int readyMinutes = 0;
+        int restMinutes = 0;
 
-        binding.servingsValue.setText(
-                getString(R.string.recipe_detail_servings, currentServings)
-        );
-        binding.decreaseServingsButton.setEnabled(currentServings > 1);
-        binding.decreaseServingsButton.setAlpha(
-                currentServings > 1 ? 1f : 0.45f
-        );
+        for (RecipeDetail detail : currentDetails) {
+            Recipe recipe = detail.getRecipe();
+            int servings = servingsFor(recipe);
+            double scale = scaleFor(recipe, servings);
+
+            cost += recipe.getEstimatedCostPen() * scale;
+            savings += recipe.getEstimatedSavingsPen() * scale;
+            calories += detail.getNutrition().getCalories() * scale;
+            readyMinutes = Math.max(
+                    readyMinutes,
+                    recipe.getTotalMinutes()
+            );
+            restMinutes = Math.max(
+                    restMinutes,
+                    recipe.getPassiveMinutes()
+            );
+        }
 
         binding.metricMoneyValue.setText(
-                String.format(
-                        Locale.US,
-                        "S/ %.1f",
-                        recipe.getEstimatedCostPen() * scale
-                )
+                String.format(Locale.US, "S/ %.1f", cost)
         );
         binding.metricMoneySubtitle.setText(
                 getString(
                         R.string.recipe_detail_savings,
-                        recipe.getEstimatedSavingsPen() * scale
+                        savings
                 )
         );
         binding.metricTimeValue.setText(
                 getString(
                         R.string.recipe_detail_minutes,
-                        recipe.getTotalMinutes()
+                        readyMinutes
                 )
         );
         binding.metricTimeSubtitle.setText(
                 getString(
                         R.string.recipe_detail_rest_minutes,
-                        recipe.getPassiveMinutes()
+                        restMinutes
                 )
         );
         binding.metricNutritionValue.setText(
-                formatNumber(
-                        currentDetail.getNutrition().getCalories() * scale
-                ) + " kcal"
+                formatNumber(calories) + " kcal"
         );
         binding.metricNutritionSubtitle.setText(
                 R.string.recipe_detail_nutrition
         );
+    }
 
-        renderIngredients(currentDetail, scale);
-        renderNutrition(currentDetail.getNutrition(), scale);
+    private void renderRecipeSelector() {
+        binding.recipeSelector.removeAllViews();
+
+        boolean visible = menuMode && currentDetails.size() > 1;
+        binding.recipeSelectorScroll.setVisibility(
+                visible ? View.VISIBLE : View.GONE
+        );
+
+        if (!visible) {
+            return;
+        }
+
+        for (RecipeDetail detail : currentDetails) {
+            Recipe recipe = detail.getRecipe();
+            int servings = servingsFor(recipe);
+            boolean selected = recipe.getId().equals(
+                    selectedRecipeId
+            );
+
+            TextView chip = new TextView(this);
+            chip.setText(
+                    recipe.getTitle() + " x" + servings
+            );
+            chip.setTextAppearance(
+                    R.style.TextAppearance_CookPilot_Label
+            );
+            chip.setTextColor(
+                    ContextCompat.getColor(
+                            this,
+                            selected
+                                    ? R.color.cook_primary
+                                    : R.color.cook_text_primary
+                    )
+            );
+            chip.setGravity(android.view.Gravity.CENTER_VERTICAL);
+            chip.setMaxLines(1);
+            chip.setEllipsize(
+                    android.text.TextUtils.TruncateAt.END
+            );
+            chip.setPadding(
+                    dp(16),
+                    dp(10),
+                    dp(16),
+                    dp(10)
+            );
+            chip.setBackgroundResource(
+                    selected
+                            ? R.drawable.bg_recipe_component_chip_selected
+                            : R.drawable.bg_recipe_component_chip
+            );
+            chip.setOnClickListener(
+                    view -> viewModel.selectRecipe(recipe.getId())
+            );
+
+            LinearLayout.LayoutParams params =
+                    new LinearLayout.LayoutParams(
+                            dp(220),
+                            dp(48)
+                    );
+            params.setMarginEnd(dp(8));
+            binding.recipeSelector.addView(chip, params);
+        }
     }
 
     private void renderIngredients(
@@ -247,10 +432,19 @@ public final class RecipeDetailActivity extends AppCompatActivity {
                     binding.ingredientsList,
                     false
             );
-            ImageView image = row.findViewById(R.id.ingredientImage);
-            TextView name = row.findViewById(R.id.ingredientName);
-            TextView quantity = row.findViewById(R.id.ingredientQuantity);
-            TextView optional = row.findViewById(R.id.ingredientOptional);
+
+            ImageView image = row.findViewById(
+                    R.id.ingredientImage
+            );
+            TextView name = row.findViewById(
+                    R.id.ingredientName
+            );
+            TextView quantity = row.findViewById(
+                    R.id.ingredientQuantity
+            );
+            TextView optional = row.findViewById(
+                    R.id.ingredientOptional
+            );
 
             name.setText(ingredient.getName());
             quantity.setText(
@@ -260,7 +454,9 @@ public final class RecipeDetailActivity extends AppCompatActivity {
                     )
             );
             optional.setVisibility(
-                    ingredient.isOptional() ? View.VISIBLE : View.GONE
+                    ingredient.isOptional()
+                            ? View.VISIBLE
+                            : View.GONE
             );
 
             Glide.with(image)
@@ -282,6 +478,7 @@ public final class RecipeDetailActivity extends AppCompatActivity {
                     binding.stepsList,
                     false
             );
+
             ((TextView) row.findViewById(R.id.stepLabel)).setText(
                     getString(
                             R.string.recipe_detail_step_number,
@@ -289,7 +486,11 @@ public final class RecipeDetailActivity extends AppCompatActivity {
                     )
             );
             ((TextView) row.findViewById(R.id.stepInstruction))
-                    .setText(step.getInstruction());
+                    .setText(
+                            TextUtil.boldMarkdown(
+                                    step.getInstruction()
+                            )
+                    );
             binding.stepsList.addView(row);
         }
     }
@@ -299,29 +500,38 @@ public final class RecipeDetailActivity extends AppCompatActivity {
             double scale
     ) {
         binding.nutritionList.removeAllViews();
+
         addNutrition(
                 R.string.recipe_detail_calories,
-                formatNumber(nutrition.getCalories() * scale) + " kcal"
+                formatNumber(nutrition.getCalories() * scale)
+                        + " kcal"
         );
         addNutrition(
                 R.string.recipe_detail_protein,
-                formatNumber(nutrition.getProteinG() * scale) + " g"
+                formatNumber(nutrition.getProteinG() * scale)
+                        + " g"
         );
         addNutrition(
                 R.string.recipe_detail_carbs,
-                formatNumber(nutrition.getCarbsG() * scale) + " g"
+                formatNumber(nutrition.getCarbsG() * scale)
+                        + " g"
         );
         addNutrition(
                 R.string.recipe_detail_fat,
-                formatNumber(nutrition.getFatG() * scale) + " g"
+                formatNumber(nutrition.getFatG() * scale)
+                        + " g"
         );
         addNutrition(
                 R.string.recipe_detail_fiber,
-                formatNumber(nutrition.getFiberG() * scale) + " g"
+                formatNumber(nutrition.getFiberG() * scale)
+                        + " g"
         );
     }
 
-    private void addNutrition(int labelRes, @NonNull String value) {
+    private void addNutrition(
+            int labelRes,
+            @NonNull String value
+    ) {
         View row = LayoutInflater.from(this).inflate(
                 R.layout.item_recipe_detail_nutrition,
                 binding.nutritionList,
@@ -373,8 +583,43 @@ public final class RecipeDetailActivity extends AppCompatActivity {
         );
     }
 
+    @Nullable
+    private RecipeDetail selectedDetail() {
+        if (selectedRecipeId == null) {
+            return null;
+        }
+
+        for (RecipeDetail detail : currentDetails) {
+            if (selectedRecipeId.equals(
+                    detail.getRecipe().getId()
+            )) {
+                return detail;
+            }
+        }
+
+        return null;
+    }
+
+    private int servingsFor(@NonNull Recipe recipe) {
+        Integer value = currentServings.get(recipe.getId());
+        return value == null
+                ? recipe.getBaseServings()
+                : Math.max(1, value);
+    }
+
+    private double scaleFor(
+            @NonNull Recipe recipe,
+            int servings
+    ) {
+        return (double) servings
+                / Math.max(1, recipe.getBaseServings());
+    }
+
     @NonNull
-    private String formatQuantity(double value, @NonNull String unit) {
+    private String formatQuantity(
+            double value,
+            @NonNull String unit
+    ) {
         String displayUnit = "unit".equals(unit) ? "u" : unit;
         return formatNumber(value) + " " + displayUnit;
     }
@@ -385,5 +630,11 @@ public final class RecipeDetailActivity extends AppCompatActivity {
             return String.valueOf((int) Math.rint(value));
         }
         return String.format(Locale.US, "%.1f", value);
+    }
+
+    private int dp(int value) {
+        return Math.round(
+                value * getResources().getDisplayMetrics().density
+        );
     }
 }

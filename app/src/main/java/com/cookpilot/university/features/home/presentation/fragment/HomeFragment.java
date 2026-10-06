@@ -208,12 +208,15 @@ public final class HomeFragment extends Fragment
     }
 
     @Override
-    public void onCook(@NonNull PlannedRecipe plannedRecipe) {
+    public void onCook(
+            @NonNull MealMoment mealMoment,
+            @NonNull List<PlannedRecipe> plannedRecipes
+    ) {
         startActivity(
-                RecipeDetailActivity.createIntent(
+                RecipeDetailActivity.createMenuIntent(
                         requireContext(),
-                        plannedRecipe.getRecipe().getId(),
-                        plannedRecipe.getServings()
+                        mealMoment,
+                        plannedRecipes
                 )
         );
     }

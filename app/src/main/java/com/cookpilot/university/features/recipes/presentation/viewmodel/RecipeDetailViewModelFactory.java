@@ -6,20 +6,22 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.cookpilot.university.features.recipes.data.repository.RecipeRepository;
 
+import java.util.List;
+
 public final class RecipeDetailViewModelFactory
         implements ViewModelProvider.Factory {
 
     private final RecipeRepository repository;
-    private final String recipeId;
-    private final int initialServings;
+    private final List<String> recipeIds;
+    private final List<Integer> initialServings;
 
     public RecipeDetailViewModelFactory(
             @NonNull RecipeRepository repository,
-            @NonNull String recipeId,
-            int initialServings
+            @NonNull List<String> recipeIds,
+            @NonNull List<Integer> initialServings
     ) {
         this.repository = repository;
-        this.recipeId = recipeId;
+        this.recipeIds = recipeIds;
         this.initialServings = initialServings;
     }
 
@@ -38,7 +40,7 @@ public final class RecipeDetailViewModelFactory
 
         return (T) new RecipeDetailViewModel(
                 repository,
-                recipeId,
+                recipeIds,
                 initialServings
         );
     }

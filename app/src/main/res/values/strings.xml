@@ -96,5 +96,6 @@
     <string name="recipe_detail_fat">Grasas</string>
     <string name="recipe_detail_fiber">Fibra</string>
     <string name="recipe_detail_cook_now">Cocinar</string>
+    <string name="recipe_detail_cook_menu">Cocinar menú</string>
     <string name="recipe_detail_cookmode_next">El modo de cocina estará disponible pronto.</string>
 </resources>

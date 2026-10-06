@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/cook_primary_tint_strong" />
+    <stroke
+        android:width="@dimen/cook_border_1"
+        android:color="@color/cook_primary" />
+    <corners android:radius="@dimen/cook_radius_full" />
+</shape>
