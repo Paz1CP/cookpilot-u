@@ -161,6 +161,12 @@ public final class MainActivity extends AppCompatActivity {
     private void renderDestination(CookBottomNavigationView.Item item) {
         Fragment fragment;
 
+        binding.appBar.setVisibility(
+                item == CookBottomNavigationView.Item.RECIPES
+                        ? View.GONE
+                        : View.VISIBLE
+        );
+
         switch (item) {
             case RECIPES:
                 fragment = new RecipesFragment();

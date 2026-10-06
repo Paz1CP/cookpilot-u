@@ -6,29 +6,115 @@
     android:layout_height="match_parent"
     android:background="@color/cook_layer_base">
 
-    <TextView
-        android:id="@+id/recipesTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.cookpilot.university.core.design.components.search.CookSearchBarView
+        android:id="@+id/searchBar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/cook_touch_56"
         android:layout_marginStart="@dimen/cook_padding_screen_x"
         android:layout_marginTop="@dimen/cook_spacing_12"
-        android:text="@string/nav_recipes"
-        android:textAppearance="@style/TextAppearance.CookPilot.TitleXL"
-        android:textColor="@color/cook_text_primary"
+        android:layout_marginEnd="@dimen/cook_padding_screen_x"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/filterPanel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/cook_padding_screen_x"
+        android:layout_marginTop="@dimen/cook_spacing_16"
+        android:layout_marginEnd="@dimen/cook_padding_screen_x"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchBar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recipes_filter_difficulty"
+            android:textAppearance="@style/TextAppearance.CookPilot.LabelSmall"
+            android:textColor="@color/cook_text_secondary" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/difficultyGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cook_spacing_8"
+            app:chipSpacingHorizontal="@dimen/cook_spacing_8"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/difficultyAll"
+                style="@style/Widget.CookPilot.Chip.Filter"
+                android:text="@string/recipes_filter_all" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/difficultyEasy"
+                style="@style/Widget.CookPilot.Chip.Filter"
+                android:text="@string/recipe_difficulty_easy" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/difficultyMedium"
+                style="@style/Widget.CookPilot.Chip.Filter"
+                android:text="@string/recipe_difficulty_medium" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/difficultyHard"
+                style="@style/Widget.CookPilot.Chip.Filter"
+                android:text="@string/recipe_difficulty_hard" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cook_spacing_12"
+            android:text="@string/recipes_filter_time"
+            android:textAppearance="@style/TextAppearance.CookPilot.LabelSmall"
+            android:textColor="@color/cook_text_secondary" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/timeGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/cook_spacing_8"
+            app:chipSpacingHorizontal="@dimen/cook_spacing_8"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/timeAny"
+                style="@style/Widget.CookPilot.Chip.Filter"
+                android:text="@string/recipes_filter_any_time" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/timeThirty"
+                style="@style/Widget.CookPilot.Chip.Filter"
+                android:text="@string/recipes_filter_30" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/timeSixty"
+                style="@style/Widget.CookPilot.Chip.Filter"
+                android:text="@string/recipes_filter_60" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/recipeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/cook_padding_screen_x"
-        android:layout_marginTop="@dimen/cook_spacing_4"
+        android:layout_marginTop="@dimen/cook_spacing_16"
         android:text="@string/recipes_count_zero"
         android:textAppearance="@style/TextAppearance.CookPilot.BodySmall"
         android:textColor="@color/cook_text_secondary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recipesTitle" />
+        app:layout_constraintTop_toBottomOf="@id/filterPanel" />
 
     <TextView
         android:id="@+id/cachedNotice"
@@ -55,10 +141,10 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingStart="@dimen/cook_spacing_20"
+        android:paddingStart="@dimen/cook_padding_screen_x"
         android:paddingTop="@dimen/cook_spacing_16"
-        android:paddingEnd="@dimen/cook_spacing_20"
-        android:paddingBottom="@dimen/cook_spacing_32"
+        android:paddingEnd="@dimen/cook_padding_screen_x"
+        android:paddingBottom="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,8 +196,9 @@
         android:id="@+id/emptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/cook_padding_screen_x"
         android:gravity="center"
-        android:text="@string/recipes_empty"
+        android:text="@string/recipes_empty_search"
         android:textAppearance="@style/TextAppearance.CookPilot.Body"
         android:textColor="@color/cook_text_secondary"
         android:visibility="gone"

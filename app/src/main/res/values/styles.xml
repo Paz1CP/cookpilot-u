@@ -193,6 +193,15 @@
         <item name="android:insetBottom">0dp</item>
     </style>
 
+    <style name="Widget.CookPilot.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/cook_filter_chip_background</item>
+        <item name="chipStrokeColor">@color/cook_filter_chip_stroke</item>
+        <item name="chipStrokeWidth">@dimen/cook_border_1</item>
+        <item name="android:textColor">@color/cook_filter_chip_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.CookPilot.Label</item>
+        <item name="checkedIconVisible">false</item>
+    </style>
+
     <style name="Widget.CookPilot.Card" parent="Widget.Material3.CardView.Filled">
         <item name="cardBackgroundColor">@color/cook_layer_raised</item>
         <item name="cardCornerRadius">@dimen/cook_radius_2xxlarge</item>

@@ -44,7 +44,7 @@ public final class CookBottomNavigationView extends FrameLayout {
 
     private final int[] selectedIcons = {
             CookIcons.homeFilled(),
-            CookIcons.search(),
+            CookIcons.searchFilled(),
             CookIcons.shoppingListFilled()
     };
 
@@ -166,7 +166,7 @@ public final class CookBottomNavigationView extends FrameLayout {
     private String contentDescriptionFor(Item item) {
         switch (item) {
             case RECIPES:
-                return getContext().getString(R.string.nav_recipes);
+                return getContext().getString(R.string.nav_search);
             case SHOPPING:
                 return getContext().getString(R.string.nav_shopping);
             case HOME:
