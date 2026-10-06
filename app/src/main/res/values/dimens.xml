@@ -82,6 +82,13 @@
     <dimen name="cook_blur_40">40dp</dimen>
     <dimen name="cook_blur_64">64dp</dimen>
 
+    <!-- Navigation shell -->
+    <dimen name="cook_app_bar_height">56dp</dimen>
+    <dimen name="cook_app_bar_avatar_size">40dp</dimen>
+    <dimen name="cook_bottom_nav_height">80dp</dimen>
+    <dimen name="cook_bottom_nav_action_height">56dp</dimen>
+    <dimen name="cook_bottom_nav_avatar_size">80dp</dimen>
+
     <!-- Typography -->
     <dimen name="cook_text_display_xxl">56sp</dimen>
     <dimen name="cook_text_display_xl">48sp</dimen>

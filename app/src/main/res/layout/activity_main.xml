@@ -1,14 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cook_layer_base">
 
+    <com.cookpilot.university.core.design.components.navigation.CookAppBarView
+        android:id="@+id/appBar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/cook_app_bar_height"
+        android:layout_marginStart="@dimen/cook_padding_screen_x"
+        android:layout_marginTop="@dimen/cook_spacing_16"
+        android:layout_marginEnd="@dimen/cook_padding_screen_x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/mainContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/cook_spacing_16"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBar">
+
+        <TextView
+            android:id="@+id/screenTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/outfit_semibold"
+            android:text="@string/nav_home"
+            android:textColor="@color/cook_text_secondary"
+            android:textSize="@dimen/cook_text_title_m" />
+
+    </FrameLayout>
+
+    <com.cookpilot.university.core.design.components.navigation.CookBottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/cook_bottom_nav_height"
+        android:layout_marginStart="@dimen/cook_padding_screen_x"
+        android:layout_marginEnd="@dimen/cook_padding_screen_x"
+        android:layout_marginBottom="@dimen/cook_spacing_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

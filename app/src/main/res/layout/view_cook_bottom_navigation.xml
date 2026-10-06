@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/cook_bottom_nav_height"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/navigationSurface"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:cardBackgroundColor="@color/cook_layer_raised"
+        app:cardCornerRadius="@dimen/cook_radius_full"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/cook_spacing_8"
+            android:paddingVertical="@dimen/cook_spacing_12">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/navHome"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/cook_bottom_nav_action_height"
+                android:layout_marginHorizontal="@dimen/cook_spacing_4"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="@dimen/cook_radius_full"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/navHomeIcon"
+                    android:layout_width="@dimen/cook_icon_24"
+                    android:layout_height="@dimen/cook_icon_24"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_home_outline" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/navRecipes"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/cook_bottom_nav_action_height"
+                android:layout_marginHorizontal="@dimen/cook_spacing_4"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="@dimen/cook_radius_full"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/navRecipesIcon"
+                    android:layout_width="@dimen/cook_icon_24"
+                    android:layout_height="@dimen/cook_icon_24"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_search" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/navShopping"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/cook_bottom_nav_action_height"
+                android:layout_marginHorizontal="@dimen/cook_spacing_4"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="@dimen/cook_radius_full"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/navShoppingIcon"
+                    android:layout_width="@dimen/cook_icon_24"
+                    android:layout_height="@dimen/cook_icon_24"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_shopping_bag_outline" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/navNutrition"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/cook_bottom_nav_action_height"
+                android:layout_marginHorizontal="@dimen/cook_spacing_4"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="@dimen/cook_radius_full"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/navNutritionIcon"
+                    android:layout_width="@dimen/cook_icon_24"
+                    android:layout_height="@dimen/cook_icon_24"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_health_ring" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cookPilotAvatarCard"
+        android:layout_width="@dimen/cook_bottom_nav_avatar_size"
+        android:layout_height="@dimen/cook_bottom_nav_avatar_size"
+        android:layout_marginStart="@dimen/cook_spacing_8"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/nav_cookpilot"
+        app:cardBackgroundColor="@color/cook_layer_raised"
+        app:cardCornerRadius="@dimen/cook_radius_2xxlarge"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/cookPilotAvatarImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
