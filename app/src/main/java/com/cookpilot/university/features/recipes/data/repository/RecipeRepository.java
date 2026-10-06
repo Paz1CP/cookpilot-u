@@ -27,12 +27,18 @@ public final class RecipeRepository {
 
     private final RecipeLocalDataSource localDataSource;
     private final RecipeRemoteDataSource remoteDataSource;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor =
+            Executors.newSingleThreadExecutor();
     private final MutableLiveData<List<Recipe>> recipes =
             new MutableLiveData<>(Collections.emptyList());
 
+    private final Object refreshLock = new Object();
+    private final List<RefreshCallback> refreshCallbacks =
+            new ArrayList<>();
+
     private volatile Map<String, Recipe> recipeCache =
             Collections.emptyMap();
+    private boolean refreshInFlight;
 
     public RecipeRepository(
             @NonNull RecipeLocalDataSource localDataSource,
@@ -66,25 +72,59 @@ public final class RecipeRepository {
     }
 
     public void refresh(@NonNull RefreshCallback callback) {
-        remoteDataSource.getRecipes(new RecipeRemoteDataSource.CatalogCallback() {
-            @Override
-            public void onSuccess(@NonNull List<RecipeDto> remoteRecipes) {
-                executor.execute(() -> {
-                    try {
-                        localDataSource.replaceCatalog(remoteRecipes);
-                        publish(localDataSource.loadAll());
-                        callback.onSuccess();
-                    } catch (Exception exception) {
-                        callback.onError(exception);
-                    }
-                });
+        synchronized (refreshLock) {
+            refreshCallbacks.add(callback);
+            if (refreshInFlight) {
+                return;
             }
+            refreshInFlight = true;
+        }
 
-            @Override
-            public void onError(@NonNull Exception exception) {
-                callback.onError(exception);
+        remoteDataSource.getRecipes(
+                new RecipeRemoteDataSource.CatalogCallback() {
+                    @Override
+                    public void onSuccess(
+                            @NonNull List<RecipeDto> remoteRecipes
+                    ) {
+                        executor.execute(() -> {
+                            try {
+                                localDataSource.replaceCatalog(
+                                        remoteRecipes
+                                );
+                                publish(localDataSource.loadAll());
+                                finishRefresh(null);
+                            } catch (Exception exception) {
+                                finishRefresh(exception);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(
+                            @NonNull Exception exception
+                    ) {
+                        finishRefresh(exception);
+                    }
+                }
+        );
+    }
+
+    private void finishRefresh(Exception error) {
+        List<RefreshCallback> callbacks;
+
+        synchronized (refreshLock) {
+            refreshInFlight = false;
+            callbacks = new ArrayList<>(refreshCallbacks);
+            refreshCallbacks.clear();
+        }
+
+        for (RefreshCallback callback : callbacks) {
+            if (error == null) {
+                callback.onSuccess();
+            } else {
+                callback.onError(error);
             }
-        });
+        }
     }
 
     private void loadLocalCatalog() {

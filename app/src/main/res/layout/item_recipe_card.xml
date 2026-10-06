@@ -1,59 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/cook_spacing_4"
-    app:cardBackgroundColor="@color/cook_layer_raised"
-    app:cardCornerRadius="@dimen/cook_radius_2xlarge"
-    app:cardElevation="0dp">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/recipeImageCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cardBackgroundColor="@color/cook_layer_floating"
+        app:cardCornerRadius="@dimen/cook_radius_2xxlarge"
+        app:cardElevation="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/recipeImage"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/cook_recipe_tile_size"
+            android:layout_height="match_parent"
             android:contentDescription="@null"
             android:scaleType="centerCrop" />
 
-        <TextView
-            android:id="@+id/recipeTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/cook_spacing_12"
-            android:layout_marginTop="@dimen/cook_spacing_12"
-            android:layout_marginEnd="@dimen/cook_spacing_12"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textAppearance="@style/TextAppearance.CookPilot.TitleS"
-            android:textColor="@color/cook_text_primary" />
+    </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/recipeMeta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/cook_spacing_12"
-            android:layout_marginTop="@dimen/cook_spacing_8"
-            android:layout_marginEnd="@dimen/cook_spacing_12"
-            android:textAppearance="@style/TextAppearance.CookPilot.LabelSmall"
-            android:textColor="@color/cook_primary" />
+    <TextView
+        android:id="@+id/recipeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cook_spacing_12"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.CookPilot.TitleS"
+        android:textColor="@color/cook_text_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeImageCard" />
 
-        <TextView
-            android:id="@+id/recipeServings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/cook_spacing_12"
-            android:layout_marginTop="@dimen/cook_spacing_4"
-            android:layout_marginEnd="@dimen/cook_spacing_12"
-            android:layout_marginBottom="@dimen/cook_spacing_12"
-            android:textAppearance="@style/TextAppearance.CookPilot.Caption"
-            android:textColor="@color/cook_text_tertiary" />
+    <TextView
+        android:id="@+id/recipeMeta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cook_spacing_4"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.CookPilot.LabelSmall"
+        android:textColor="@color/cook_text_tertiary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeTitle" />
 
-    </LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

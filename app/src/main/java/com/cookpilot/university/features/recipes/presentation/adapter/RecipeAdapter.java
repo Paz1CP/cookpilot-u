@@ -25,10 +25,6 @@ public final class RecipeAdapter
         notifyDataSetChanged();
     }
 
-    public boolean isEmpty() {
-        return recipes.isEmpty();
-    }
-
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(
@@ -56,7 +52,8 @@ public final class RecipeAdapter
         return recipes.size();
     }
 
-    static final class RecipeViewHolder extends RecyclerView.ViewHolder {
+    static final class RecipeViewHolder
+            extends RecyclerView.ViewHolder {
 
         private final ItemRecipeCardBinding binding;
 
@@ -74,19 +71,15 @@ public final class RecipeAdapter
                             difficultyLabel(recipe.getDifficulty())
                     )
             );
-            binding.recipeServings.setText(
-                    itemView.getContext().getString(
-                            R.string.recipes_card_servings,
-                            recipe.getBaseServings()
-                    )
-            );
 
             Glide.with(binding.recipeImage)
                     .load(recipe.getImageUrl())
                     .centerCrop()
                     .into(binding.recipeImage);
 
-            binding.getRoot().setContentDescription(recipe.getTitle());
+            binding.getRoot().setContentDescription(
+                    recipe.getTitle()
+            );
         }
 
         private String difficultyLabel(String difficulty) {
