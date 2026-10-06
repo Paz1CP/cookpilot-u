@@ -18,6 +18,7 @@ import com.cookpilot.university.databinding.ActivityMainBinding;
 import com.cookpilot.university.features.auth.data.repository.AuthRepository;
 import com.cookpilot.university.features.auth.presentation.activity.LoginActivity;
 import com.cookpilot.university.features.home.presentation.fragment.HomeFragment;
+import com.cookpilot.university.features.recipes.presentation.fragment.RecipesFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public final class MainActivity extends AppCompatActivity {
@@ -118,9 +119,7 @@ public final class MainActivity extends AppCompatActivity {
 
         switch (item) {
             case RECIPES:
-                fragment = PlaceholderFragment.newInstance(
-                        getString(R.string.nav_recipes)
-                );
+                fragment = new RecipesFragment();
                 break;
             case SHOPPING:
                 fragment = PlaceholderFragment.newInstance(

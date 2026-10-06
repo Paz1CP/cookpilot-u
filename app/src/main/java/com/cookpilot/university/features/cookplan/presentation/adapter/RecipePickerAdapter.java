@@ -22,11 +22,24 @@ import java.util.Set;
 public final class RecipePickerAdapter
         extends RecyclerView.Adapter<RecipePickerAdapter.RecipeViewHolder> {
 
-    private final List<Recipe> recipes;
+    private final List<Recipe> recipes = new ArrayList<>();
     private final Set<String> selectedIds = new HashSet<>();
 
     public RecipePickerAdapter(@NonNull List<Recipe> recipes) {
-        this.recipes = recipes;
+        submitRecipes(recipes);
+    }
+
+    public void submitRecipes(@NonNull List<Recipe> values) {
+        recipes.clear();
+        recipes.addAll(values);
+
+        Set<String> availableIds = new HashSet<>();
+        for (Recipe recipe : values) {
+            availableIds.add(recipe.getId());
+        }
+        selectedIds.retainAll(availableIds);
+
+        notifyDataSetChanged();
     }
 
     @NonNull

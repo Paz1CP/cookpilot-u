@@ -13,11 +13,11 @@ import com.cookpilot.university.CookPilotApplication;
 import com.cookpilot.university.databinding.SheetRecipePickerBinding;
 import com.cookpilot.university.features.cookplan.domain.model.MealMoment;
 import com.cookpilot.university.features.cookplan.presentation.adapter.RecipePickerAdapter;
-import com.cookpilot.university.features.recipes.domain.model.Recipe;
+import com.cookpilot.university.features.recipes.data.repository.RecipeRepository;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public final class RecipePickerBottomSheet extends BottomSheetDialogFragment {
 
@@ -62,16 +62,31 @@ public final class RecipePickerBottomSheet extends BottomSheetDialogFragment {
 
         CookPilotApplication application =
                 (CookPilotApplication) requireActivity().getApplication();
-        List<Recipe> recipes = application
-                .getRecipeRepository()
-                .getAllRecipes();
+        RecipeRepository repository = application.getRecipeRepository();
 
-        adapter = new RecipePickerAdapter(recipes);
+        adapter = new RecipePickerAdapter(Collections.emptyList());
         binding.recipeGrid.setLayoutManager(
                 new GridLayoutManager(requireContext(), 2)
         );
         binding.recipeGrid.setAdapter(adapter);
         binding.addRecipesButton.setOnClickListener(v -> submitSelection());
+
+        repository.observeRecipes().observe(
+                getViewLifecycleOwner(),
+                adapter::submitRecipes
+        );
+
+        if (!repository.hasCachedRecipes()) {
+            repository.refresh(new RecipeRepository.RefreshCallback() {
+                @Override
+                public void onSuccess() {
+                }
+
+                @Override
+                public void onError(@NonNull Exception exception) {
+                }
+            });
+        }
     }
 
     private void submitSelection() {
