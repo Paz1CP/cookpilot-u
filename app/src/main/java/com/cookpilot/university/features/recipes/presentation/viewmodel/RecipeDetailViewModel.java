@@ -34,10 +34,14 @@ public final class RecipeDetailViewModel extends ViewModel {
 
         for (int index = 0; index < recipeIds.size(); index++) {
             String recipeId = recipeIds.get(index);
+            int initialValue = index < initialServings.size()
+                    ? initialServings.get(index)
+                    : 0;
+
             repository.getRecipeDetail(recipeId).ifPresent(detail -> {
                 loadedDetails.add(detail);
-                int value = index < initialServings.size()
-                        ? initialServings.get(index)
+                int value = initialValue > 0
+                        ? initialValue
                         : detail.getRecipe().getBaseServings();
                 servings.put(recipeId, Math.max(1, value));
             });
