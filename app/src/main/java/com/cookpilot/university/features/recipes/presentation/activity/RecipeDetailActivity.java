@@ -35,6 +35,7 @@ import com.cookpilot.university.features.recipes.domain.model.Recipe;
 import com.cookpilot.university.features.recipes.domain.model.RecipeDetail;
 import com.cookpilot.university.features.recipes.domain.model.RecipeStep;
 import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipeDetailViewModel;
+import com.cookpilot.university.features.recipes.domain.usecase.ScaleRecipeServings;
 import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipeDetailViewModelFactory;
 
 import java.util.ArrayList;
@@ -611,8 +612,11 @@ public final class RecipeDetailActivity extends AppCompatActivity {
             @NonNull Recipe recipe,
             int servings
     ) {
-        return (double) servings
-                / Math.max(1, recipe.getBaseServings());
+        return ScaleRecipeServings.scaleQuantity(
+                1.0,
+                servings,
+                recipe.getBaseServings()
+        );
     }
 
     @NonNull
