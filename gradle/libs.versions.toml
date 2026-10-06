@@ -15,6 +15,8 @@ glide = "4.16.0"
 iconsax = "1.0.0"
 firebaseBom = "34.19.0"
 googleServices = "4.5.0"
+kotlinxCoroutines = "1.11.0"
+kotlinxSerialization = "1.11.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -40,6 +42,9 @@ iconsax-android = { group = "io.github.being-eyram", name = "iconsax-android", v
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+firebase-dataconnect = { group = "com.google.firebase", name = "firebase-dataconnect" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-serialization-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core", version.ref = "kotlinxSerialization" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

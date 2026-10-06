@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "721792630033",
+    "project_id": "cookpilotu",
+    "storage_bucket": "cookpilotu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721792630033:android:98e955e29496a99d8da0b0",
+        "android_client_info": {
+          "package_name": "com.cookpilot.university"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3SWLguoXhl_eNqhTa7HYDcink9W8TjCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

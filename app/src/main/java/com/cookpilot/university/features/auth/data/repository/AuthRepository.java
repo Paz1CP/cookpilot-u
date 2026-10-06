@@ -1,5 +1,7 @@
 package com.cookpilot.university.features.auth.data.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.cookpilot.university.features.auth.data.remote.FirebaseAuthDataSource;
@@ -31,7 +33,7 @@ public final class AuthRepository {
             @NonNull String password,
             @NonNull Callback callback
     ) {
-        authenticateAndPersist(true, email, password, callback);
+        authenticateAndSyncUser(true, email, password, callback);
     }
 
     public void login(
@@ -39,7 +41,7 @@ public final class AuthRepository {
             @NonNull String password,
             @NonNull Callback callback
     ) {
-        authenticateAndPersist(false, email, password, callback);
+        authenticateAndSyncUser(false, email, password, callback);
     }
 
     public void logout() {
@@ -55,7 +57,7 @@ public final class AuthRepository {
         return AuthState.authenticated(toDomain(firebaseUser));
     }
 
-    private void authenticateAndPersist(
+    private void authenticateAndSyncUser(
             boolean register,
             @NonNull String email,
             @NonNull String password,
@@ -65,7 +67,9 @@ public final class AuthRepository {
                 new FirebaseAuthDataSource.Callback() {
                     @Override
                     public void onSuccess(@NonNull FirebaseUser firebaseUser) {
-                        persistUser(firebaseUser, callback);
+                        User user = toDomain(firebaseUser);
+                        callback.onSuccess(user);
+                        syncUser(user);
                     }
 
                     @Override
@@ -81,23 +85,18 @@ public final class AuthRepository {
         }
     }
 
-    private void persistUser(
-            @NonNull FirebaseUser firebaseUser,
-            @NonNull Callback callback
-    ) {
-        User user = toDomain(firebaseUser);
-
+    private void syncUser(@NonNull User user) {
         userDataSource.ensureUser(
                 user,
                 new FirebaseUserDataSource.Callback() {
                     @Override
                     public void onSuccess() {
-                        callback.onSuccess(user);
+                        // Auth already completed; profile sync does not control navigation.
                     }
 
                     @Override
                     public void onError(@NonNull Exception exception) {
-                        callback.onError(exception);
+                        Log.w("AuthRepository", "No se pudo sincronizar el perfil en Firestore.", exception);
                     }
                 }
         );
