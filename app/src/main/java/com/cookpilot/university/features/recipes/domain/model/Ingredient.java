@@ -14,19 +14,22 @@ public final class Ingredient {
     private final double quantity;
     @NonNull
     private final String unit;
+    private final boolean optional;
 
     public Ingredient(
             @NonNull String id,
             @NonNull String name,
             @Nullable String imageUrl,
             double quantity,
-            @NonNull String unit
+            @NonNull String unit,
+            boolean optional
     ) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.quantity = quantity;
         this.unit = unit;
+        this.optional = optional;
     }
 
     @NonNull
@@ -51,5 +54,9 @@ public final class Ingredient {
     @NonNull
     public String getUnit() {
         return unit;
+    }
+
+    public boolean isOptional() {
+        return optional;
     }
 }

@@ -1,6 +1,7 @@
 package com.cookpilot.university.features.recipes.domain.model;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,85 +16,101 @@ public final class Recipe {
     @NonNull
     private final String canonicalName;
     @NonNull
+    private final String description;
+    @Nullable
     private final String imageUrl;
     private final int baseServings;
+    @NonNull
+    private final String difficulty;
     private final int totalMinutes;
-    private final double estimatedCostPen;
-    private final double estimatedSavingsPen;
+    private final int activeMinutes;
+    private final int passiveMinutes;
     @NonNull
     private final NutritionInfo nutrition;
     @NonNull
+    private final List<String> categorySlugs;
+    @NonNull
     private final List<Ingredient> ingredients;
+    @NonNull
+    private final List<RecipeStep> steps;
 
     public Recipe(
             @NonNull String id,
             @NonNull String title,
             @NonNull String canonicalName,
-            @NonNull String imageUrl,
+            @NonNull String description,
+            @Nullable String imageUrl,
             int baseServings,
+            @NonNull String difficulty,
             int totalMinutes,
-            double estimatedCostPen,
-            double estimatedSavingsPen,
+            int activeMinutes,
+            int passiveMinutes,
             @NonNull NutritionInfo nutrition,
-            @NonNull List<Ingredient> ingredients
+            @NonNull List<String> categorySlugs,
+            @NonNull List<Ingredient> ingredients,
+            @NonNull List<RecipeStep> steps
     ) {
         this.id = id;
         this.title = title;
         this.canonicalName = canonicalName;
+        this.description = description;
         this.imageUrl = imageUrl;
-        this.baseServings = baseServings;
-        this.totalMinutes = totalMinutes;
-        this.estimatedCostPen = estimatedCostPen;
-        this.estimatedSavingsPen = estimatedSavingsPen;
+        this.baseServings = Math.max(1, baseServings);
+        this.difficulty = difficulty;
+        this.totalMinutes = Math.max(0, totalMinutes);
+        this.activeMinutes = Math.max(0, activeMinutes);
+        this.passiveMinutes = Math.max(0, passiveMinutes);
         this.nutrition = nutrition;
+        this.categorySlugs = Collections.unmodifiableList(
+                new ArrayList<>(categorySlugs)
+        );
         this.ingredients = Collections.unmodifiableList(
                 new ArrayList<>(ingredients)
+        );
+        this.steps = Collections.unmodifiableList(
+                new ArrayList<>(steps)
         );
     }
 
     @NonNull
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 
     @NonNull
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() { return title; }
 
     @NonNull
-    public String getCanonicalName() {
-        return canonicalName;
-    }
+    public String getCanonicalName() { return canonicalName; }
 
     @NonNull
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    public String getDescription() { return description; }
 
-    public int getBaseServings() {
-        return baseServings;
-    }
+    @Nullable
+    public String getImageUrl() { return imageUrl; }
 
-    public int getTotalMinutes() {
-        return totalMinutes;
-    }
-
-    public double getEstimatedCostPen() {
-        return estimatedCostPen;
-    }
-
-    public double getEstimatedSavingsPen() {
-        return estimatedSavingsPen;
-    }
+    public int getBaseServings() { return baseServings; }
 
     @NonNull
-    public NutritionInfo getNutrition() {
-        return nutrition;
-    }
+    public String getDifficulty() { return difficulty; }
+
+    public int getTotalMinutes() { return totalMinutes; }
+
+    public int getActiveMinutes() { return activeMinutes; }
+
+    public int getPassiveMinutes() { return passiveMinutes; }
 
     @NonNull
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
+    public NutritionInfo getNutrition() { return nutrition; }
+
+    @NonNull
+    public List<String> getCategorySlugs() { return categorySlugs; }
+
+    @NonNull
+    public List<Ingredient> getIngredients() { return ingredients; }
+
+    @NonNull
+    public List<RecipeStep> getSteps() { return steps; }
+
+    public double getEstimatedCostPen() { return 0.0; }
+
+    public double getEstimatedSavingsPen() { return 0.0; }
 }
