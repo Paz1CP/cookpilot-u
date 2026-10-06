@@ -27,7 +27,6 @@ public final class CookPlanViewModel extends ViewModel {
                 selectedDate,
                 repository::observeDay
         );
-        repository.seedDemoDayIfEmpty(LocalDate.now());
     }
 
     public LiveData<LocalDate> getSelectedDate() {

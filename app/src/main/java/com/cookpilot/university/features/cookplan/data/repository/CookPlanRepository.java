@@ -8,13 +8,11 @@ import com.cookpilot.university.features.cookplan.data.local.PlannedRecipeDao;
 import com.cookpilot.university.features.cookplan.data.local.PlannedRecipeEntity;
 import com.cookpilot.university.features.cookplan.domain.model.MealMoment;
 import com.cookpilot.university.features.cookplan.domain.model.PlannedRecipe;
-import com.cookpilot.university.features.recipes.data.local.RecipeFixtures;
 import com.cookpilot.university.features.recipes.data.repository.RecipeRepository;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -94,40 +92,6 @@ public final class CookPlanRepository {
                 recipeId,
                 Math.max(1, servings)
         ));
-    }
-
-    public void seedDemoDayIfEmpty(@NonNull LocalDate date) {
-        executor.execute(() -> {
-            if (dao.countForDate(date.toString()) > 0) {
-                return;
-            }
-
-            List<PlannedRecipeEntity> initial = Arrays.asList(
-                    entity(date, MealMoment.BREAKFAST, RecipeFixtures.PANQUEQUES_ID, 1, 0),
-                    entity(date, MealMoment.LUNCH, RecipeFixtures.LOMO_SALTADO_ID, 1, 1),
-                    entity(date, MealMoment.LUNCH, RecipeFixtures.ARROZ_CON_POLLO_ID, 1, 2),
-                    entity(date, MealMoment.LUNCH, RecipeFixtures.TALLARINES_ROJOS_ID, 1, 3),
-                    entity(date, MealMoment.DINNER, RecipeFixtures.ENSALADA_PASTA_POLLO_ID, 1, 4)
-            );
-
-            dao.upsertAll(initial);
-        });
-    }
-
-    private PlannedRecipeEntity entity(
-            LocalDate date,
-            MealMoment mealMoment,
-            String recipeId,
-            int servings,
-            int offset
-    ) {
-        return new PlannedRecipeEntity(
-                date.toString(),
-                mealMoment.getStorageKey(),
-                recipeId,
-                servings,
-                System.currentTimeMillis() + offset
-        );
     }
 
     private List<PlannedRecipe> toDomain(List<PlannedRecipeEntity> entities) {
