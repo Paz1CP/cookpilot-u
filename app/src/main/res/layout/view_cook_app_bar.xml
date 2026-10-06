@@ -50,11 +50,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/avatarIcon"
             android:layout_width="@dimen/cook_icon_20"
             android:layout_height="@dimen/cook_icon_20"
             android:layout_gravity="center"
             android:contentDescription="@null"
-            android:src="@drawable/ic_user"
             app:tint="@color/cook_text_primary" />
 
     </com.google.android.material.card.MaterialCardView>

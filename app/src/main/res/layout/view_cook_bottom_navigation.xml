@@ -44,8 +44,7 @@
                     android:layout_width="@dimen/cook_icon_24"
                     android:layout_height="@dimen/cook_icon_24"
                     android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_home_outline" />
+                    android:contentDescription="@null" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
@@ -66,8 +65,7 @@
                     android:layout_width="@dimen/cook_icon_24"
                     android:layout_height="@dimen/cook_icon_24"
                     android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_search" />
+                    android:contentDescription="@null" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
@@ -88,8 +86,7 @@
                     android:layout_width="@dimen/cook_icon_24"
                     android:layout_height="@dimen/cook_icon_24"
                     android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_shopping_bag_outline" />
+                    android:contentDescription="@null" />
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>

@@ -3,12 +3,13 @@ package com.cookpilot.university.core.design.components.navigation;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
 import com.cookpilot.university.R;
+import com.cookpilot.university.core.design.icons.CookIcons;
 import com.google.android.material.card.MaterialCardView;
 
 public final class CookAppBarView extends FrameLayout {
@@ -29,8 +30,15 @@ public final class CookAppBarView extends FrameLayout {
             int defStyleAttr
     ) {
         super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.view_cook_app_bar, this, true);
+        LayoutInflater.from(context).inflate(
+                R.layout.view_cook_app_bar,
+                this,
+                true
+        );
+
         avatarCard = findViewById(R.id.avatarCard);
+        ImageView avatarIcon = findViewById(R.id.avatarIcon);
+        avatarIcon.setImageResource(CookIcons.user());
     }
 
     public void setAvatarOnClickListener(@Nullable OnClickListener listener) {

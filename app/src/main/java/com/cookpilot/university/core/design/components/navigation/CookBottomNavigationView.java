@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.cookpilot.university.R;
+import com.cookpilot.university.core.design.icons.CookIcons;
 import com.google.android.material.card.MaterialCardView;
 
 import java.io.IOException;
@@ -36,15 +37,15 @@ public final class CookBottomNavigationView extends FrameLayout {
     private final ImageView[] actionIcons = new ImageView[3];
 
     private final int[] outlineIcons = {
-            R.drawable.ic_home_outline,
-            R.drawable.ic_search,
-            R.drawable.ic_shopping_bag_outline
+            CookIcons.home(),
+            CookIcons.search(),
+            CookIcons.shoppingList()
     };
 
     private final int[] selectedIcons = {
-            R.drawable.ic_home_filled,
-            R.drawable.ic_search,
-            R.drawable.ic_shopping_bag_filled
+            CookIcons.homeFilled(),
+            CookIcons.search(),
+            CookIcons.shoppingListFilled()
     };
 
     private Item selectedItem = Item.HOME;
@@ -138,12 +139,20 @@ public final class CookBottomNavigationView extends FrameLayout {
             MaterialCardView card = actionCards[index];
             ImageView icon = actionIcons[index];
 
-            card.setCardBackgroundColor(selected ? activeSurface : Color.TRANSPARENT);
-            card.setStrokeColor(selected ? primary : Color.TRANSPARENT);
+            card.setCardBackgroundColor(
+                    selected ? activeSurface : Color.TRANSPARENT
+            );
+            card.setStrokeColor(
+                    selected ? primary : Color.TRANSPARENT
+            );
             card.setStrokeWidth(selected ? borderWidth : 0);
-            icon.setImageResource(selected ? selectedIcons[index] : outlineIcons[index]);
+            icon.setImageResource(
+                    selected ? selectedIcons[index] : outlineIcons[index]
+            );
             icon.setColorFilter(iconColor);
-            card.setContentDescription(contentDescriptionFor(Item.values()[index]));
+            card.setContentDescription(
+                    contentDescriptionFor(Item.values()[index])
+            );
         }
 
         if (notify) {
@@ -173,7 +182,7 @@ public final class CookBottomNavigationView extends FrameLayout {
             Bitmap bitmap = BitmapFactory.decodeStream(stream);
             avatarImage.setImageBitmap(bitmap);
         } catch (IOException ignored) {
-            avatarImage.setImageResource(R.drawable.ic_user);
+            avatarImage.setImageResource(CookIcons.user());
         }
     }
 }
