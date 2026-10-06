@@ -194,6 +194,8 @@
     </style>
 
     <style name="Widget.CookPilot.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="chipBackgroundColor">@color/cook_filter_chip_background</item>
         <item name="chipStrokeColor">@color/cook_filter_chip_stroke</item>
         <item name="chipStrokeWidth">@dimen/cook_border_1</item>
