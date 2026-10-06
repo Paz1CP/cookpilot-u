@@ -47,6 +47,30 @@
     <color name="cook_gray_deep">#3E3F3A</color>
     <color name="cook_gray_disabled">#6177786F</color>
 
+    <!-- Opacity / glass tokens -->
+    <color name="cook_primary_tint">#29E9A80E</color>
+    <color name="cook_primary_tint_strong">#3DE9A80E</color>
+    <color name="cook_accent_tint">#29E24690</color>
+    <color name="cook_accent_tint_strong">#3DE24690</color>
+    <color name="cook_dark_dim">#A9080000</color>
+    <color name="cook_dark_dim_strong">#A3080000</color>
+
+    <color name="cook_light_glass_fill">#A0FEFEF5</color>
+    <color name="cook_light_glass_rim">#73FFFFFF</color>
+    <color name="cook_light_glass_backdrop">#1F080000</color>
+
+    <color name="cook_dark_glass_fill">#94151212</color>
+    <color name="cook_dark_glass_rim">#1AFFFFFF</color>
+
+    <color name="cook_primary_glass_fill">#8CFDEECC</color>
+    <color name="cook_primary_glass_rim">#59E9A80E</color>
+    <color name="cook_accent_glass_fill">#8CF9C1DA</color>
+    <color name="cook_accent_glass_rim">#59E24690</color>
+    <color name="cook_error_glass_fill">#8CFCEAEA</color>
+    <color name="cook_error_glass_rim">#59CD0000</color>
+    <color name="cook_blue_glass_rim">#7D046FCC</color>
+    <color name="cook_secondary_glass_rim">#597BBC0B</color>
+
     <!-- Brand/supporting colors -->
     <color name="cook_blue">#046FCC</color>
     <color name="cook_blue_soft">#64B6FF</color>
