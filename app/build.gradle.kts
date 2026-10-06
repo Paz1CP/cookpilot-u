@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.services)
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.10"
 }
 
 android {
@@ -56,11 +55,12 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.dataconnect)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.serialization.core)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
 
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)
