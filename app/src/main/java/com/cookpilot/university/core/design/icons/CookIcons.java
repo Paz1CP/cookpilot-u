@@ -53,7 +53,7 @@ public final class CookIcons {
     }
 
     public static int more() {
-        return LinearIcons.INSTANCE.getMore2();
+        return LinearIcons.INSTANCE.getMore();
     }
 
     public static int selected() {
@@ -68,7 +68,7 @@ public final class CookIcons {
         return LinearIcons.INSTANCE.getEyeSlash();
     }
 
-    public static int closeCircle() {
-        return LinearIcons.INSTANCE.getCloseCircle();
+    public static int close() {
+        return LinearIcons.INSTANCE.getAdd();
     }
 }

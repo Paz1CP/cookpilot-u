@@ -192,7 +192,8 @@ public final class CookPlanMealMomentView extends LinearLayout {
             TextView servings = item.findViewById(R.id.servingsBadge);
             View remove = item.findViewById(R.id.removeRecipeButton);
 
-            removeIcon.setImageResource(CookIcons.closeCircle());
+            removeIcon.setImageResource(CookIcons.close());
+            removeIcon.setRotation(45f);
             servings.setText(String.valueOf(plannedRecipe.getServings()));
 
             Glide.with(image)
