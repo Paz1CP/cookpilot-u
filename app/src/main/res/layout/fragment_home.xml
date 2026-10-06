@@ -6,7 +6,7 @@
     android:clipToPadding="false"
     android:fillViewport="true"
     android:overScrollMode="never"
-    android:paddingBottom="@dimen/cook_spacing_24">
+    android:paddingBottom="120dp">
 
     <LinearLayout
         android:layout_width="match_parent"

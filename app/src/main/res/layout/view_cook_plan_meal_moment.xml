@@ -84,75 +84,67 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/cook_spacing_16"
-                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:visibility="gone">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/focusedRecipeTitle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.CookPilot.TitleS"
+                    android:textColor="@color/cook_text_primary" />
 
-                    <TextView
-                        android:id="@+id/focusedRecipeTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textAppearance="@style/TextAppearance.CookPilot.TitleS"
-                        android:textColor="@color/cook_text_primary" />
+                <TextView
+                    android:id="@+id/decreaseServingsButton"
+                    android:layout_width="@dimen/cook_icon_32"
+                    android:layout_height="@dimen/cook_icon_32"
+                    android:layout_marginStart="@dimen/cook_spacing_12"
+                    android:background="@drawable/bg_servings_control"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/outfit_semibold"
+                    android:gravity="center"
+                    android:text="−"
+                    android:textColor="@color/cook_text_primary"
+                    android:textSize="@dimen/cook_text_title_m" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/replaceRecipeButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/cook_touch_40"
-                        android:minHeight="@dimen/cook_touch_40"
-                        android:minWidth="0dp"
-                        android:text="@string/cookplan_replace_recipe"
-                        android:textColor="@color/cook_primary"
-                        app:backgroundTint="@android:color/transparent" />
+                <TextView
+                    android:id="@+id/focusedServings"
+                    android:layout_width="@dimen/cook_icon_64"
+                    android:layout_height="@dimen/cook_icon_32"
+                    android:layout_marginHorizontal="@dimen/cook_spacing_8"
+                    android:background="@drawable/bg_servings_value"
+                    android:fontFamily="@font/outfit_medium"
+                    android:gravity="center"
+                    android:textColor="@color/cook_text_primary"
+                    android:textSize="@dimen/cook_text_title_s" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/cook_touch_48"
-                    android:layout_marginTop="@dimen/cook_spacing_8"
-                    android:gravity="end|center_vertical"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/decreaseServingsButton"
-                        style="@style/Widget.CookPilot.Button.Secondary"
-                        android:layout_width="@dimen/cook_touch_40"
-                        android:layout_height="@dimen/cook_touch_40"
-                        android:minHeight="@dimen/cook_touch_40"
-                        android:minWidth="0dp"
-                        android:text="−" />
-
-                    <TextView
-                        android:id="@+id/focusedServings"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/cook_spacing_16"
-                        android:minWidth="88dp"
-                        android:gravity="center"
-                        android:textAppearance="@style/TextAppearance.CookPilot.BodySemibold"
-                        android:textColor="@color/cook_text_primary" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/increaseServingsButton"
-                        style="@style/Widget.CookPilot.Button.Secondary"
-                        android:layout_width="@dimen/cook_touch_40"
-                        android:layout_height="@dimen/cook_touch_40"
-                        android:minHeight="@dimen/cook_touch_40"
-                        android:minWidth="0dp"
-                        android:text="+" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/increaseServingsButton"
+                    android:layout_width="@dimen/cook_icon_32"
+                    android:layout_height="@dimen/cook_icon_32"
+                    android:background="@drawable/bg_servings_control"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/outfit_semibold"
+                    android:gravity="center"
+                    android:text="+"
+                    android:textColor="@color/cook_text_primary"
+                    android:textSize="@dimen/cook_text_title_m" />
 
             </LinearLayout>
+
+            <View
+                android:id="@+id/ingredientsDivider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/cook_border_1"
+                android:layout_marginTop="@dimen/cook_spacing_16"
+                android:background="@color/cook_border_subtle"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/ingredientsList"
@@ -164,7 +156,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/cook_touch_56"
+                android:layout_height="@dimen/cook_touch_48"
                 android:layout_marginTop="@dimen/cook_spacing_20"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -172,8 +164,9 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/ingredientsButton"
                     style="@style/Widget.CookPilot.Button.Secondary"
-                    android:layout_width="@dimen/cook_touch_56"
-                    android:layout_height="@dimen/cook_touch_56"
+                    android:layout_width="@dimen/cook_touch_48"
+                    android:layout_height="@dimen/cook_touch_48"
+                    android:minHeight="@dimen/cook_touch_48"
                     android:minWidth="0dp"
                     android:padding="0dp"
                     android:text=""
@@ -186,13 +179,25 @@
                     android:id="@+id/addRecipeButton"
                     style="@style/Widget.CookPilot.Button.Secondary"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/cook_touch_56"
+                    android:layout_height="@dimen/cook_touch_48"
                     android:layout_marginStart="@dimen/cook_spacing_12"
                     android:layout_weight="1"
-                    android:text="@string/cookplan_add_recipe"
+                    android:minHeight="@dimen/cook_touch_48"
+                    android:text=""
                     app:iconGravity="textStart"
-                    app:iconPadding="@dimen/cook_spacing_8"
+                    app:iconPadding="0dp"
                     app:iconTint="@color/cook_text_primary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cookButton"
+                    style="@style/Widget.CookPilot.Button.Primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/cook_touch_48"
+                    android:layout_marginStart="@dimen/cook_spacing_12"
+                    android:minHeight="@dimen/cook_touch_48"
+                    android:minWidth="112dp"
+                    android:text="@string/cookplan_cook"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

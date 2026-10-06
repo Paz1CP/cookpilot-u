@@ -21,25 +21,26 @@ import com.cookpilot.university.features.cookplan.domain.model.PlannedRecipe;
 import com.cookpilot.university.features.recipes.domain.model.Ingredient;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public final class CookPlanMealMomentView extends LinearLayout {
 
     public interface Listener {
         void onAddRecipe(@NonNull MealMoment mealMoment);
-        void onReplaceRecipe(@NonNull PlannedRecipe plannedRecipe);
         void onRemoveRecipe(@NonNull PlannedRecipe plannedRecipe);
         void onUpdateServings(
                 @NonNull PlannedRecipe plannedRecipe,
                 int servings
         );
+        void onCook(@NonNull MealMoment mealMoment);
     }
 
     private final ImageView momentIcon;
@@ -48,14 +49,17 @@ public final class CookPlanMealMomentView extends LinearLayout {
     private final TextView metaText;
     private final LinearLayout recipeRail;
     private final LinearLayout ingredientsList;
+    private final View ingredientsDivider;
     private final LinearLayout focusedRecipeControls;
     private final TextView focusedRecipeTitle;
     private final TextView focusedServings;
-    private final MaterialButton decreaseServingsButton;
-    private final MaterialButton increaseServingsButton;
-    private final MaterialButton replaceRecipeButton;
+    private final TextView decreaseServingsButton;
+    private final TextView increaseServingsButton;
     private final MaterialButton ingredientsButton;
     private final MaterialButton addButton;
+    private final MaterialButton cookButton;
+
+    private final Set<String> uncheckedIngredientKeys = new HashSet<>();
 
     private MealMoment mealMoment = MealMoment.LUNCH;
     private Listener listener;
@@ -94,6 +98,7 @@ public final class CookPlanMealMomentView extends LinearLayout {
         metaText = findViewById(R.id.mealMeta);
         recipeRail = findViewById(R.id.recipeRail);
         ingredientsList = findViewById(R.id.ingredientsList);
+        ingredientsDivider = findViewById(R.id.ingredientsDivider);
         focusedRecipeControls = findViewById(R.id.focusedRecipeControls);
         focusedRecipeTitle = findViewById(R.id.focusedRecipeTitle);
         focusedServings = findViewById(R.id.focusedServings);
@@ -103,9 +108,9 @@ public final class CookPlanMealMomentView extends LinearLayout {
         increaseServingsButton = findViewById(
                 R.id.increaseServingsButton
         );
-        replaceRecipeButton = findViewById(R.id.replaceRecipeButton);
         ingredientsButton = findViewById(R.id.ingredientsButton);
         addButton = findViewById(R.id.addRecipeButton);
+        cookButton = findViewById(R.id.cookButton);
 
         ingredientsButton.setIconResource(CookIcons.ingredients());
         addButton.setIconResource(CookIcons.add());
@@ -114,18 +119,17 @@ public final class CookPlanMealMomentView extends LinearLayout {
         ingredientsButton.setOnClickListener(
                 view -> toggleIngredients()
         );
-        replaceRecipeButton.setOnClickListener(view -> {
-            PlannedRecipe focused = focusedRecipe();
-            if (focused != null && listener != null) {
-                listener.onReplaceRecipe(focused);
+        decreaseServingsButton.setOnClickListener(
+                view -> changeFocusedServings(-1)
+        );
+        increaseServingsButton.setOnClickListener(
+                view -> changeFocusedServings(1)
+        );
+        cookButton.setOnClickListener(view -> {
+            if (listener != null && !currentRecipes.isEmpty()) {
+                listener.onCook(mealMoment);
             }
         });
-        decreaseServingsButton.setOnClickListener(view ->
-                changeFocusedServings(-1)
-        );
-        increaseServingsButton.setOnClickListener(view ->
-                changeFocusedServings(1)
-        );
     }
 
     public void configure(
@@ -142,11 +146,8 @@ public final class CookPlanMealMomentView extends LinearLayout {
                 new ArrayList<>(recipes)
         );
 
-        if (focusedRecipeId != null && focusedRecipe() == null) {
+        if (focusedRecipeId != null && focusedRecipeById() == null) {
             focusedRecipeId = null;
-        }
-        if (focusedRecipeId == null && currentRecipes.size() == 1) {
-            focusedRecipeId = currentRecipes.get(0).getId();
         }
 
         renderRecipeRail();
@@ -154,9 +155,8 @@ public final class CookPlanMealMomentView extends LinearLayout {
         renderIngredients();
 
         boolean hasRecipes = !currentRecipes.isEmpty();
-        ingredientsButton.setVisibility(
-                hasRecipes ? VISIBLE : GONE
-        );
+        ingredientsButton.setVisibility(hasRecipes ? VISIBLE : GONE);
+        cookButton.setVisibility(hasRecipes ? VISIBLE : GONE);
 
         double cost = totalCost();
         priceText.setText(
@@ -225,6 +225,7 @@ public final class CookPlanMealMomentView extends LinearLayout {
         }
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
+        PlannedRecipe focused = focusedRecipe();
 
         for (PlannedRecipe plannedRecipe : currentRecipes) {
             View item = inflater.inflate(
@@ -233,9 +234,6 @@ public final class CookPlanMealMomentView extends LinearLayout {
                     false
             );
 
-            MaterialCardView card = item.findViewById(
-                    R.id.plannedRecipeCard
-            );
             ImageView image = item.findViewById(R.id.recipeImage);
             ImageView removeIcon = item.findViewById(
                     R.id.removeRecipeIcon
@@ -243,24 +241,10 @@ public final class CookPlanMealMomentView extends LinearLayout {
             TextView servings = item.findViewById(R.id.servingsBadge);
             View remove = item.findViewById(R.id.removeRecipeButton);
 
-            boolean focused = plannedRecipe.getId().equals(
-                    focusedRecipeId
-            );
-            card.setStrokeWidth(
-                    focused
-                            ? getResources().getDimensionPixelSize(
-                                    R.dimen.cook_border_2
-                            )
-                            : 0
-            );
-            card.setStrokeColor(
-                    ContextCompat.getColor(
-                            getContext(),
-                            focused
-                                    ? R.color.cook_primary
-                                    : android.R.color.transparent
-                    )
-            );
+            boolean dimmed = focused != null
+                    && currentRecipes.size() > 1
+                    && !focused.getId().equals(plannedRecipe.getId());
+            item.setAlpha(dimmed ? 0.5f : 1f);
 
             removeIcon.setImageResource(CookIcons.close());
             removeIcon.setRotation(45f);
@@ -274,11 +258,16 @@ public final class CookPlanMealMomentView extends LinearLayout {
                     .into(image);
 
             item.setOnClickListener(view -> {
+                if (currentRecipes.size() <= 1) {
+                    return;
+                }
+
                 focusedRecipeId = plannedRecipe.getId().equals(
                         focusedRecipeId
                 )
                         ? null
                         : plannedRecipe.getId();
+
                 renderRecipeRail();
                 renderFocusedControls();
                 renderIngredients();
@@ -308,24 +297,24 @@ public final class CookPlanMealMomentView extends LinearLayout {
                 focused.getRecipe().getTitle()
         );
         focusedServings.setText(
-                getContext().getString(
-                        R.string.cookplan_servings_count,
-                        focused.getServings()
-                )
+                String.valueOf(focused.getServings())
         );
         decreaseServingsButton.setEnabled(
                 focused.getServings() > 1
+        );
+        decreaseServingsButton.setAlpha(
+                focused.getServings() > 1 ? 1f : 0.45f
         );
     }
 
     private void renderIngredients() {
         ingredientsList.removeAllViews();
+
         boolean visible = ingredientsVisible
                 && !currentRecipes.isEmpty();
 
-        ingredientsList.setVisibility(
-                visible ? VISIBLE : GONE
-        );
+        ingredientsList.setVisibility(visible ? VISIBLE : GONE);
+        ingredientsDivider.setVisibility(visible ? VISIBLE : GONE);
 
         if (!visible) {
             return;
@@ -341,16 +330,39 @@ public final class CookPlanMealMomentView extends LinearLayout {
             );
 
             ImageView icon = row.findViewById(R.id.ingredientIcon);
+            ImageView selectedIcon = row.findViewById(
+                    R.id.ingredientSelectedIcon
+            );
             TextView name = row.findViewById(R.id.ingredientName);
             TextView quantity = row.findViewById(
                     R.id.ingredientQuantity
             );
+
+            String key = ingredient.key();
+            boolean checked = !uncheckedIngredientKeys.contains(key);
 
             name.setText(ingredient.name);
             quantity.setText(formatQuantity(
                     ingredient.quantity,
                     ingredient.unit
             ));
+
+            selectedIcon.setImageResource(CookIcons.selected());
+            selectedIcon.setColorFilter(
+                    ContextCompat.getColor(
+                            getContext(),
+                            checked
+                                    ? R.color.cook_secondary
+                                    : R.color.cook_border_default
+                    )
+            );
+            selectedIcon.setAlpha(checked ? 1f : 0.55f);
+            selectedIcon.setOnClickListener(view -> {
+                if (!uncheckedIngredientKeys.add(key)) {
+                    uncheckedIngredientKeys.remove(key);
+                }
+                renderIngredients();
+            });
 
             Glide.with(icon)
                     .load(ingredient.imageUrl)
@@ -374,11 +386,12 @@ public final class CookPlanMealMomentView extends LinearLayout {
         for (PlannedRecipe plannedRecipe : currentRecipes) {
             for (IngredientDisplay ingredient
                     : scaledIngredients(plannedRecipe)) {
-                String key = ingredient.id + "|" + ingredient.unit;
-                IngredientDisplay current = merged.get(key);
+                IngredientDisplay current = merged.get(
+                        ingredient.key()
+                );
 
                 if (current == null) {
-                    merged.put(key, ingredient);
+                    merged.put(ingredient.key(), ingredient);
                 } else {
                     current.quantity += ingredient.quantity;
                 }
@@ -459,6 +472,14 @@ public final class CookPlanMealMomentView extends LinearLayout {
 
     @Nullable
     private PlannedRecipe focusedRecipe() {
+        if (currentRecipes.size() == 1) {
+            return currentRecipes.get(0);
+        }
+        return focusedRecipeById();
+    }
+
+    @Nullable
+    private PlannedRecipe focusedRecipeById() {
         if (focusedRecipeId == null) {
             return null;
         }
@@ -562,6 +583,11 @@ public final class CookPlanMealMomentView extends LinearLayout {
             this.imageUrl = imageUrl;
             this.quantity = quantity;
             this.unit = unit;
+        }
+
+        @NonNull
+        String key() {
+            return id + "|" + unit;
         }
     }
 }

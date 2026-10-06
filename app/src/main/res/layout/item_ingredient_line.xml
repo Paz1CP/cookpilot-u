@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/ingredientIcon"
-        android:layout_width="@dimen/cook_icon_48"
-        android:layout_height="@dimen/cook_icon_48"
+        android:layout_width="@dimen/cook_icon_40"
+        android:layout_height="@dimen/cook_icon_40"
         android:contentDescription="@null"
         android:scaleType="centerCrop" />
 
@@ -25,7 +25,7 @@
             android:id="@+id/ingredientName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.CookPilot.BodySemibold"
+            android:textAppearance="@style/TextAppearance.CookPilot.TitleS"
             android:textColor="@color/cook_text_primary" />
 
         <TextView
@@ -37,5 +37,13 @@
             android:textColor="@color/cook_text_secondary" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ingredientSelectedIcon"
+        android:layout_width="@dimen/cook_icon_32"
+        android:layout_height="@dimen/cook_icon_32"
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:focusable="true" />
 
 </LinearLayout>

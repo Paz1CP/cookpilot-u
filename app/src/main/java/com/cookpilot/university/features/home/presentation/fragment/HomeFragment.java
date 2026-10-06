@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cookpilot.university.CookPilotApplication;
+import com.cookpilot.university.R;
 import com.cookpilot.university.databinding.FragmentHomeBinding;
 import com.cookpilot.university.features.cookplan.domain.model.MealMoment;
 import com.cookpilot.university.features.cookplan.domain.model.PlannedRecipe;
@@ -33,7 +35,6 @@ public final class HomeFragment extends Fragment
     private CookPlanViewModel viewModel;
     private CookPilotApplication application;
     private WeekDayAdapter weekDayAdapter;
-    private List<PlannedRecipe> currentPlan = Collections.emptyList();
 
     @Nullable
     @Override
@@ -124,26 +125,6 @@ public final class HomeFragment extends Fragment
                         return;
                     }
 
-                    String replacementEntryId = result.getString(
-                            RecipePickerBottomSheet.RESULT_REPLACE_ENTRY_ID
-                    );
-
-                    if (replacementEntryId != null) {
-                        PlannedRecipe plannedRecipe =
-                                findPlannedRecipe(replacementEntryId);
-                        application.getRecipeRepository()
-                                .findById(recipeIds.get(0))
-                                .ifPresent(recipe -> {
-                                    if (plannedRecipe != null) {
-                                        viewModel.replaceRecipe(
-                                                plannedRecipe,
-                                                recipe
-                                        );
-                                    }
-                                });
-                        return;
-                    }
-
                     List<Recipe> recipes = new ArrayList<>();
                     for (String recipeId : recipeIds) {
                         application.getRecipeRepository()
@@ -169,18 +150,18 @@ public final class HomeFragment extends Fragment
     }
 
     private void renderPlan(List<PlannedRecipe> plan) {
-        currentPlan = plan == null
+        List<PlannedRecipe> safePlan = plan == null
                 ? Collections.emptyList()
                 : plan;
 
         binding.breakfastCard.render(
-                byMoment(currentPlan, MealMoment.BREAKFAST)
+                byMoment(safePlan, MealMoment.BREAKFAST)
         );
         binding.lunchCard.render(
-                byMoment(currentPlan, MealMoment.LUNCH)
+                byMoment(safePlan, MealMoment.LUNCH)
         );
         binding.dinnerCard.render(
-                byMoment(currentPlan, MealMoment.DINNER)
+                byMoment(safePlan, MealMoment.DINNER)
         );
     }
 
@@ -201,16 +182,6 @@ public final class HomeFragment extends Fragment
         return result;
     }
 
-    @Nullable
-    private PlannedRecipe findPlannedRecipe(@NonNull String id) {
-        for (PlannedRecipe item : currentPlan) {
-            if (item.getId().equals(id)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
     @Override
     public void onAddRecipe(@NonNull MealMoment mealMoment) {
         RecipePickerBottomSheet
@@ -218,21 +189,6 @@ public final class HomeFragment extends Fragment
                 .show(
                         getParentFragmentManager(),
                         "recipe_picker"
-                );
-    }
-
-    @Override
-    public void onReplaceRecipe(
-            @NonNull PlannedRecipe plannedRecipe
-    ) {
-        RecipePickerBottomSheet
-                .newReplaceInstance(
-                        plannedRecipe.getMealMoment(),
-                        plannedRecipe.getId()
-                )
-                .show(
-                        getParentFragmentManager(),
-                        "recipe_replace_picker"
                 );
     }
 
@@ -249,6 +205,15 @@ public final class HomeFragment extends Fragment
             int servings
     ) {
         viewModel.updateServings(plannedRecipe, servings);
+    }
+
+    @Override
+    public void onCook(@NonNull MealMoment mealMoment) {
+        Toast.makeText(
+                requireContext(),
+                R.string.cooking_pending,
+                Toast.LENGTH_SHORT
+        ).show();
     }
 
     @Override

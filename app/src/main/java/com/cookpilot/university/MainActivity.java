@@ -1,6 +1,7 @@
 package com.cookpilot.university;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ public final class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        configureEdgeToEdge();
+        enableDeviceFullscreen();
 
         CookPilotApplication application =
                 (CookPilotApplication) getApplication();
@@ -59,7 +60,18 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void configureEdgeToEdge() {
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideSystemBars();
+        }
+    }
+
+    private void enableDeviceFullscreen() {
+        setRequestedOrientation(
+                ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+        );
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
@@ -69,11 +81,21 @@ public final class MainActivity extends AppCompatActivity {
             getWindow().setStatusBarContrastEnforced(false);
         }
 
+        hideSystemBars();
+    }
+
+    private void hideSystemBars() {
         WindowInsetsControllerCompat controller =
                 WindowCompat.getInsetsController(
                         getWindow(),
                         getWindow().getDecorView()
                 );
+
+        controller.hide(WindowInsetsCompat.Type.systemBars());
+        controller.setSystemBarsBehavior(
+                WindowInsetsControllerCompat
+                        .BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        );
         controller.setAppearanceLightStatusBars(false);
         controller.setAppearanceLightNavigationBars(false);
     }

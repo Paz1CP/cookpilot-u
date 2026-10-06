@@ -84,7 +84,7 @@
     <dimen name="cook_week_strip_height">86dp</dimen>
     <dimen name="cook_week_day_width">64dp</dimen>
     <dimen name="cook_week_day_height">82dp</dimen>
-    <dimen name="cook_recipe_tile_size">132dp</dimen>
+    <dimen name="cook_recipe_tile_size">115dp</dimen>
     <dimen name="cook_picker_image_height">132dp</dimen>
 
     <dimen name="cook_text_display_xxl">56sp</dimen>
