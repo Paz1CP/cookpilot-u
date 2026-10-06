@@ -1,10 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Foundation: primary -->
+    <color name="cook_primary_muted">#FFF7E0</color>
+    <color name="cook_primary_soft">#FDEECC</color>
+    <color name="cook_primary">#E9A80E</color>
+    <color name="cook_primary_strong">#CCA10D</color>
+    <color name="cook_primary_deep">#665305</color>
+
+    <!-- Foundation: secondary -->
+    <color name="cook_secondary_muted">#F4FAE5</color>
+    <color name="cook_secondary_soft">#E0FFAB</color>
+    <color name="cook_secondary">#7BBC0B</color>
+    <color name="cook_secondary_strong">#659609</color>
+    <color name="cook_secondary_deep">#345005</color>
+
+    <!-- Foundation: accent -->
+    <color name="cook_accent_muted">#FFF0F5</color>
+    <color name="cook_accent_soft">#F9C1DA</color>
+    <color name="cook_accent">#E24690</color>
+    <color name="cook_accent_strong">#D43B7B</color>
+    <color name="cook_accent_deep">#7C1D45</color>
+
+    <!-- Foundation: status -->
+    <color name="cook_error_muted">#FFF0F0</color>
+    <color name="cook_error_soft">#FCEAEA</color>
+    <color name="cook_error">#CD0000</color>
+    <color name="cook_error_strong">#A30000</color>
+    <color name="cook_error_deep">#510000</color>
+    <color name="cook_warning">#E9D502</color>
+    <color name="cook_time">#046FCC</color>
+
+    <!-- Foundation: neutrals -->
+    <color name="cook_light_soft">#FEFEF5</color>
+    <color name="cook_light">#F9FAE9</color>
+    <color name="cook_light_strong">#E2E4B0</color>
+    <color name="cook_light_deep">#898B5F</color>
+
+    <color name="cook_dark">#080000</color>
+    <color name="cook_dark_raised">#151212</color>
+    <color name="cook_dark_floating">#1F1B1A</color>
+    <color name="cook_dark_deep">#020000</color>
+
+    <color name="cook_gray_soft">#C7C7BD</color>
+    <color name="cook_gray">#77786F</color>
+    <color name="cook_gray_strong">#5E5F58</color>
+    <color name="cook_gray_deep">#3E3F3A</color>
+    <color name="cook_gray_disabled">#6177786F</color>
+
+    <!-- Brand/supporting colors -->
+    <color name="cook_blue">#046FCC</color>
+    <color name="cook_blue_soft">#64B6FF</color>
+    <color name="cook_cyan">#0BB3BC</color>
+    <color name="cook_cyan_soft">#7CF6F9</color>
+    <color name="cook_delivery">#CB5B24</color>
+    <color name="cook_restaurant">#AB6130</color>
+    <color name="cook_green">#13552E</color>
+    <color name="cook_green_soft">#E4F3EA</color>
+    <color name="cook_red">#9D0208</color>
+    <color name="cook_red_soft">#FADFE1</color>
+    <color name="cook_wine">#9F1F48</color>
+    <color name="cook_wine_soft">#F3E2E8</color>
+
+    <!-- Semantic colors: light mode -->
+    <color name="cook_layer_base">@color/cook_light</color>
+    <color name="cook_layer_raised">#FFFFFFDF</color>
+    <color name="cook_layer_floating">#FFFFC9</color>
+    <color name="cook_layer_dim">#A0FEFEF5</color>
+
+    <color name="cook_text_primary">@color/cook_dark</color>
+    <color name="cook_text_secondary">@color/cook_gray_strong</color>
+    <color name="cook_text_tertiary">@color/cook_gray</color>
+    <color name="cook_text_inverse">@color/cook_light</color>
+    <color name="cook_text_disabled">@color/cook_gray</color>
+
+    <color name="cook_border_subtle">@color/cook_gray_soft</color>
+    <color name="cook_border_default">@color/cook_gray</color>
+    <color name="cook_border_strong">@color/cook_gray_strong</color>
+    <color name="cook_border_primary">@color/cook_primary_soft</color>
+    <color name="cook_border_secondary">@color/cook_secondary_soft</color>
+    <color name="cook_border_accent">@color/cook_accent_soft</color>
+    <color name="cook_border_error">@color/cook_error_soft</color>
+
+    <color name="cook_action_primary">@color/cook_primary</color>
+    <color name="cook_action_primary_pressed">@color/cook_primary_strong</color>
+    <color name="cook_action_secondary">@color/cook_secondary</color>
+    <color name="cook_action_secondary_pressed">@color/cook_secondary_strong</color>
+    <color name="cook_action_accent">@color/cook_accent</color>
+    <color name="cook_action_accent_pressed">@color/cook_accent_strong</color>
+
+    <color name="cook_state_success">@color/cook_secondary</color>
+    <color name="cook_state_error">@color/cook_error</color>
+    <color name="cook_state_warning">@color/cook_warning</color>
+
+    <color name="cook_metric_saving">@color/cook_primary</color>
+    <color name="cook_metric_health">@color/cook_secondary</color>
+    <color name="cook_metric_fat">@color/cook_accent</color>
+    <color name="cook_metric_warning">@color/cook_warning</color>
+    <color name="cook_metric_time">@color/cook_time</color>
 </resources>
