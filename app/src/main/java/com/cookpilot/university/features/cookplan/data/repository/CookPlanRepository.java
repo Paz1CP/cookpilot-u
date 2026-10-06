@@ -2,8 +2,8 @@ package com.cookpilot.university.features.cookplan.data.repository;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import com.cookpilot.university.features.cookplan.data.local.PlannedRecipeDao;
 import com.cookpilot.university.features.cookplan.data.local.PlannedRecipeEntity;
@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class CookPlanRepository {
 
@@ -55,9 +56,8 @@ public final class CookPlanRepository {
             return new MutableLiveData<>(Collections.emptyList());
         }
 
-        return Transformations.map(
-                dao.observeByDate(userId, date.toString()),
-                this::toDomain
+        return observeEntities(
+                dao.observeByDate(userId, date.toString())
         );
     }
 
@@ -69,13 +69,12 @@ public final class CookPlanRepository {
             return new MutableLiveData<>(Collections.emptyList());
         }
 
-        return Transformations.map(
+        return observeEntities(
                 dao.observeRange(
                         userId,
                         weekStart.toString(),
                         weekStart.plusDays(6).toString()
-                ),
-                this::toDomain
+                )
         );
     }
 
@@ -307,6 +306,33 @@ public final class CookPlanRepository {
         } catch (Exception ignored) {
             return fallback;
         }
+    }
+
+    @NonNull
+    private LiveData<List<PlannedRecipe>> observeEntities(
+            @NonNull LiveData<List<PlannedRecipeEntity>> source
+    ) {
+        MediatorLiveData<List<PlannedRecipe>> result =
+                new MediatorLiveData<>();
+        AtomicReference<List<PlannedRecipeEntity>> latest =
+                new AtomicReference<>(Collections.emptyList());
+
+        result.addSource(source, entities -> {
+            List<PlannedRecipeEntity> safe = entities == null
+                    ? Collections.emptyList()
+                    : entities;
+            latest.set(safe);
+            result.setValue(toDomain(safe));
+        });
+
+        result.addSource(
+                recipeRepository.observeRecipes(),
+                recipes -> result.setValue(
+                        toDomain(latest.get())
+                )
+        );
+
+        return result;
     }
 
     private List<PlannedRecipe> toDomain(

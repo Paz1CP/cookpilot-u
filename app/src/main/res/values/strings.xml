@@ -48,12 +48,20 @@
     <string name="cookplan_cook">Cocinar</string>
     <string name="cookplan_empty_meal">Agrega recetas a este momento</string>
     <string name="cookplan_choose_recipes">Elige una o varias recetas</string>
+    <string name="cookplan_price_unavailable">S/ —</string>
     <string name="cookplan_meal_meta">%1$d min · Ahorras: S/ %2$.1f</string>
+    <string name="cookplan_meal_time">%1$d min</string>
+    <string name="cookplan_servings_count">%1$d porciones</string>
+    <string name="cookplan_add_recipe">Agregar receta</string>
+    <string name="cookplan_replace_recipe">Cambiar</string>
     <string name="cookplan_remove_recipe">Quitar receta</string>
 
     <string name="recipe_picker_title">Elige tus recetas</string>
     <string name="recipe_picker_subtitle">Selecciona una o varias para este momento.</string>
     <string name="recipe_picker_add">Agregar</string>
+    <string name="recipe_picker_replace">Cambiar receta</string>
+    <string name="recipe_picker_replace_title">Cambiar receta</string>
+    <string name="recipe_picker_replace_subtitle">Elige la receta que reemplazará a la seleccionada.</string>
     <string name="recipe_picker_meta">%1$d min · %2$d porciones</string>
 
     <string name="cooking_pending">Esta opción estará disponible pronto.</string>
