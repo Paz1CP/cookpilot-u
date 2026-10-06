@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cook_layer_base">
+
+    <LinearLayout
+        android:id="@+id/searchContainer"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/cook_touch_64"
+        android:layout_marginStart="@dimen/cook_padding_screen_x"
+        android:layout_marginTop="@dimen/cook_spacing_12"
+        android:layout_marginEnd="@dimen/cook_padding_screen_x"
+        android:background="@drawable/bg_cook_search_bar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/cook_spacing_20"
+        android:paddingEnd="@dimen/cook_spacing_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="@dimen/cook_icon_32"
+            android:layout_height="@dimen/cook_icon_32"
+            android:contentDescription="@null"
+            android:tint="@color/cook_text_tertiary" />
+
+        <EditText
+            android:id="@+id/searchInput"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/cook_spacing_12"
+            android:layout_weight="1"
+            android:background="@null"
+            android:fontFamily="@font/outfit_regular"
+            android:hint="@string/cooklist_search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="0dp"
+            android:textColor="@color/cook_text_primary"
+            android:textColorHint="@color/cook_text_tertiary"
+            android:textSize="@dimen/cook_text_body" />
+
+        <ImageView
+            android:id="@+id/addItemButton"
+            android:layout_width="@dimen/cook_touch_40"
+            android:layout_height="@dimen/cook_touch_40"
+            android:contentDescription="@string/cooklist_add_item"
+            android:padding="@dimen/cook_spacing_8"
+            android:tint="@color/cook_primary" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/priceRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/cook_padding_screen_x"
+        android:layout_marginTop="@dimen/cook_spacing_20"
+        android:layout_marginEnd="@dimen/cook_padding_screen_x"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cooklist_estimated_total"
+            android:textAppearance="@style/TextAppearance.CookPilot.TitleS"
+            android:textColor="@color/cook_text_primary" />
+
+        <TextView
+            android:id="@+id/estimatedTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="S/ 0.00"
+            android:textAppearance="@style/TextAppearance.CookPilot.TitleL"
+            android:textColor="@color/cook_secondary" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/shoppingList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/cook_spacing_20"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/cook_padding_screen_x"
+        android:paddingEnd="@dimen/cook_padding_screen_x"
+        android:paddingBottom="148dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/priceRow" />
+
+    <TextView
+        android:id="@+id/emptyState"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/cook_padding_screen_x"
+        android:gravity="center"
+        android:text="@string/cooklist_empty"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.CookPilot.Body"
+        android:textColor="@color/cook_text_secondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/priceRow" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/clearPurchasedButton"
+        style="@style/Widget.CookPilot.Button.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/cook_touch_48"
+        android:layout_marginEnd="@dimen/cook_padding_screen_x"
+        android:layout_marginBottom="116dp"
+        android:text="@string/cooklist_clear_purchased"
+        android:textAppearance="@style/TextAppearance.CookPilot.Label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
