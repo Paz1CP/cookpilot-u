@@ -18,6 +18,8 @@ public final class RecipeDto {
     private int totalMinutes;
     private int activeMinutes;
     private int passiveMinutes;
+    private double estimatedCostPen;
+    private double estimatedSavingsPen;
     private List<String> categorySlugs;
     private NutritionDto nutrition;
     private List<RecipeIngredientDto> ingredients;
@@ -42,6 +44,8 @@ public final class RecipeDto {
     public int getTotalMinutes() { return totalMinutes; }
     public int getActiveMinutes() { return activeMinutes; }
     public int getPassiveMinutes() { return passiveMinutes; }
+    public double getEstimatedCostPen() { return estimatedCostPen; }
+    public double getEstimatedSavingsPen() { return estimatedSavingsPen; }
     public List<String> getCategorySlugs() {
         return categorySlugs == null
                 ? Collections.emptyList()

@@ -25,6 +25,8 @@ public final class Recipe {
     private final int totalMinutes;
     private final int activeMinutes;
     private final int passiveMinutes;
+    private final double estimatedCostPen;
+    private final double estimatedSavingsPen;
     @NonNull
     private final NutritionInfo nutrition;
     @NonNull
@@ -45,6 +47,8 @@ public final class Recipe {
             int totalMinutes,
             int activeMinutes,
             int passiveMinutes,
+            double estimatedCostPen,
+            double estimatedSavingsPen,
             @NonNull NutritionInfo nutrition,
             @NonNull List<String> categorySlugs,
             @NonNull List<Ingredient> ingredients,
@@ -60,6 +64,8 @@ public final class Recipe {
         this.totalMinutes = Math.max(0, totalMinutes);
         this.activeMinutes = Math.max(0, activeMinutes);
         this.passiveMinutes = Math.max(0, passiveMinutes);
+        this.estimatedCostPen = Math.max(0, estimatedCostPen);
+        this.estimatedSavingsPen = Math.max(0, estimatedSavingsPen);
         this.nutrition = nutrition;
         this.categorySlugs = Collections.unmodifiableList(
                 new ArrayList<>(categorySlugs)
@@ -110,7 +116,7 @@ public final class Recipe {
     @NonNull
     public List<RecipeStep> getSteps() { return steps; }
 
-    public double getEstimatedCostPen() { return 0.0; }
+    public double getEstimatedCostPen() { return estimatedCostPen; }
 
-    public double getEstimatedSavingsPen() { return 0.0; }
+    public double getEstimatedSavingsPen() { return estimatedSavingsPen; }
 }

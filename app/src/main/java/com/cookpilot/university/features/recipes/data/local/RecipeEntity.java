@@ -42,6 +42,12 @@ public final class RecipeEntity {
     @ColumnInfo(name = "passive_minutes")
     public final int passiveMinutes;
 
+    @ColumnInfo(name = "estimated_cost_pen")
+    public final double estimatedCostPen;
+
+    @ColumnInfo(name = "estimated_savings_pen")
+    public final double estimatedSavingsPen;
+
     public final double calories;
 
     @ColumnInfo(name = "protein_g")
@@ -74,6 +80,8 @@ public final class RecipeEntity {
             int totalMinutes,
             int activeMinutes,
             int passiveMinutes,
+            double estimatedCostPen,
+            double estimatedSavingsPen,
             double calories,
             double proteinG,
             double carbsG,
@@ -92,6 +100,8 @@ public final class RecipeEntity {
         this.totalMinutes = totalMinutes;
         this.activeMinutes = activeMinutes;
         this.passiveMinutes = passiveMinutes;
+        this.estimatedCostPen = estimatedCostPen;
+        this.estimatedSavingsPen = estimatedSavingsPen;
         this.calories = calories;
         this.proteinG = proteinG;
         this.carbsG = carbsG;

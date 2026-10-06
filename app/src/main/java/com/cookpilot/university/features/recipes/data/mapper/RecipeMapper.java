@@ -46,6 +46,8 @@ public final class RecipeMapper {
                 dto.getTotalMinutes(),
                 dto.getActiveMinutes(),
                 dto.getPassiveMinutes(),
+                dto.getEstimatedCostPen(),
+                dto.getEstimatedSavingsPen(),
                 nutrition.getCalories(),
                 nutrition.getProteinG(),
                 nutrition.getCarbsG(),
@@ -140,6 +142,8 @@ public final class RecipeMapper {
                 recipe.totalMinutes,
                 recipe.activeMinutes,
                 recipe.passiveMinutes,
+                recipe.estimatedCostPen,
+                recipe.estimatedSavingsPen,
                 new NutritionInfo(
                         recipe.calories,
                         recipe.proteinG,

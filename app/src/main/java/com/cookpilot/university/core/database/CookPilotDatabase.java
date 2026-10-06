@@ -28,7 +28,7 @@ import com.cookpilot.university.features.recipes.data.local.RecipeStepEntity;
                 RecipeIngredientEntity.class,
                 RecipeStepEntity.class
         },
-        version = 3,
+        version = 4,
         exportSchema = false
 )
 public abstract class CookPilotDatabase extends RoomDatabase {
@@ -133,6 +133,20 @@ public abstract class CookPilotDatabase extends RoomDatabase {
         }
     };
 
+    private static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL(
+                    "ALTER TABLE recipes ADD COLUMN estimated_cost_pen "
+                            + "REAL NOT NULL DEFAULT 0"
+            );
+            database.execSQL(
+                    "ALTER TABLE recipes ADD COLUMN estimated_savings_pen "
+                            + "REAL NOT NULL DEFAULT 0"
+            );
+        }
+    };
+
     public abstract PlannedRecipeDao plannedRecipeDao();
     public abstract RecipeDao recipeDao();
     public abstract IngredientDao ingredientDao();
@@ -145,7 +159,11 @@ public abstract class CookPilotDatabase extends RoomDatabase {
                 CookPilotDatabase.class,
                 "cookpilot_university.db"
         )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(
+                        MIGRATION_1_2,
+                        MIGRATION_2_3,
+                        MIGRATION_3_4
+                )
                 .build();
     }
 }
