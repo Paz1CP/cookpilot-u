@@ -11,6 +11,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.cookpilot.university.features.cookplan.data.local.PlannedRecipeDao;
 import com.cookpilot.university.features.cookplan.data.local.PlannedRecipeEntity;
+import com.cookpilot.university.features.cooklist.data.local.ShoppingItemDao;
+import com.cookpilot.university.features.cooklist.data.local.ShoppingItemEntity;
 import com.cookpilot.university.features.recipes.data.local.IngredientDao;
 import com.cookpilot.university.features.recipes.data.local.IngredientEntity;
 import com.cookpilot.university.features.recipes.data.local.RecipeDao;
@@ -26,9 +28,10 @@ import com.cookpilot.university.features.recipes.data.local.RecipeStepEntity;
                 RecipeEntity.class,
                 IngredientEntity.class,
                 RecipeIngredientEntity.class,
-                RecipeStepEntity.class
+                RecipeStepEntity.class,
+                ShoppingItemEntity.class
         },
-        version = 4,
+        version = 5,
         exportSchema = false
 )
 public abstract class CookPilotDatabase extends RoomDatabase {
@@ -147,11 +150,43 @@ public abstract class CookPilotDatabase extends RoomDatabase {
         }
     };
 
+    private static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS shopping_items ("
+                            + "id TEXT NOT NULL, "
+                            + "user_id TEXT NOT NULL, "
+                            + "week_start TEXT NOT NULL, "
+                            + "ingredient_id TEXT, "
+                            + "name TEXT NOT NULL, "
+                            + "quantity REAL NOT NULL, "
+                            + "unit TEXT NOT NULL, "
+                            + "purchased INTEGER NOT NULL, "
+                            + "manual INTEGER NOT NULL, "
+                            + "source_recipe_ids TEXT NOT NULL, "
+                            + "created_at INTEGER NOT NULL, "
+                            + "updated_at INTEGER NOT NULL, "
+                            + "sync_state TEXT NOT NULL, "
+                            + "PRIMARY KEY(id))"
+            );
+            database.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_shopping_items_user_id_week_start "
+                            + "ON shopping_items(user_id, week_start)"
+            );
+            database.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_shopping_items_ingredient_id "
+                            + "ON shopping_items(ingredient_id)"
+            );
+        }
+    };
+
     public abstract PlannedRecipeDao plannedRecipeDao();
     public abstract RecipeDao recipeDao();
     public abstract IngredientDao ingredientDao();
     public abstract RecipeIngredientDao recipeIngredientDao();
     public abstract RecipeStepDao recipeStepDao();
+    public abstract ShoppingItemDao shoppingItemDao();
 
     public static CookPilotDatabase create(Context context) {
         return Room.databaseBuilder(
@@ -162,7 +197,8 @@ public abstract class CookPilotDatabase extends RoomDatabase {
                 .addMigrations(
                         MIGRATION_1_2,
                         MIGRATION_2_3,
-                        MIGRATION_3_4
+                        MIGRATION_3_4,
+                        MIGRATION_4_5
                 )
                 .build();
     }

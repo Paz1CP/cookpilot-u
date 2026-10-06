@@ -12,6 +12,7 @@ import com.cookpilot.university.features.auth.data.repository.AuthRepository;
 import com.cookpilot.university.features.cookplan.data.remote.CookPlanApiService;
 import com.cookpilot.university.features.cookplan.data.remote.CookPlanRemoteDataSource;
 import com.cookpilot.university.features.cookplan.data.repository.CookPlanRepository;
+import com.cookpilot.university.features.cooklist.data.repository.ShoppingRepository;
 import com.cookpilot.university.features.recipes.data.local.RecipeLocalDataSource;
 import com.cookpilot.university.features.recipes.data.remote.RecipeApiService;
 import com.cookpilot.university.features.recipes.data.remote.RecipeRemoteDataSource;
@@ -27,6 +28,7 @@ public final class CookPilotApplication extends Application {
     private AuthRepository authRepository;
     private RecipeRepository recipeRepository;
     private CookPlanRepository cookPlanRepository;
+    private ShoppingRepository shoppingRepository;
 
     @Override
     public void onCreate() {
@@ -64,6 +66,11 @@ public final class CookPilotApplication extends Application {
                 ),
                 firebaseAuth
         );
+
+        shoppingRepository = new ShoppingRepository(
+                database.shoppingItemDao(),
+                firebaseAuth
+        );
     }
 
     public AuthRepository getAuthRepository() {
@@ -76,5 +83,9 @@ public final class CookPilotApplication extends Application {
 
     public CookPlanRepository getCookPlanRepository() {
         return cookPlanRepository;
+    }
+
+    public ShoppingRepository getShoppingRepository() {
+        return shoppingRepository;
     }
 }
