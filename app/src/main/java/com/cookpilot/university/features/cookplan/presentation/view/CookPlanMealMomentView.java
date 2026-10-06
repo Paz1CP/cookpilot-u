@@ -20,6 +20,7 @@ import com.cookpilot.university.features.cookplan.domain.model.MealMoment;
 import com.cookpilot.university.features.cookplan.domain.model.PlannedRecipe;
 import com.cookpilot.university.features.recipes.domain.model.Ingredient;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
+import com.cookpilot.university.features.recipes.domain.usecase.ScaleRecipeServings;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -414,16 +415,17 @@ public final class CookPlanMealMomentView extends LinearLayout {
             @NonNull PlannedRecipe plannedRecipe
     ) {
         Recipe recipe = plannedRecipe.getRecipe();
-        double scale = (double) plannedRecipe.getServings()
-                / Math.max(1, recipe.getBaseServings());
-
         List<IngredientDisplay> result = new ArrayList<>();
         for (Ingredient ingredient : recipe.getIngredients()) {
             result.add(new IngredientDisplay(
                     ingredient.getId(),
                     ingredient.getName(),
                     ingredient.getImageUrl(),
-                    ingredient.getQuantity() * scale,
+                    ScaleRecipeServings.scaleQuantity(
+                            ingredient.getQuantity(),
+                            plannedRecipe.getServings(),
+                            recipe.getBaseServings()
+                    ),
                     ingredient.getUnit()
             ));
         }
