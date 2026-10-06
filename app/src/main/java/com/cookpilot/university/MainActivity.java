@@ -20,7 +20,7 @@ public final class MainActivity extends AppCompatActivity {
 
         binding.bottomNavigation.setOnItemSelectedListener(this::renderDestination);
         binding.appBar.setAvatarOnClickListener(view -> {
-            // Profile/settings behavior is intentionally deferred to its feature.
+            // Perfil se implementará cuando forme parte del alcance académico.
         });
 
         renderDestination(CookBottomNavigationView.Item.HOME);
@@ -35,9 +35,6 @@ public final class MainActivity extends AppCompatActivity {
                 break;
             case SHOPPING:
                 label = R.string.nav_shopping;
-                break;
-            case NUTRITION:
-                label = R.string.nav_nutrition;
                 break;
             case HOME:
             default:

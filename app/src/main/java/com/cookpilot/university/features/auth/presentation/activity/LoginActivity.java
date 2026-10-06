@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.inputmethod.EditorInfo;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -19,7 +18,6 @@ import androidx.media3.ui.AspectRatioFrameLayout;
 import com.cookpilot.university.MainActivity;
 import com.cookpilot.university.R;
 import com.cookpilot.university.databinding.ActivityLoginBinding;
-import com.cookpilot.university.features.auth.presentation.viewmodel.LoginUiState;
 import com.cookpilot.university.features.auth.presentation.viewmodel.LoginViewModel;
 
 public final class LoginActivity extends AppCompatActivity {
@@ -36,11 +34,11 @@ public final class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Se conserva para conectar Firebase Auth después sin rehacer la pantalla.
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         applySystemBarInsets();
         bindActions();
-        observeState();
     }
 
     @Override
@@ -81,12 +79,12 @@ public final class LoginActivity extends AppCompatActivity {
     }
 
     private void bindActions() {
-        binding.continueButton.setOnClickListener(view -> submit());
+        binding.continueButton.setOnClickListener(view -> continueToApp());
 
         binding.passwordEditText.setOnEditorActionListener(
                 (view, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        submit();
+                        continueToApp();
                         return true;
                     }
                     return false;
@@ -94,39 +92,9 @@ public final class LoginActivity extends AppCompatActivity {
         );
     }
 
-    private void observeState() {
-        viewModel.getUiState().observe(this, this::renderState);
-    }
-
-    private void submit() {
-        viewModel.submit(
-                textOf(binding.emailEditText),
-                textOf(binding.passwordEditText)
-        );
-    }
-
-    private void renderState(LoginUiState state) {
-        if (!state.isSubmitted()) {
-            return;
-        }
-
-        binding.emailInputLayout.setError(
-                resolveError(state.getEmailErrorResId())
-        );
-        binding.passwordInputLayout.setError(
-                resolveError(state.getPasswordErrorResId())
-        );
-
-        if (!state.isValid()) {
-            return;
-        }
-
+    private void continueToApp() {
         startActivity(new Intent(this, MainActivity.class));
         finish();
-    }
-
-    private CharSequence resolveError(@StringRes int errorResId) {
-        return errorResId == 0 ? null : getString(errorResId);
     }
 
     private void startBackgroundVideo() {
@@ -160,11 +128,5 @@ public final class LoginActivity extends AppCompatActivity {
         binding.loginVideo.setPlayer(null);
         videoPlayer.release();
         videoPlayer = null;
-    }
-
-    private String textOf(android.widget.EditText editText) {
-        return editText.getText() == null
-                ? ""
-                : editText.getText().toString();
     }
 }

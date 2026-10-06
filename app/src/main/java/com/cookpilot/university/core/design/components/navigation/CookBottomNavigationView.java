@@ -25,29 +25,26 @@ public final class CookBottomNavigationView extends FrameLayout {
     public enum Item {
         HOME,
         RECIPES,
-        SHOPPING,
-        NUTRITION
+        SHOPPING
     }
 
     public interface OnItemSelectedListener {
         void onItemSelected(@NonNull Item item);
     }
 
-    private final MaterialCardView[] actionCards = new MaterialCardView[4];
-    private final ImageView[] actionIcons = new ImageView[4];
+    private final MaterialCardView[] actionCards = new MaterialCardView[3];
+    private final ImageView[] actionIcons = new ImageView[3];
 
     private final int[] outlineIcons = {
             R.drawable.ic_home_outline,
             R.drawable.ic_search,
-            R.drawable.ic_shopping_bag_outline,
-            R.drawable.ic_health_ring
+            R.drawable.ic_shopping_bag_outline
     };
 
     private final int[] selectedIcons = {
             R.drawable.ic_home_filled,
             R.drawable.ic_search,
-            R.drawable.ic_shopping_bag_filled,
-            R.drawable.ic_health_ring
+            R.drawable.ic_shopping_bag_filled
     };
 
     private Item selectedItem = Item.HOME;
@@ -80,12 +77,10 @@ public final class CookBottomNavigationView extends FrameLayout {
         actionCards[0] = findViewById(R.id.navHome);
         actionCards[1] = findViewById(R.id.navRecipes);
         actionCards[2] = findViewById(R.id.navShopping);
-        actionCards[3] = findViewById(R.id.navNutrition);
 
         actionIcons[0] = findViewById(R.id.navHomeIcon);
         actionIcons[1] = findViewById(R.id.navRecipesIcon);
         actionIcons[2] = findViewById(R.id.navShoppingIcon);
-        actionIcons[3] = findViewById(R.id.navNutritionIcon);
 
         avatarCard = findViewById(R.id.cookPilotAvatarCard);
         avatarImage = findViewById(R.id.cookPilotAvatarImage);
@@ -101,9 +96,7 @@ public final class CookBottomNavigationView extends FrameLayout {
         selectItem(Item.HOME, false);
     }
 
-    public void setOnItemSelectedListener(
-            @Nullable OnItemSelectedListener listener
-    ) {
+    public void setOnItemSelectedListener(@Nullable OnItemSelectedListener listener) {
         itemSelectedListener = listener;
     }
 
@@ -145,21 +138,12 @@ public final class CookBottomNavigationView extends FrameLayout {
             MaterialCardView card = actionCards[index];
             ImageView icon = actionIcons[index];
 
-            card.setCardBackgroundColor(
-                    selected ? activeSurface : Color.TRANSPARENT
-            );
-            card.setStrokeColor(
-                    selected ? primary : Color.TRANSPARENT
-            );
+            card.setCardBackgroundColor(selected ? activeSurface : Color.TRANSPARENT);
+            card.setStrokeColor(selected ? primary : Color.TRANSPARENT);
             card.setStrokeWidth(selected ? borderWidth : 0);
-
-            icon.setImageResource(
-                    selected ? selectedIcons[index] : outlineIcons[index]
-            );
+            icon.setImageResource(selected ? selectedIcons[index] : outlineIcons[index]);
             icon.setColorFilter(iconColor);
-            card.setContentDescription(
-                    contentDescriptionFor(Item.values()[index])
-            );
+            card.setContentDescription(contentDescriptionFor(Item.values()[index]));
         }
 
         if (notify) {
@@ -176,8 +160,6 @@ public final class CookBottomNavigationView extends FrameLayout {
                 return getContext().getString(R.string.nav_recipes);
             case SHOPPING:
                 return getContext().getString(R.string.nav_shopping);
-            case NUTRITION:
-                return getContext().getString(R.string.nav_nutrition);
             case HOME:
             default:
                 return getContext().getString(R.string.nav_home);
