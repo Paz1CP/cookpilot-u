@@ -3,9 +3,16 @@ package com.cookpilot.university.features.cookplan.data.local;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "planned_recipes")
+@Entity(
+        tableName = "planned_recipes",
+        indices = @Index(
+                value = {"user_id", "plan_date"},
+                name = "index_planned_recipes_user_id_plan_date"
+        )
+)
 public final class PlannedRecipeEntity {
 
     public static final String SYNCED = "SYNCED";

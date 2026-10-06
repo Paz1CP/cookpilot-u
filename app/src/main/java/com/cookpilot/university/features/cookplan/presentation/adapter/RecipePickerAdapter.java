@@ -24,8 +24,13 @@ public final class RecipePickerAdapter
 
     private final List<Recipe> recipes = new ArrayList<>();
     private final Set<String> selectedIds = new HashSet<>();
+    private final boolean singleSelection;
 
-    public RecipePickerAdapter(@NonNull List<Recipe> recipes) {
+    public RecipePickerAdapter(
+            @NonNull List<Recipe> recipes,
+            boolean singleSelection
+    ) {
+        this.singleSelection = singleSelection;
         submitRecipes(recipes);
     }
 
@@ -121,9 +126,17 @@ public final class RecipePickerAdapter
                     .into(binding.recipeImage);
 
             binding.getRoot().setOnClickListener(view -> {
+                if (singleSelection) {
+                    selectedIds.clear();
+                    selectedIds.add(recipe.getId());
+                    notifyDataSetChanged();
+                    return;
+                }
+
                 if (!selectedIds.add(recipe.getId())) {
                     selectedIds.remove(recipe.getId());
                 }
+
                 int adapterPosition = getBindingAdapterPosition();
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     notifyItemChanged(adapterPosition);

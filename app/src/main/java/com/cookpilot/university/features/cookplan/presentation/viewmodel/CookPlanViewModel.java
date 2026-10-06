@@ -11,7 +11,9 @@ import com.cookpilot.university.features.cookplan.domain.model.MealMoment;
 import com.cookpilot.university.features.cookplan.domain.model.PlannedRecipe;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 public final class CookPlanViewModel extends ViewModel {
@@ -27,6 +29,9 @@ public final class CookPlanViewModel extends ViewModel {
                 selectedDate,
                 repository::observeDay
         );
+
+        repository.syncPending();
+        repository.refreshWeek(weekStart(LocalDate.now()));
     }
 
     public LiveData<LocalDate> getSelectedDate() {
@@ -38,8 +43,16 @@ public final class CookPlanViewModel extends ViewModel {
     }
 
     public void selectDate(@NonNull LocalDate date) {
-        if (!date.equals(selectedDate.getValue())) {
-            selectedDate.setValue(date);
+        LocalDate current = selectedDate.getValue();
+        if (date.equals(current)) {
+            return;
+        }
+
+        selectedDate.setValue(date);
+
+        if (current == null
+                || !weekStart(current).equals(weekStart(date))) {
+            repository.refreshWeek(weekStart(date));
         }
     }
 
@@ -53,29 +66,31 @@ public final class CookPlanViewModel extends ViewModel {
         }
     }
 
+    public void replaceRecipe(
+            @NonNull PlannedRecipe plannedRecipe,
+            @NonNull Recipe replacement
+    ) {
+        repository.replaceRecipe(plannedRecipe, replacement);
+    }
+
     public void removeRecipe(@NonNull PlannedRecipe plannedRecipe) {
-        LocalDate date = selectedDate.getValue();
-        if (date != null) {
-            repository.removeRecipe(
-                    date,
-                    plannedRecipe.getMealMoment(),
-                    plannedRecipe.getRecipe().getId()
-            );
-        }
+        repository.removeRecipe(plannedRecipe);
     }
 
     public void updateServings(
             @NonNull PlannedRecipe plannedRecipe,
             int servings
     ) {
-        LocalDate date = selectedDate.getValue();
-        if (date != null) {
-            repository.updateServings(
-                    date,
-                    plannedRecipe.getMealMoment(),
-                    plannedRecipe.getRecipe().getId(),
-                    servings
-            );
-        }
+        repository.updateServings(
+                plannedRecipe,
+                Math.max(1, servings)
+        );
+    }
+
+    @NonNull
+    private LocalDate weekStart(@NonNull LocalDate date) {
+        return date.with(
+                TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)
+        );
     }
 }

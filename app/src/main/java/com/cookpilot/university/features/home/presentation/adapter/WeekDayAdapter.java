@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cookpilot.university.R;
 import com.cookpilot.university.databinding.ItemWeekDayBinding;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -32,13 +34,13 @@ public final class WeekDayAdapter
 
     public WeekDayAdapter(@NonNull OnDaySelectedListener listener) {
         this.listener = listener;
-        LocalDate firstDay = LocalDate.now().minusDays(3);
-        for (int index = 0; index < 7; index++) {
-            days.add(firstDay.plusDays(index));
-        }
+        rebuildWeek(selectedDate);
     }
 
     public void setSelectedDate(@NonNull LocalDate date) {
+        if (!sameWeek(selectedDate, date)) {
+            rebuildWeek(date);
+        }
         selectedDate = date;
         notifyDataSetChanged();
     }
@@ -69,6 +71,28 @@ public final class WeekDayAdapter
     @Override
     public int getItemCount() {
         return days.size();
+    }
+
+    private void rebuildWeek(@NonNull LocalDate anchor) {
+        days.clear();
+        LocalDate monday = startOfWeek(anchor);
+        for (int index = 0; index < 7; index++) {
+            days.add(monday.plusDays(index));
+        }
+    }
+
+    private boolean sameWeek(
+            @NonNull LocalDate left,
+            @NonNull LocalDate right
+    ) {
+        return startOfWeek(left).equals(startOfWeek(right));
+    }
+
+    @NonNull
+    private LocalDate startOfWeek(@NonNull LocalDate date) {
+        return date.with(
+                TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)
+        );
     }
 
     final class DayViewHolder extends RecyclerView.ViewHolder {
@@ -103,10 +127,12 @@ public final class WeekDayAdapter
                             .getDimensionPixelSize(R.dimen.cook_border_2)
                             : 0
             );
-            binding.dayCard.setStrokeColor(selected ? primary : transparent);
+            binding.dayCard.setStrokeColor(
+                    selected ? primary : transparent
+            );
 
-            binding.getRoot().setOnClickListener(view ->
-                    listener.onDaySelected(date)
+            binding.getRoot().setOnClickListener(
+                    view -> listener.onDaySelected(date)
             );
         }
     }
