@@ -23,7 +23,7 @@ import java.util.List;
 
 public final class RecipeMapper {
 
-    private static final String CATEGORY_SEPARATOR = "";
+    private static final String CATEGORY_SEPARATOR = ",";
 
     private RecipeMapper() {
     }
