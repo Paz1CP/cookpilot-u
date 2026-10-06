@@ -3,9 +3,12 @@ package com.cookpilot.university;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import com.cookpilot.university.core.common.PlaceholderFragment;
 import com.cookpilot.university.core.design.components.navigation.CookBottomNavigationView;
 import com.cookpilot.university.databinding.ActivityMainBinding;
+import com.cookpilot.university.features.home.presentation.fragment.HomeFragment;
 
 public final class MainActivity extends AppCompatActivity {
 
@@ -18,30 +21,41 @@ public final class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.bottomNavigation.setOnItemSelectedListener(this::renderDestination);
+        binding.bottomNavigation.setOnItemSelectedListener(
+                this::renderDestination
+        );
         binding.appBar.setAvatarOnClickListener(view -> {
-            // Perfil se implementará cuando forme parte del alcance académico.
+            // Perfil fuera del alcance actual.
         });
 
-        renderDestination(CookBottomNavigationView.Item.HOME);
+        if (savedInstanceState == null) {
+            renderDestination(CookBottomNavigationView.Item.HOME);
+        }
     }
 
     private void renderDestination(CookBottomNavigationView.Item item) {
-        int label;
+        Fragment fragment;
 
         switch (item) {
             case RECIPES:
-                label = R.string.nav_recipes;
+                fragment = PlaceholderFragment.newInstance(
+                        getString(R.string.nav_recipes)
+                );
                 break;
             case SHOPPING:
-                label = R.string.nav_shopping;
+                fragment = PlaceholderFragment.newInstance(
+                        getString(R.string.nav_shopping)
+                );
                 break;
             case HOME:
             default:
-                label = R.string.nav_home;
+                fragment = new HomeFragment();
                 break;
         }
 
-        binding.screenTitle.setText(label);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainContainer, fragment)
+                .commit();
     }
 }
