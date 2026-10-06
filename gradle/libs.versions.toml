@@ -13,6 +13,8 @@ dataStore = "1.1.1"
 media3 = "1.5.1"
 glide = "4.16.0"
 iconsax = "1.0.0"
+firebaseBom = "34.19.0"
+googleServices = "4.5.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -35,6 +37,9 @@ androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplaye
 androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 iconsax-android = { group = "io.github.being-eyram", name = "iconsax-android", version.ref = "iconsax" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -42,3 +47,4 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
