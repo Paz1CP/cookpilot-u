@@ -125,7 +125,7 @@ public final class RecipeMapper {
             categories = Collections.emptyList();
         } else {
             categories = Arrays.asList(
-                    recipe.categorySlugs.split(CATEGORY_SEPARATOR, -1)
+                    recipe.categorySlugs.split(",")
             );
         }
 
