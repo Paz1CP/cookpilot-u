@@ -72,6 +72,22 @@ public final class CookIcons {
         return LinearIcons.INSTANCE.getTickCircle();
     }
 
+    public static int selectedFilled() {
+        return BoldIcons.INSTANCE.getTickCircle();
+    }
+
+    public static int addCircle() {
+        return LinearIcons.INSTANCE.getAddCircle();
+    }
+
+    public static int delete() {
+        return LinearIcons.INSTANCE.getTrash();
+    }
+
+    public static int category() {
+        return LinearIcons.INSTANCE.getCategory2();
+    }
+
     public static int eye() {
         return LinearIcons.INSTANCE.getEye();
     }
