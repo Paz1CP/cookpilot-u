@@ -8,6 +8,7 @@ import com.cookpilot.university.features.recipes.data.local.RecipeLocalDataSourc
 import com.cookpilot.university.features.recipes.data.remote.RecipeRemoteDataSource;
 import com.cookpilot.university.features.recipes.data.remote.dto.RecipeDto;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
+import com.cookpilot.university.features.recipes.domain.model.RecipeDetail;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,6 +66,16 @@ public final class RecipeRepository {
     @NonNull
     public Optional<Recipe> findById(@NonNull String recipeId) {
         return Optional.ofNullable(recipeCache.get(recipeId));
+    }
+
+    @NonNull
+    public Optional<RecipeDetail> getRecipeDetail(
+            @NonNull String recipeId
+    ) {
+        Recipe recipe = recipeCache.get(recipeId);
+        return recipe == null
+                ? Optional.empty()
+                : Optional.of(new RecipeDetail(recipe));
     }
 
     public boolean hasCachedRecipes() {
