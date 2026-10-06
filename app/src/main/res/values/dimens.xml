@@ -74,6 +74,14 @@
     <dimen name="cook_icon_56">56dp</dimen>
     <dimen name="cook_icon_64">64dp</dimen>
 
+    <!-- Blur/effect scale preserved from the CookPilot design system -->
+    <dimen name="cook_blur_0">0dp</dimen>
+    <dimen name="cook_blur_8">8dp</dimen>
+    <dimen name="cook_blur_16">16dp</dimen>
+    <dimen name="cook_blur_24">24dp</dimen>
+    <dimen name="cook_blur_40">40dp</dimen>
+    <dimen name="cook_blur_64">64dp</dimen>
+
     <!-- Typography -->
     <dimen name="cook_text_display_xxl">56sp</dimen>
     <dimen name="cook_text_display_xl">48sp</dimen>
