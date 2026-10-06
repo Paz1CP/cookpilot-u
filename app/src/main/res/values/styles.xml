@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ShapeAppearance.CookPilot.Small" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/cook_radius_medium</item>
+    </style>
+
+    <style name="ShapeAppearance.CookPilot.Medium" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/cook_radius_xlarge</item>
+    </style>
+
+    <style name="ShapeAppearance.CookPilot.Large" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/cook_radius_2xxlarge</item>
+    </style>
+
+    <style name="ShapeAppearance.CookPilot.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/cook_radius_full</item>
+    </style>
+
+    <!-- Outfit/Permanent Marker source tokens are preserved in naming.
+         The local TTF files can replace these platform fallbacks without changing callers. -->
+    <style name="TextAppearance.CookPilot.DisplayXXL" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_display_xxl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.0143</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.DisplayXL" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_display_xl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.DisplayL" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_display_l</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.DisplayM" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_display_m</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.015</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.TitleXL" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_title_xl</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.TitleL" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_title_l</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.TitleM" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_title_m</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.TitleS" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_title_s</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.Body" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_body</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.BodySemibold" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_body</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.BodySmall" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_body_s</item>
+        <item name="android:textColor">@color/cook_text_secondary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.Label" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_label</item>
+        <item name="android:letterSpacing">0.0085</item>
+        <item name="android:textColor">@color/cook_text_secondary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.LabelSmall" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_label_s</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:textColor">@color/cook_text_secondary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.Caption" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_caption</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:textColor">@color/cook_text_tertiary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.Button" parent="">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/cook_text_body</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.005</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.HighlightL" parent="">
+        <item name="android:fontFamily">cursive</item>
+        <item name="android:textSize">@dimen/cook_text_highlight_l</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="TextAppearance.CookPilot.HighlightM" parent="">
+        <item name="android:fontFamily">cursive</item>
+        <item name="android:textSize">@dimen/cook_text_highlight_m</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+    </style>
+
+    <style name="Widget.CookPilot.Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/cook_touch_56</item>
+        <item name="backgroundTint">@color/cook_button_primary_background</item>
+        <item name="android:textColor">@color/cook_button_primary_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.CookPilot.Button</item>
+        <item name="cornerRadius">@dimen/cook_radius_full</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <style name="Widget.CookPilot.Button.Secondary" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/cook_touch_56</item>
+        <item name="backgroundTint">@color/cook_button_secondary_background</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+        <item name="android:textAppearance">@style/TextAppearance.CookPilot.Button</item>
+        <item name="cornerRadius">@dimen/cook_radius_full</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <style name="Widget.CookPilot.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/cook_layer_raised</item>
+        <item name="cardCornerRadius">@dimen/cook_radius_2xxlarge</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+</resources>
