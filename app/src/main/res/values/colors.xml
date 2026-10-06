@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Foundation: primary -->
+    <!-- Base: primario -->
     <color name="cook_primary_muted">#FFF7E0</color>
     <color name="cook_primary_soft">#FDEECC</color>
     <color name="cook_primary">#E9A80E</color>
     <color name="cook_primary_strong">#CCA10D</color>
     <color name="cook_primary_deep">#665305</color>
 
-    <!-- Foundation: secondary -->
+    <!-- Base: secundario -->
     <color name="cook_secondary_muted">#F4FAE5</color>
     <color name="cook_secondary_soft">#E0FFAB</color>
     <color name="cook_secondary">#7BBC0B</color>
     <color name="cook_secondary_strong">#659609</color>
     <color name="cook_secondary_deep">#345005</color>
 
-    <!-- Foundation: accent -->
+    <!-- Base: acento -->
     <color name="cook_accent_muted">#FFF0F5</color>
     <color name="cook_accent_soft">#F9C1DA</color>
     <color name="cook_accent">#E24690</color>
     <color name="cook_accent_strong">#D43B7B</color>
     <color name="cook_accent_deep">#7C1D45</color>
 
-    <!-- Foundation: status -->
+    <!-- Base: estados -->
     <color name="cook_error_muted">#FFF0F0</color>
     <color name="cook_error_soft">#FCEAEA</color>
     <color name="cook_error">#CD0000</color>
@@ -30,7 +30,7 @@
     <color name="cook_warning">#E9D502</color>
     <color name="cook_time">#046FCC</color>
 
-    <!-- Foundation: neutrals -->
+    <!-- Base: neutros -->
     <color name="cook_light_soft">#FEFEF5</color>
     <color name="cook_light">#F9FAE9</color>
     <color name="cook_light_strong">#E2E4B0</color>
@@ -47,7 +47,7 @@
     <color name="cook_gray_deep">#3E3F3A</color>
     <color name="cook_gray_disabled">#6177786F</color>
 
-    <!-- Opacity / glass tokens -->
+    <!-- Tokens de opacidad y vidrio -->
     <color name="cook_primary_tint">#29E9A80E</color>
     <color name="cook_primary_tint_strong">#3DE9A80E</color>
     <color name="cook_accent_tint">#29E24690</color>
@@ -71,7 +71,7 @@
     <color name="cook_blue_glass_rim">#7D046FCC</color>
     <color name="cook_secondary_glass_rim">#597BBC0B</color>
 
-    <!-- Brand/supporting colors -->
+    <!-- Colores de marca y apoyo -->
     <color name="cook_blue">#046FCC</color>
     <color name="cook_blue_soft">#64B6FF</color>
     <color name="cook_cyan">#0BB3BC</color>
@@ -85,7 +85,7 @@
     <color name="cook_wine">#9F1F48</color>
     <color name="cook_wine_soft">#F3E2E8</color>
 
-    <!-- Semantic colors: light mode -->
+    <!-- Colores semánticos: modo claro -->
     <color name="cook_layer_base">@color/cook_light</color>
     <color name="cook_layer_raised">#FFFFFFDF</color>
     <color name="cook_layer_floating">#FFFFC9</color>
