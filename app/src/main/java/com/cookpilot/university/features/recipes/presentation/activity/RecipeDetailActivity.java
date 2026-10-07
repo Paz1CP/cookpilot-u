@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.cookpilot.university.CookPilotApplication;
 import com.cookpilot.university.R;
 import com.cookpilot.university.core.design.icons.CookIcons;
+import com.cookpilot.university.core.sync.SyncScheduler;
 import com.cookpilot.university.core.utils.TextUtil;
 import com.cookpilot.university.databinding.ActivityRecipeDetailBinding;
 import com.cookpilot.university.features.cookplan.domain.model.MealMoment;
@@ -154,6 +155,7 @@ public final class RecipeDetailActivity extends AppCompatActivity {
 
         configureUi();
         observeState();
+        SyncScheduler.requestSync(this);
     }
 
     @Override
