@@ -9,8 +9,10 @@ import androidx.room.Transaction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Dao
 public interface ShoppingItemDao {
@@ -19,9 +21,21 @@ public interface ShoppingItemDao {
             "SELECT * FROM shopping_items "
                     + "WHERE user_id = :userId "
                     + "AND week_start = :weekStart "
+                    + "AND sync_state != 'PENDING_DELETE' "
                     + "ORDER BY purchased ASC, name COLLATE NOCASE ASC"
     )
     LiveData<List<ShoppingItemEntity>> observeWeek(
+            String userId,
+            String weekStart
+    );
+
+    @Query(
+            "SELECT * FROM shopping_items "
+                    + "WHERE user_id = :userId "
+                    + "AND week_start = :weekStart "
+                    + "AND sync_state != 'PENDING_DELETE'"
+    )
+    List<ShoppingItemEntity> getWeekNow(
             String userId,
             String weekStart
     );
@@ -37,51 +51,33 @@ public interface ShoppingItemDao {
             String weekStart
     );
 
+    @Query(
+            "SELECT * FROM shopping_items "
+                    + "WHERE user_id = :userId "
+                    + "AND sync_state != 'SYNCED' "
+                    + "ORDER BY updated_at ASC"
+    )
+    List<ShoppingItemEntity> getPending(String userId);
+
+    @Query("SELECT * FROM shopping_items WHERE id = :id LIMIT 1")
+    ShoppingItemEntity getById(String id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void upsert(ShoppingItemEntity entity);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void upsertAll(List<ShoppingItemEntity> entities);
 
-    @Query(
-            "DELETE FROM shopping_items "
-                    + "WHERE user_id = :userId "
-                    + "AND week_start = :weekStart "
-                    + "AND manual = 0"
-    )
-    void deleteGeneratedForWeek(
-            String userId,
-            String weekStart
-    );
-
     @Query("DELETE FROM shopping_items WHERE id = :id")
-    void deleteById(String id);
-
-    @Query(
-            "DELETE FROM shopping_items "
-                    + "WHERE user_id = :userId "
-                    + "AND week_start = :weekStart "
-                    + "AND purchased = 1"
-    )
-    void deletePurchased(
-            String userId,
-            String weekStart
-    );
-
-    @Query(
-            "DELETE FROM shopping_items "
-                    + "WHERE user_id = :userId "
-                    + "AND week_start = :weekStart"
-    )
-    void deleteWeek(
-            String userId,
-            String weekStart
-    );
+    void hardDelete(String id);
 
     @Query(
             "UPDATE shopping_items "
                     + "SET purchased = :purchased, "
-                    + "updated_at = :updatedAt "
+                    + "updated_at = :updatedAt, "
+                    + "sync_state = CASE "
+                    + "WHEN sync_state = 'PENDING_CREATE' THEN 'PENDING_CREATE' "
+                    + "ELSE 'PENDING_UPDATE' END "
                     + "WHERE id = :id"
     )
     void updatePurchased(
@@ -95,7 +91,10 @@ public interface ShoppingItemDao {
                     + "SET name = :name, "
                     + "quantity = :quantity, "
                     + "unit = :unit, "
-                    + "updated_at = :updatedAt "
+                    + "updated_at = :updatedAt, "
+                    + "sync_state = CASE "
+                    + "WHEN sync_state = 'PENDING_CREATE' THEN 'PENDING_CREATE' "
+                    + "ELSE 'PENDING_UPDATE' END "
                     + "WHERE id = :id"
     )
     void updateDetails(
@@ -105,6 +104,44 @@ public interface ShoppingItemDao {
             String unit,
             long updatedAt
     );
+
+    @Query(
+            "UPDATE shopping_items "
+                    + "SET updated_at = :updatedAt, "
+                    + "sync_state = 'PENDING_DELETE' "
+                    + "WHERE id = :id"
+    )
+    void markDeleted(String id, long updatedAt);
+
+    @Query(
+            "UPDATE shopping_items "
+                    + "SET sync_state = 'SYNCED' "
+                    + "WHERE id = :id "
+                    + "AND updated_at = :expectedUpdatedAt "
+                    + "AND sync_state != 'PENDING_DELETE'"
+    )
+    int markSyncedIfVersion(
+            String id,
+            long expectedUpdatedAt
+    );
+
+    @Query(
+            "DELETE FROM shopping_items "
+                    + "WHERE user_id = :userId "
+                    + "AND week_start = :weekStart "
+                    + "AND sync_state = 'SYNCED'"
+    )
+    void deleteSyncedWeek(String userId, String weekStart);
+
+    @Transaction
+    default void replaceSyncedWeek(
+            String userId,
+            String weekStart,
+            List<ShoppingItemEntity> remoteItems
+    ) {
+        deleteSyncedWeek(userId, weekStart);
+        upsertAll(remoteItems);
+    }
 
     @Transaction
     default void replaceGenerated(
@@ -116,20 +153,47 @@ public interface ShoppingItemDao {
                 getGeneratedForWeek(userId, weekStart);
         Map<String, ShoppingItemEntity> existingById =
                 new HashMap<>();
+        Set<String> nextIds = new HashSet<>();
 
         for (ShoppingItemEntity item : existing) {
             existingById.put(item.id, item);
         }
 
-        deleteGeneratedForWeek(userId, weekStart);
-
         List<ShoppingItemEntity> merged = new ArrayList<>();
         for (ShoppingItemEntity item : generated) {
+            nextIds.add(item.id);
             ShoppingItemEntity previous = existingById.get(item.id);
 
             if (previous == null) {
                 merged.add(item);
                 continue;
+            }
+
+            boolean changed =
+                    Double.compare(previous.quantity, item.quantity) != 0
+                            || !previous.name.equals(item.name)
+                            || !previous.unit.equals(item.unit)
+                            || !previous.sourceRecipeIds.equals(
+                                    item.sourceRecipeIds
+                            )
+                            || ShoppingItemEntity.PENDING_DELETE.equals(
+                                    previous.syncState
+                            );
+
+            String nextState;
+            long updatedAt;
+
+            if (ShoppingItemEntity.PENDING_CREATE.equals(
+                    previous.syncState
+            )) {
+                nextState = ShoppingItemEntity.PENDING_CREATE;
+                updatedAt = item.updatedAt;
+            } else if (changed) {
+                nextState = ShoppingItemEntity.PENDING_UPDATE;
+                updatedAt = item.updatedAt;
+            } else {
+                nextState = previous.syncState;
+                updatedAt = previous.updatedAt;
             }
 
             merged.add(new ShoppingItemEntity(
@@ -144,11 +208,26 @@ public interface ShoppingItemDao {
                     false,
                     item.sourceRecipeIds,
                     previous.createdAt,
-                    item.updatedAt,
-                    item.syncState
+                    updatedAt,
+                    nextState
             ));
         }
 
         upsertAll(merged);
+
+        long now = System.currentTimeMillis();
+        for (ShoppingItemEntity previous : existing) {
+            if (nextIds.contains(previous.id)) {
+                continue;
+            }
+
+            if (ShoppingItemEntity.PENDING_CREATE.equals(
+                    previous.syncState
+            )) {
+                hardDelete(previous.id);
+            } else {
+                markDeleted(previous.id, now);
+            }
+        }
     }
 }
