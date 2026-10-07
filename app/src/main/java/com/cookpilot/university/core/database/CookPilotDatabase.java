@@ -21,6 +21,8 @@ import com.cookpilot.university.features.recipes.data.local.RecipeIngredientDao;
 import com.cookpilot.university.features.recipes.data.local.RecipeIngredientEntity;
 import com.cookpilot.university.features.recipes.data.local.RecipeStepDao;
 import com.cookpilot.university.features.recipes.data.local.RecipeStepEntity;
+import com.cookpilot.university.features.recipes.data.local.SavedRecipeDao;
+import com.cookpilot.university.features.recipes.data.local.SavedRecipeEntity;
 
 @Database(
         entities = {
@@ -29,9 +31,10 @@ import com.cookpilot.university.features.recipes.data.local.RecipeStepEntity;
                 IngredientEntity.class,
                 RecipeIngredientEntity.class,
                 RecipeStepEntity.class,
-                ShoppingItemEntity.class
+                ShoppingItemEntity.class,
+                SavedRecipeEntity.class
         },
-        version = 6,
+        version = 7,
         exportSchema = false
 )
 public abstract class CookPilotDatabase extends RoomDatabase {
@@ -192,12 +195,31 @@ public abstract class CookPilotDatabase extends RoomDatabase {
         }
     };
 
+    private static final Migration MIGRATION_6_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS saved_recipes ("
+                            + "user_id TEXT NOT NULL, "
+                            + "recipe_id TEXT NOT NULL, "
+                            + "saved_at INTEGER NOT NULL, "
+                            + "sync_state TEXT NOT NULL, "
+                            + "PRIMARY KEY(user_id, recipe_id))"
+            );
+            database.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_saved_recipes_user_id "
+                            + "ON saved_recipes(user_id)"
+            );
+        }
+    };
+
     public abstract PlannedRecipeDao plannedRecipeDao();
     public abstract RecipeDao recipeDao();
     public abstract IngredientDao ingredientDao();
     public abstract RecipeIngredientDao recipeIngredientDao();
     public abstract RecipeStepDao recipeStepDao();
     public abstract ShoppingItemDao shoppingItemDao();
+    public abstract SavedRecipeDao savedRecipeDao();
 
     public static CookPilotDatabase create(Context context) {
         return Room.databaseBuilder(
@@ -210,7 +232,8 @@ public abstract class CookPilotDatabase extends RoomDatabase {
                         MIGRATION_2_3,
                         MIGRATION_3_4,
                         MIGRATION_4_5,
-                        MIGRATION_5_6
+                        MIGRATION_5_6,
+                        MIGRATION_6_7
                 )
                 .build();
     }

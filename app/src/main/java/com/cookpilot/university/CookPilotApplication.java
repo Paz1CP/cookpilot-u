@@ -18,7 +18,9 @@ import com.cookpilot.university.features.cooklist.data.repository.ShoppingReposi
 import com.cookpilot.university.features.recipes.data.local.RecipeLocalDataSource;
 import com.cookpilot.university.features.recipes.data.remote.RecipeApiService;
 import com.cookpilot.university.features.recipes.data.remote.RecipeRemoteDataSource;
+import com.cookpilot.university.features.recipes.data.remote.SavedRecipeFirestoreDataSource;
 import com.cookpilot.university.features.recipes.data.repository.RecipeRepository;
+import com.cookpilot.university.features.recipes.data.repository.SavedRecipeRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -31,6 +33,7 @@ public final class CookPilotApplication extends Application {
     private RecipeRepository recipeRepository;
     private CookPlanRepository cookPlanRepository;
     private ShoppingRepository shoppingRepository;
+    private SavedRecipeRepository savedRecipeRepository;
 
     @Override
     public void onCreate() {
@@ -79,6 +82,15 @@ public final class CookPilotApplication extends Application {
                 this
         );
 
+        savedRecipeRepository = new SavedRecipeRepository(
+                database.savedRecipeDao(),
+                firebaseAuth,
+                new SavedRecipeFirestoreDataSource(
+                        FirebaseFirestore.getInstance()
+                ),
+                this
+        );
+
         SyncScheduler.ensurePeriodicSync(this);
         SyncScheduler.requestSync(this);
     }
@@ -97,5 +109,9 @@ public final class CookPilotApplication extends Application {
 
     public ShoppingRepository getShoppingRepository() {
         return shoppingRepository;
+    }
+
+    public SavedRecipeRepository getSavedRecipeRepository() {
+        return savedRecipeRepository;
     }
 }

@@ -40,8 +40,10 @@ public final class UserSyncWorker extends Worker {
         try {
             application.getCookPlanRepository().syncPendingBlocking();
             application.getShoppingRepository().syncPendingBlocking();
+            application.getSavedRecipeRepository().syncPendingBlocking();
             application.getCookPlanRepository().refreshWeekBlocking(weekStart);
             application.getShoppingRepository().refreshWeekBlocking(weekStart);
+            application.getSavedRecipeRepository().refreshBlocking();
             return Result.success();
         } catch (Exception exception) {
             return Result.retry();
