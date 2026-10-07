@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.cookpilot.university.core.database.CookPilotDatabase;
 import com.cookpilot.university.core.network.ApiClient;
+import com.cookpilot.university.core.sync.SyncScheduler;
 import com.cookpilot.university.features.auth.data.remote.FirebaseAuthDataSource;
 import com.cookpilot.university.features.auth.data.remote.FirebaseUserDataSource;
 import com.cookpilot.university.features.auth.data.repository.AuthRepository;
 import com.cookpilot.university.features.cookplan.data.remote.CookPlanApiService;
 import com.cookpilot.university.features.cookplan.data.remote.CookPlanRemoteDataSource;
 import com.cookpilot.university.features.cookplan.data.repository.CookPlanRepository;
+import com.cookpilot.university.features.cooklist.data.remote.ShoppingFirestoreDataSource;
 import com.cookpilot.university.features.cooklist.data.repository.ShoppingRepository;
 import com.cookpilot.university.features.recipes.data.local.RecipeLocalDataSource;
 import com.cookpilot.university.features.recipes.data.remote.RecipeApiService;
@@ -64,13 +66,21 @@ public final class CookPilotApplication extends Application {
                         firebaseAuth,
                         cookPlanApiService
                 ),
-                firebaseAuth
+                firebaseAuth,
+                this
         );
 
         shoppingRepository = new ShoppingRepository(
                 database.shoppingItemDao(),
-                firebaseAuth
+                firebaseAuth,
+                new ShoppingFirestoreDataSource(
+                        FirebaseFirestore.getInstance()
+                ),
+                this
         );
+
+        SyncScheduler.ensurePeriodicSync(this);
+        SyncScheduler.requestSync(this);
     }
 
     public AuthRepository getAuthRepository() {
