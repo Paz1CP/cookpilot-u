@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cookpilot.university.CookPilotApplication;
 import com.cookpilot.university.R;
+import com.cookpilot.university.core.sync.SyncScheduler;
 import com.cookpilot.university.databinding.FragmentRecipesBinding;
 import com.cookpilot.university.features.recipes.data.repository.SavedRecipeRepository;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
@@ -82,6 +83,7 @@ public final class RecipesFragment extends Fragment {
         configureFilters();
         configureGrid();
         observeState();
+        SyncScheduler.requestSync(requireContext());
 
         binding.retryButton.setOnClickListener(
                 ignored -> viewModel.refresh()
