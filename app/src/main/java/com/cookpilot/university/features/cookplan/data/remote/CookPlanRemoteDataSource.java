@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.android.gms.tasks.Tasks;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -119,6 +122,98 @@ public final class CookPlanRemoteDataSource {
                         callback.onError(asException(throwable));
                     }
                 }), callback::onError);
+    }
+
+    @NonNull
+    public List<PlanEntryDto> getRangeBlocking(
+            @NonNull String from,
+            @NonNull String to
+    ) throws Exception {
+        Response<List<PlanEntryDto>> response = apiService
+                .getPlanEntries(
+                        "Bearer " + tokenBlocking(),
+                        from,
+                        to
+                )
+                .execute();
+
+        if (!response.isSuccessful() || response.body() == null) {
+            throw httpError(response.code());
+        }
+        return response.body();
+    }
+
+    @NonNull
+    public PlanEntryDto createBlocking(
+            @NonNull PlanEntryDto entry
+    ) throws Exception {
+        Response<PlanEntryDto> response = apiService
+                .createPlanEntry(
+                        "Bearer " + tokenBlocking(),
+                        entry
+                )
+                .execute();
+
+        if (!response.isSuccessful() || response.body() == null) {
+            throw httpError(response.code());
+        }
+        return response.body();
+    }
+
+    @NonNull
+    public PlanEntryDto updateBlocking(
+            @NonNull PlanEntryDto entry
+    ) throws Exception {
+        Response<PlanEntryDto> response = apiService
+                .updatePlanEntry(
+                        "Bearer " + tokenBlocking(),
+                        entry.getId(),
+                        entry
+                )
+                .execute();
+
+        if (!response.isSuccessful() || response.body() == null) {
+            throw httpError(response.code());
+        }
+        return response.body();
+    }
+
+    public void deleteBlocking(
+            @NonNull String entryId
+    ) throws Exception {
+        Response<Void> response = apiService
+                .deletePlanEntry(
+                        "Bearer " + tokenBlocking(),
+                        entryId
+                )
+                .execute();
+
+        if (!response.isSuccessful()) {
+            throw httpError(response.code());
+        }
+    }
+
+    @NonNull
+    private String tokenBlocking() throws Exception {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user == null) {
+            throw new IllegalStateException(
+                    "No existe una sesión activa."
+            );
+        }
+
+        GetTokenResult result = Tasks.await(
+                user.getIdToken(false),
+                20,
+                TimeUnit.SECONDS
+        );
+        String token = result.getToken();
+        if (token == null || token.isEmpty()) {
+            throw new IllegalStateException(
+                    "No se pudo obtener el token de sesión."
+            );
+        }
+        return token;
     }
 
     @NonNull
