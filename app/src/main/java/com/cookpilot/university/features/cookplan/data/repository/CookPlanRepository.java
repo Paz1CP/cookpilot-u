@@ -1,10 +1,13 @@
 package com.cookpilot.university.features.cookplan.data.repository;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.cookpilot.university.core.sync.SyncScheduler;
 import com.cookpilot.university.features.cookplan.data.local.PlannedRecipeDao;
 import com.cookpilot.university.features.cookplan.data.local.PlannedRecipeEntity;
 import com.cookpilot.university.features.cookplan.data.remote.CookPlanRemoteDataSource;
@@ -35,6 +38,7 @@ public final class CookPlanRepository {
     private final RecipeRepository recipeRepository;
     private final CookPlanRemoteDataSource remoteDataSource;
     private final FirebaseAuth firebaseAuth;
+    private final Context appContext;
     private final ExecutorService executor =
             Executors.newSingleThreadExecutor();
 
@@ -42,12 +46,14 @@ public final class CookPlanRepository {
             @NonNull PlannedRecipeDao dao,
             @NonNull RecipeRepository recipeRepository,
             @NonNull CookPlanRemoteDataSource remoteDataSource,
-            @NonNull FirebaseAuth firebaseAuth
+            @NonNull FirebaseAuth firebaseAuth,
+            @NonNull Context context
     ) {
         this.dao = dao;
         this.recipeRepository = recipeRepository;
         this.remoteDataSource = remoteDataSource;
         this.firebaseAuth = firebaseAuth;
+        appContext = context.getApplicationContext();
     }
 
     public LiveData<List<PlannedRecipe>> observeDay(@NonNull LocalDate date) {
@@ -109,6 +115,7 @@ public final class CookPlanRepository {
             }
 
             syncPending();
+            SyncScheduler.requestSync(appContext);
         });
     }
 
@@ -124,6 +131,7 @@ public final class CookPlanRepository {
                     System.currentTimeMillis()
             );
             syncPending();
+            SyncScheduler.requestSync(appContext);
         });
     }
 
@@ -139,6 +147,7 @@ public final class CookPlanRepository {
             } else {
                 dao.markDeleted(entity.id, System.currentTimeMillis());
                 syncPending();
+            SyncScheduler.requestSync(appContext);
             }
         });
     }
@@ -154,6 +163,7 @@ public final class CookPlanRepository {
                     System.currentTimeMillis()
             );
             syncPending();
+            SyncScheduler.requestSync(appContext);
         });
     }
 
@@ -221,6 +231,71 @@ public final class CookPlanRepository {
         });
     }
 
+    public void syncPendingBlocking() throws Exception {
+        String userId = currentUserId();
+        if (userId == null) {
+            return;
+        }
+
+        for (PlannedRecipeEntity entity : dao.getPending(userId)) {
+            if (PlannedRecipeEntity.PENDING_DELETE.equals(
+                    entity.syncState
+            )) {
+                remoteDataSource.deleteBlocking(entity.id);
+                dao.hardDelete(entity.id);
+                continue;
+            }
+
+            PlanEntryDto dto = toRemote(entity);
+            if (PlannedRecipeEntity.PENDING_CREATE.equals(
+                    entity.syncState
+            )) {
+                remoteDataSource.createBlocking(dto);
+            } else {
+                remoteDataSource.updateBlocking(dto);
+            }
+
+            dao.markSyncedIfVersion(
+                    entity.id,
+                    entity.updatedAt,
+                    System.currentTimeMillis()
+            );
+        }
+    }
+
+    public void refreshWeekBlocking(
+            @NonNull LocalDate weekStart
+    ) throws Exception {
+        String userId = currentUserId();
+        if (userId == null) {
+            return;
+        }
+
+        LocalDate weekEnd = weekStart.plusDays(6);
+        Set<String> pendingIds = new HashSet<>();
+        for (PlannedRecipeEntity pending : dao.getPending(userId)) {
+            pendingIds.add(pending.id);
+        }
+
+        List<PlannedRecipeEntity> remoteEntries =
+                new ArrayList<>();
+        for (PlanEntryDto entry : remoteDataSource.getRangeBlocking(
+                weekStart.toString(),
+                weekEnd.toString()
+        )) {
+            if (!pendingIds.contains(entry.getId())) {
+                remoteEntries.add(fromRemote(entry, userId));
+            }
+        }
+
+        dao.replaceSyncedRange(
+                userId,
+                weekStart.toString(),
+                weekEnd.toString(),
+                remoteEntries
+        );
+    }
+
     private void syncEntity(@NonNull PlannedRecipeEntity entity) {
         if (PlannedRecipeEntity.PENDING_DELETE.equals(entity.syncState)) {
             remoteDataSource.delete(
@@ -252,6 +327,7 @@ public final class CookPlanRepository {
                             );
                             if (updated == 0) {
                                 syncPending();
+            SyncScheduler.requestSync(appContext);
                             }
                         });
                     }
