@@ -42,6 +42,20 @@
                     android:padding="@dimen/cook_spacing_16"
                     android:tint="@color/cook_light" />
 
+                <ImageView
+                    android:id="@+id/saveButton"
+                    android:layout_width="@dimen/cook_touch_56"
+                    android:layout_height="@dimen/cook_touch_56"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="@dimen/cook_spacing_24"
+                    android:layout_marginEnd="@dimen/cook_padding_screen_x"
+                    android:background="@drawable/bg_servings_control"
+                    android:backgroundTint="#CC151212"
+                    android:clickable="true"
+                    android:contentDescription="@string/recipes_save_recipe"
+                    android:focusable="true"
+                    android:padding="@dimen/cook_spacing_16" />
+
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="112dp"

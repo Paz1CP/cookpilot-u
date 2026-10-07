@@ -33,6 +33,7 @@ import com.cookpilot.university.features.recipes.domain.model.Ingredient;
 import com.cookpilot.university.features.recipes.domain.model.NutritionInfo;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
 import com.cookpilot.university.features.recipes.domain.model.RecipeDetail;
+import com.cookpilot.university.features.recipes.data.repository.SavedRecipeRepository;
 import com.cookpilot.university.features.recipes.domain.model.RecipeStep;
 import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipeDetailViewModel;
 import com.cookpilot.university.features.recipes.domain.usecase.ScaleRecipeServings;
@@ -41,9 +42,11 @@ import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipeDe
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public final class RecipeDetailActivity extends AppCompatActivity {
 
@@ -54,10 +57,12 @@ public final class RecipeDetailActivity extends AppCompatActivity {
 
     private ActivityRecipeDetailBinding binding;
     private RecipeDetailViewModel viewModel;
+    private SavedRecipeRepository savedRecipeRepository;
 
     private List<RecipeDetail> currentDetails = Collections.emptyList();
     private Map<String, Integer> currentServings =
             Collections.emptyMap();
+    private Set<String> savedRecipeIds = Collections.emptySet();
     @Nullable
     private String selectedRecipeId;
     private boolean menuMode;
@@ -135,6 +140,8 @@ public final class RecipeDetailActivity extends AppCompatActivity {
 
         CookPilotApplication application =
                 (CookPilotApplication) getApplication();
+        savedRecipeRepository =
+                application.getSavedRecipeRepository();
 
         viewModel = new ViewModelProvider(
                 this,
@@ -185,6 +192,7 @@ public final class RecipeDetailActivity extends AppCompatActivity {
 
     private void configureUi() {
         binding.backButton.setImageResource(CookIcons.back());
+        binding.saveButton.setImageResource(CookIcons.heart());
         binding.metricMoneyIcon.setImageResource(CookIcons.money());
         binding.metricTimeIcon.setImageResource(CookIcons.timer());
         binding.metricNutritionIcon.setImageResource(
@@ -201,6 +209,11 @@ public final class RecipeDetailActivity extends AppCompatActivity {
         binding.backButton.setOnClickListener(
                 view -> getOnBackPressedDispatcher().onBackPressed()
         );
+        binding.saveButton.setOnClickListener(view -> {
+            if (selectedRecipeId != null) {
+                savedRecipeRepository.toggle(selectedRecipeId);
+            }
+        });
         binding.decreaseServingsButton.setOnClickListener(
                 view -> viewModel.decreaseServings()
         );
@@ -248,6 +261,18 @@ public final class RecipeDetailActivity extends AppCompatActivity {
             selectedRecipeId = recipeId;
             renderAll();
         });
+
+        savedRecipeRepository.observeSavedRecipeIds().observe(
+                this,
+                ids -> {
+                    savedRecipeIds = ids == null
+                            ? Collections.emptySet()
+                            : Collections.unmodifiableSet(
+                                    new HashSet<>(ids)
+                            );
+                    renderSaveState();
+                }
+        );
     }
 
     private void startCooking() {
@@ -282,6 +307,26 @@ public final class RecipeDetailActivity extends AppCompatActivity {
         renderRecipeSelector();
         renderSelectedRecipe(selected);
         renderMenuSummary();
+        renderSaveState();
+    }
+
+    private void renderSaveState() {
+        if (binding == null || selectedRecipeId == null) {
+            return;
+        }
+
+        boolean saved = savedRecipeIds.contains(selectedRecipeId);
+        binding.saveButton.setImageResource(
+                saved
+                        ? CookIcons.heartFilled()
+                        : CookIcons.heart()
+        );
+        binding.saveButton.setColorFilter(
+                ContextCompat.getColor(
+                        this,
+                        R.color.cook_accent
+                )
+        );
     }
 
     private void renderSelectedRecipe(
