@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cook_layer_base">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/cook_layer_raised"
+            app:cardCornerRadius="@dimen/cook_radius_3xxlarge"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/cook_padding_screen_x"
+                android:paddingTop="@dimen/cook_spacing_20"
+                android:paddingEnd="@dimen/cook_padding_screen_x"
+                android:paddingBottom="@dimen/cook_spacing_20">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/cook_touch_64"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/exitButton"
+                        android:layout_width="@dimen/cook_touch_64"
+                        android:layout_height="@dimen/cook_touch_64"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/cook_layer_floating"
+                        app:cardCornerRadius="@dimen/cook_radius_full"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/exitIcon"
+                            android:layout_width="@dimen/cook_icon_32"
+                            android:layout_height="@dimen/cook_icon_32"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/cooking_exit"
+                            app:tint="@color/cook_gray" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/cook_touch_64"
+                        android:layout_marginStart="@dimen/cook_spacing_16"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/cook_layer_floating"
+                        app:cardCornerRadius="@dimen/cook_radius_xlarge"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="@dimen/cook_spacing_16">
+
+                            <TextView
+                                android:id="@+id/currentRecipeTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textAppearance="@style/TextAppearance.CookPilot.TitleM"
+                                android:textColor="@color/cook_text_primary" />
+
+                            <TextView
+                                android:id="@+id/currentStepMeta"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/cook_spacing_4"
+                                android:textAppearance="@style/TextAppearance.CookPilot.LabelSmall"
+                                android:textColor="@color/cook_light_strong" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="72dp"
+                        android:layout_height="@dimen/cook_touch_64"
+                        android:layout_marginStart="@dimen/cook_spacing_16"
+                        app:cardBackgroundColor="@color/cook_layer_floating"
+                        app:cardCornerRadius="@dimen/cook_radius_xlarge"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/headerTimerIcon"
+                                android:layout_width="@dimen/cook_icon_24"
+                                android:layout_height="@dimen/cook_icon_24"
+                                android:contentDescription="@null"
+                                app:tint="@color/cook_blue" />
+
+                            <TextView
+                                android:id="@+id/headerMinutes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/cook_spacing_4"
+                                android:textAppearance="@style/TextAppearance.CookPilot.Label"
+                                android:textColor="@color/cook_text_primary" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:id="@+id/stepRailScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="88dp"
+                    android:layout_marginTop="@dimen/cook_spacing_20"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/stepRail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:paddingBottom="188dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/cook_padding_screen_x"
+                android:paddingTop="@dimen/cook_spacing_40">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        app:cardCornerRadius="@dimen/cook_radius_full"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/recipeThumb"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/instructionText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/cook_spacing_24"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/outfit_regular"
+                        android:lineSpacingExtra="@dimen/cook_spacing_8"
+                        android:textColor="@color/cook_text_primary"
+                        android:textSize="@dimen/cook_text_title_xl" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/cook_touch_56"
+                    android:layout_marginTop="@dimen/cook_spacing_48"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/previousStepButton"
+                        style="@style/Widget.CookPilot.Button.Secondary"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/cook_touch_56"
+                        android:layout_weight="1"
+                        android:text="@string/cooking_previous"
+                        app:iconGravity="textStart"
+                        app:iconPadding="@dimen/cook_spacing_8" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/nextStepButton"
+                        style="@style/Widget.CookPilot.Button.Primary"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/cook_touch_56"
+                        android:layout_marginStart="@dimen/cook_spacing_12"
+                        android:layout_weight="1"
+                        android:text="@string/cooking_next"
+                        app:iconGravity="textEnd"
+                        app:iconPadding="@dimen/cook_spacing_8" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/timerOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="@dimen/cook_spacing_16"
+        android:layout_marginBottom="@dimen/cook_spacing_16"
+        app:cardBackgroundColor="@color/cook_dark_glass_fill"
+        app:cardCornerRadius="@dimen/cook_radius_3xxlarge"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/cook_dark_glass_rim"
+        app:strokeWidth="@dimen/cook_border_1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/cook_spacing_12">
+
+            <ImageView
+                android:id="@+id/mascotImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:contentDescription="@string/nav_cookpilot"
+                android:scaleType="fitCenter" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/cook_spacing_12"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/timerAction"
+                        style="@style/Widget.CookPilot.Button.Secondary"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/cooking_timer"
+                        android:text=""
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/cook_blue" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/ingredientsAction"
+                        style="@style/Widget.CookPilot.Button.Secondary"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/cook_spacing_8"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/cooking_ingredients"
+                        android:text=""
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/cook_accent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/cook_spacing_8"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/cleanAction"
+                        style="@style/Widget.CookPilot.Button.Secondary"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/cooking_clean"
+                        android:text=""
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/cook_cyan" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/finishAction"
+                        style="@style/Widget.CookPilot.Button.Secondary"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/cook_spacing_8"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/cooking_finish"
+                        android:text=""
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconTint="@color/cook_primary" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>
