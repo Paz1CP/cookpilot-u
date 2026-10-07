@@ -305,34 +305,24 @@ public final class CookModeActivity extends AppCompatActivity {
 
             boolean completed = index < currentStepIndex;
             boolean current = index == currentStepIndex;
-            boolean last = index == steps.size() - 1;
 
             int backgroundColor;
             if (current) {
                 backgroundColor = R.color.cook_primary;
-                cell.setTextColor(
-                        ContextCompat.getColor(this, R.color.cook_dark)
-                );
             } else if (completed) {
                 backgroundColor = R.color.cook_secondary;
-                cell.setTextColor(
-                        ContextCompat.getColor(this, R.color.cook_dark)
-                );
-            } else if (last) {
-                backgroundColor = R.color.cook_accent;
-                cell.setTextColor(
-                        ContextCompat.getColor(this, R.color.cook_dark)
-                );
             } else {
                 backgroundColor = R.color.cook_layer_floating;
-                cell.setTextColor(
-                        ContextCompat.getColor(
-                                this,
-                                R.color.cook_text_primary
-                        )
-                );
             }
 
+            cell.setTextColor(
+                    ContextCompat.getColor(
+                            this,
+                            current || completed
+                                    ? R.color.cook_dark
+                                    : R.color.cook_text_primary
+                    )
+            );
             cell.setBackground(
                     roundedBackground(
                             ContextCompat.getColor(
@@ -342,18 +332,7 @@ public final class CookModeActivity extends AppCompatActivity {
                             dp(36)
                     )
             );
-
-            if (last) {
-                cell.setCompoundDrawablesWithIntrinsicBounds(
-                        0,
-                        CookIcons.flag(),
-                        0,
-                        0
-                );
-                cell.setText("");
-            } else {
-                cell.setText(String.valueOf(index + 1));
-            }
+            cell.setText(String.valueOf(index + 1));
 
             int target = index;
             cell.setOnClickListener(
@@ -368,6 +347,34 @@ public final class CookModeActivity extends AppCompatActivity {
             params.setMarginEnd(dp(12));
             binding.stepRail.addView(cell, params);
         }
+
+        TextView finishCell = new TextView(this);
+        finishCell.setGravity(Gravity.CENTER);
+        finishCell.setBackground(
+                roundedBackground(
+                        ContextCompat.getColor(
+                                this,
+                                R.color.cook_accent
+                        ),
+                        dp(36)
+                )
+        );
+        finishCell.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                CookIcons.flag(),
+                0,
+                0
+        );
+        finishCell.setOnClickListener(
+                view -> confirmFinish()
+        );
+
+        LinearLayout.LayoutParams finishParams =
+                new LinearLayout.LayoutParams(
+                        dp(72),
+                        dp(72)
+                );
+        binding.stepRail.addView(finishCell, finishParams);
 
         binding.stepRailScroll.post(() -> {
             int x = Math.max(
