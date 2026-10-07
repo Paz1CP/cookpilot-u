@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +28,7 @@ import com.cookpilot.university.core.utils.TextUtil;
 import com.cookpilot.university.databinding.ActivityRecipeDetailBinding;
 import com.cookpilot.university.features.cookplan.domain.model.MealMoment;
 import com.cookpilot.university.features.cookplan.domain.model.PlannedRecipe;
+import com.cookpilot.university.features.cookmode.presentation.activity.CookModeActivity;
 import com.cookpilot.university.features.recipes.domain.model.Ingredient;
 import com.cookpilot.university.features.recipes.domain.model.NutritionInfo;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
@@ -224,12 +224,8 @@ public final class RecipeDetailActivity extends AppCompatActivity {
                         ? R.string.recipe_detail_cook_menu
                         : R.string.recipe_detail_cook_now
         );
-        binding.cookButton.setOnClickListener(view ->
-                Toast.makeText(
-                        this,
-                        R.string.recipe_detail_cookmode_next,
-                        Toast.LENGTH_SHORT
-                ).show()
+        binding.cookButton.setOnClickListener(
+                view -> startCooking()
         );
     }
 
@@ -252,6 +248,29 @@ public final class RecipeDetailActivity extends AppCompatActivity {
             selectedRecipeId = recipeId;
             renderAll();
         });
+    }
+
+    private void startCooking() {
+        if (currentDetails.isEmpty()) {
+            return;
+        }
+
+        List<String> recipeIds = new ArrayList<>();
+        List<Integer> servings = new ArrayList<>();
+
+        for (RecipeDetail detail : currentDetails) {
+            Recipe recipe = detail.getRecipe();
+            recipeIds.add(recipe.getId());
+            servings.add(servingsFor(recipe));
+        }
+
+        startActivity(
+                CookModeActivity.createIntent(
+                        this,
+                        recipeIds,
+                        servings
+                )
+        );
     }
 
     private void renderAll() {
