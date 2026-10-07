@@ -119,4 +119,32 @@ public final class CookIcons {
     public static int steps() {
         return LinearIcons.INSTANCE.getNote2();
     }
+
+    public static int previous() {
+        return LinearIcons.INSTANCE.getArrowLeft2();
+    }
+
+    public static int next() {
+        return LinearIcons.INSTANCE.getArrowRight2();
+    }
+
+    public static int flag() {
+        return BoldIcons.INSTANCE.getFlag();
+    }
+
+    public static int play() {
+        return LinearIcons.INSTANCE.getPlay();
+    }
+
+    public static int timerPause() {
+        return LinearIcons.INSTANCE.getTimerPause();
+    }
+
+    public static int cleanScreen() {
+        return LinearIcons.INSTANCE.getMaximize4();
+    }
+
+    public static int finish() {
+        return LinearIcons.INSTANCE.getTickSquare();
+    }
 }
