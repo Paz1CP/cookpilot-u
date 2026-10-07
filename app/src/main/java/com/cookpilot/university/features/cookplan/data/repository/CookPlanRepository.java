@@ -115,7 +115,6 @@ public final class CookPlanRepository {
             }
 
             syncPending();
-            SyncScheduler.requestSync(appContext);
         });
     }
 
@@ -147,7 +146,6 @@ public final class CookPlanRepository {
             } else {
                 dao.markDeleted(entity.id, System.currentTimeMillis());
                 syncPending();
-                SyncScheduler.requestSync(appContext);
             }
         });
     }
@@ -218,17 +216,9 @@ public final class CookPlanRepository {
     }
 
     public void syncPending() {
-        String userId = currentUserId();
-        if (userId == null) {
-            return;
+        if (currentUserId() != null) {
+            SyncScheduler.requestSync(appContext);
         }
-
-        executor.execute(() -> {
-            List<PlannedRecipeEntity> pending = dao.getPending(userId);
-            for (PlannedRecipeEntity entity : pending) {
-                syncEntity(entity);
-            }
-        });
     }
 
     public void syncPendingBlocking() throws Exception {
@@ -320,54 +310,6 @@ public final class CookPlanRepository {
             }
         }
         return null;
-    }
-
-    private void syncEntity(@NonNull PlannedRecipeEntity entity) {
-        if (PlannedRecipeEntity.PENDING_DELETE.equals(entity.syncState)) {
-            remoteDataSource.delete(
-                    entity.id,
-                    new CookPlanRemoteDataSource.ActionCallback() {
-                        @Override
-                        public void onSuccess() {
-                            executor.execute(() -> dao.hardDelete(entity.id));
-                        }
-
-                        @Override
-                        public void onError(@NonNull Exception exception) {
-                        }
-                    }
-            );
-            return;
-        }
-
-        PlanEntryDto dto = toRemote(entity);
-        CookPlanRemoteDataSource.EntryCallback callback =
-                new CookPlanRemoteDataSource.EntryCallback() {
-                    @Override
-                    public void onSuccess(@NonNull PlanEntryDto entry) {
-                        executor.execute(() -> {
-                            int updated = dao.markSyncedIfVersion(
-                                    entity.id,
-                                    entity.updatedAt,
-                                    System.currentTimeMillis()
-                            );
-                            if (updated == 0) {
-                                syncPending();
-                                SyncScheduler.requestSync(appContext);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(@NonNull Exception exception) {
-                    }
-                };
-
-        if (PlannedRecipeEntity.PENDING_CREATE.equals(entity.syncState)) {
-            remoteDataSource.create(dto, callback);
-        } else {
-            remoteDataSource.update(dto, callback);
-        }
     }
 
     @NonNull
