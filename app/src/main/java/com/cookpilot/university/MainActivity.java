@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.cookpilot.university.core.design.components.navigation.CookBottomNavigationView;
+import com.cookpilot.university.core.sync.SyncScheduler;
 import com.cookpilot.university.databinding.ActivityMainBinding;
 import com.cookpilot.university.features.auth.data.repository.AuthRepository;
 import com.cookpilot.university.features.auth.presentation.activity.LoginActivity;
@@ -43,6 +44,8 @@ public final class MainActivity extends AppCompatActivity {
             openLogin();
             return;
         }
+
+        SyncScheduler.requestSync(this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
