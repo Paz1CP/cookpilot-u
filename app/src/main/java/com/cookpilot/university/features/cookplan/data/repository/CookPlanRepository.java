@@ -147,7 +147,7 @@ public final class CookPlanRepository {
             } else {
                 dao.markDeleted(entity.id, System.currentTimeMillis());
                 syncPending();
-            SyncScheduler.requestSync(appContext);
+                SyncScheduler.requestSync(appContext);
             }
         });
     }
@@ -238,6 +238,17 @@ public final class CookPlanRepository {
         }
 
         for (PlannedRecipeEntity entity : dao.getPending(userId)) {
+            PlanEntryDto remoteEntry = findRemoteEntry(entity);
+
+            if (remoteEntry != null
+                    && parseTime(
+                            remoteEntry.getUpdatedAt(),
+                            0
+                    ) > entity.updatedAt) {
+                dao.upsert(fromRemote(remoteEntry, userId));
+                continue;
+            }
+
             if (PlannedRecipeEntity.PENDING_DELETE.equals(
                     entity.syncState
             )) {
@@ -296,6 +307,21 @@ public final class CookPlanRepository {
         );
     }
 
+    private PlanEntryDto findRemoteEntry(
+            @NonNull PlannedRecipeEntity entity
+    ) throws Exception {
+        for (PlanEntryDto remote
+                : remoteDataSource.getRangeBlocking(
+                        entity.planDate,
+                        entity.planDate
+                )) {
+            if (entity.id.equals(remote.getId())) {
+                return remote;
+            }
+        }
+        return null;
+    }
+
     private void syncEntity(@NonNull PlannedRecipeEntity entity) {
         if (PlannedRecipeEntity.PENDING_DELETE.equals(entity.syncState)) {
             remoteDataSource.delete(
@@ -327,7 +353,7 @@ public final class CookPlanRepository {
                             );
                             if (updated == 0) {
                                 syncPending();
-            SyncScheduler.requestSync(appContext);
+                                SyncScheduler.requestSync(appContext);
                             }
                         });
                     }
