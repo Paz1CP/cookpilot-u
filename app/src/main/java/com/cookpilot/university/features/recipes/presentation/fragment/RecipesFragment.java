@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cookpilot.university.CookPilotApplication;
 import com.cookpilot.university.R;
 import com.cookpilot.university.databinding.FragmentRecipesBinding;
+import com.cookpilot.university.features.recipes.data.repository.SavedRecipeRepository;
 import com.cookpilot.university.features.recipes.domain.model.Recipe;
 import com.cookpilot.university.features.recipes.presentation.activity.RecipeDetailActivity;
 import com.cookpilot.university.features.recipes.presentation.adapter.RecipeAdapter;
@@ -23,16 +24,23 @@ import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipesU
 import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipesViewModel;
 import com.cookpilot.university.features.recipes.presentation.viewmodel.RecipesViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public final class RecipesFragment extends Fragment {
 
     private FragmentRecipesBinding binding;
     private RecipesViewModel viewModel;
+    private SavedRecipeRepository savedRecipeRepository;
     private RecipeAdapter adapter;
+
     private List<Recipe> currentRecipes = Collections.emptyList();
+    private Set<String> savedRecipeIds = Collections.emptySet();
     private RecipesUiState currentState = RecipesUiState.loading();
+    private boolean showingSaved;
 
     @Nullable
     @Override
@@ -59,6 +67,9 @@ public final class RecipesFragment extends Fragment {
         CookPilotApplication application =
                 (CookPilotApplication) requireActivity().getApplication();
 
+        savedRecipeRepository =
+                application.getSavedRecipeRepository();
+
         viewModel = new ViewModelProvider(
                 this,
                 new RecipesViewModelFactory(
@@ -67,6 +78,7 @@ public final class RecipesFragment extends Fragment {
         ).get(RecipesViewModel.class);
 
         configureSearch();
+        configureGallerySelector();
         configureFilters();
         configureGrid();
         observeState();
@@ -85,11 +97,23 @@ public final class RecipesFragment extends Fragment {
         );
         binding.searchBar.setOnFilterClickListener(
                 view -> {
-                    boolean showing = binding.filterPanel.getVisibility()
-                            == View.VISIBLE;
+                    boolean showing =
+                            binding.filterPanel.getVisibility()
+                                    == View.VISIBLE;
                     binding.filterPanel.setVisibility(
                             showing ? View.GONE : View.VISIBLE
                     );
+                }
+        );
+    }
+
+    private void configureGallerySelector() {
+        binding.gallerySelector.configure(
+                getString(R.string.recipes_segment_gallery),
+                getString(R.string.recipes_segment_saved),
+                index -> {
+                    showingSaved = index == 1;
+                    render();
                 }
         );
     }
@@ -149,15 +173,19 @@ public final class RecipesFragment extends Fragment {
     }
 
     private void configureGrid() {
-        adapter = new RecipeAdapter(recipe ->
-                startActivity(
+        adapter = new RecipeAdapter(
+                recipe -> startActivity(
                         RecipeDetailActivity.createIntent(
                                 requireContext(),
                                 recipe.getId(),
                                 recipe.getBaseServings()
                         )
+                ),
+                recipe -> savedRecipeRepository.toggle(
+                        recipe.getId()
                 )
         );
+
         binding.recipeGrid.setLayoutManager(
                 new GridLayoutManager(requireContext(), 2)
         );
@@ -181,7 +209,6 @@ public final class RecipesFragment extends Fragment {
                     currentRecipes = recipes == null
                             ? Collections.emptyList()
                             : recipes;
-                    adapter.submitRecipes(currentRecipes);
                     render();
                 }
         );
@@ -195,27 +222,47 @@ public final class RecipesFragment extends Fragment {
                     render();
                 }
         );
+
+        savedRecipeRepository.observeSavedRecipeIds().observe(
+                getViewLifecycleOwner(),
+                ids -> {
+                    savedRecipeIds = ids == null
+                            ? Collections.emptySet()
+                            : Collections.unmodifiableSet(
+                                    new HashSet<>(ids)
+                            );
+                    render();
+                }
+        );
     }
 
     private void render() {
-        if (binding == null) {
+        if (binding == null || adapter == null) {
             return;
         }
 
-        boolean hasRecipes = !currentRecipes.isEmpty();
+        List<Recipe> visibleRecipes = visibleRecipes();
+        boolean hasRecipes = !visibleRecipes.isEmpty();
         boolean loadingWithoutCache =
-                currentState.isLoading() && !hasRecipes;
+                currentState.isLoading()
+                        && currentRecipes.isEmpty();
         boolean failedWithoutCache =
-                currentState.getErrorMessage() != null && !hasRecipes;
+                currentState.getErrorMessage() != null
+                        && currentRecipes.isEmpty();
         boolean empty =
                 !currentState.isLoading()
                         && currentState.getErrorMessage() == null
                         && !hasRecipes;
 
+        adapter.submitSavedRecipeIds(savedRecipeIds);
+        adapter.submitRecipes(visibleRecipes);
+
         binding.recipeCount.setText(
                 getString(
-                        R.string.recipes_count,
-                        currentRecipes.size()
+                        showingSaved
+                                ? R.string.recipes_saved_count
+                                : R.string.recipes_count,
+                        visibleRecipes.size()
                 )
         );
         binding.recipeGrid.setVisibility(
@@ -230,8 +277,14 @@ public final class RecipesFragment extends Fragment {
         binding.emptyState.setVisibility(
                 empty ? View.VISIBLE : View.GONE
         );
+        binding.emptyState.setText(
+                showingSaved
+                        ? R.string.recipes_saved_empty
+                        : R.string.recipes_empty_search
+        );
         binding.cachedNotice.setVisibility(
-                currentState.isShowingCachedData() && hasRecipes
+                currentState.isShowingCachedData()
+                        && !currentRecipes.isEmpty()
                         ? View.VISIBLE
                         : View.GONE
         );
@@ -241,6 +294,21 @@ public final class RecipesFragment extends Fragment {
                     currentState.getErrorMessage()
             );
         }
+    }
+
+    @NonNull
+    private List<Recipe> visibleRecipes() {
+        if (!showingSaved) {
+            return currentRecipes;
+        }
+
+        List<Recipe> result = new ArrayList<>();
+        for (Recipe recipe : currentRecipes) {
+            if (savedRecipeIds.contains(recipe.getId())) {
+                result.add(recipe);
+            }
+        }
+        return Collections.unmodifiableList(result);
     }
 
     @Override

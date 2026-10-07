@@ -17,6 +17,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.cookpilot.university.core.design.components.segmented.CookSegmentedSelectorView
+        android:id="@+id/gallerySelector"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/cook_touch_48"
+        android:layout_marginStart="@dimen/cook_padding_screen_x"
+        android:layout_marginTop="@dimen/cook_spacing_16"
+        android:layout_marginEnd="@dimen/cook_padding_screen_x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchBar" />
+
     <LinearLayout
         android:id="@+id/filterPanel"
         android:layout_width="0dp"
@@ -28,7 +39,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchBar">
+        app:layout_constraintTop_toBottomOf="@id/gallerySelector">
 
         <TextView
             android:layout_width="wrap_content"

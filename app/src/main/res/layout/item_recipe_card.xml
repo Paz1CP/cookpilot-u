@@ -26,6 +26,20 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <ImageView
+        android:id="@+id/saveRecipeButton"
+        android:layout_width="@dimen/cook_touch_40"
+        android:layout_height="@dimen/cook_touch_40"
+        android:layout_marginTop="@dimen/cook_spacing_8"
+        android:layout_marginEnd="@dimen/cook_spacing_8"
+        android:background="@drawable/bg_recipe_card_save_button"
+        android:clickable="true"
+        android:contentDescription="@string/recipes_save_recipe"
+        android:focusable="true"
+        android:padding="@dimen/cook_spacing_8"
+        app:layout_constraintEnd_toEndOf="@id/recipeImageCard"
+        app:layout_constraintTop_toTopOf="@id/recipeImageCard" />
+
     <TextView
         android:id="@+id/recipeTitle"
         android:layout_width="0dp"

@@ -3,10 +3,15 @@ package com.cookpilot.university.features.recipes.data.local;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 
 @Entity(
         tableName = "saved_recipes",
-        primaryKeys = {"user_id", "recipe_id"}
+        primaryKeys = {"user_id", "recipe_id"},
+        indices = @Index(
+                value = {"user_id"},
+                name = "index_saved_recipes_user_id"
+        )
 )
 public final class SavedRecipeEntity {
 

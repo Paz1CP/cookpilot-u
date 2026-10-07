@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/cook_touch_48"
+    android:background="@drawable/bg_cook_segmented_selector"
+    android:orientation="horizontal"
+    android:padding="@dimen/cook_spacing_4">
+
+    <TextView
+        android:id="@+id/firstSegment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textAppearance="@style/TextAppearance.CookPilot.Button" />
+
+    <TextView
+        android:id="@+id/secondSegment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textAppearance="@style/TextAppearance.CookPilot.Button" />
+
+</LinearLayout>

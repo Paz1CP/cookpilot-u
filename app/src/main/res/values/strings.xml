@@ -31,6 +31,11 @@
     <string name="profile_avatar">Perfil</string>
 
     <string name="recipes_search_hint">Buscar recetas...</string>
+    <string name="recipes_segment_gallery">Galería</string>
+    <string name="recipes_segment_saved">Guardadas</string>
+    <string name="recipes_saved_empty">Aún no guardaste recetas.</string>
+    <string name="recipes_saved_count">%1$d guardadas</string>
+    <string name="recipes_save_recipe">Guardar receta</string>
     <string name="recipes_clear_search">Limpiar búsqueda</string>
     <string name="recipes_filters">Filtros</string>
     <string name="recipes_filter_difficulty">Dificultad</string>

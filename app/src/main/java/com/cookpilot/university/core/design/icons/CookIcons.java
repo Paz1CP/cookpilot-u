@@ -112,6 +112,14 @@ public final class CookIcons {
         return LinearIcons.INSTANCE.getTimer1();
     }
 
+    public static int heart() {
+        return LinearIcons.INSTANCE.getHeart();
+    }
+
+    public static int heartFilled() {
+        return BoldIcons.INSTANCE.getHeart();
+    }
+
     public static int nutrition() {
         return LinearIcons.INSTANCE.getHeartTick();
     }
