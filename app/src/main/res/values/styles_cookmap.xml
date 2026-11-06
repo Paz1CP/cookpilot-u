@@ -1,0 +1,19 @@
+<resources>
+    <style name="TextAppearance.CookPilot.MapBody" parent="TextAppearance.CookPilot.Body">
+        <item name="android:textSize">@dimen/cook_text_body_s</item>
+    </style>
+    <style name="Widget.CookPilot.MapButton" parent="Widget.CookPilot.Button.Primary">
+        <item name="android:minHeight">@dimen/cook_touch_48</item>
+        <item name="android:textAppearance">@style/TextAppearance.CookPilot.Label</item>
+        <item name="android:paddingTop">@dimen/cook_spacing_12</item>
+        <item name="android:paddingBottom">@dimen/cook_spacing_12</item>
+        <item name="cornerRadius">@dimen/cook_radius_xlarge</item>
+    </style>
+    <style name="Widget.CookPilot.MapButton.Secondary" parent="Widget.CookPilot.MapButton">
+        <item name="backgroundTint">@color/cook_layer_raised</item>
+        <item name="android:textColor">@color/cook_text_primary</item>
+        <item name="iconTint">@color/cook_text_primary</item>
+        <item name="strokeColor">@color/cook_border_subtle</item>
+        <item name="strokeWidth">@dimen/cook_border_1</item>
+    </style>
+</resources>

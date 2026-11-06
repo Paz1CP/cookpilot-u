@@ -1,6 +1,13 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.services)
+}
+
+val mapsSecrets = Properties().apply {
+    val file = rootProject.file("secrets.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
 }
 
 android {
@@ -16,6 +23,9 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
+        manifestPlaceholders["MAPS_API_KEY"] = mapsSecrets.getProperty("MAPS_API_KEY")
+            ?.trim()?.takeIf { it.isNotEmpty() }
+            ?: error("Define MAPS_API_KEY en secrets.properties antes de compilar.")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,6 +49,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.google.maps)
+    implementation(libs.google.location)
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

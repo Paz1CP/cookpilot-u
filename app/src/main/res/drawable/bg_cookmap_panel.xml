@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/cook_layer_floating" />
+    <corners android:radius="@dimen/cook_radius_2xxlarge" />
+    <stroke android:width="@dimen/cook_border_1" android:color="@color/cook_border_subtle" />
+</shape>

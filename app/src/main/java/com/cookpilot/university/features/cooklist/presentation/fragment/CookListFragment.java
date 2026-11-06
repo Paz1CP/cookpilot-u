@@ -1,6 +1,9 @@
 package com.cookpilot.university.features.cooklist.presentation.fragment;
 
 import android.os.Bundle;
+import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
+import com.cookpilot.university.MainActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -74,6 +77,10 @@ public final class CookListFragment extends Fragment
                 )
         ).get(CookListViewModel.class);
 
+        binding.whereToBuyButton.setOnClickListener(ignored -> openMap());
+        if (getChildFragmentManager().findFragmentById(R.id.cookMapContainer) != null) {
+            showMapContent(true);
+        }
         configureSearch();
         configureList();
         observeState();
@@ -90,6 +97,28 @@ public final class CookListFragment extends Fragment
         binding.clearPurchasedButton.setOnClickListener(
                 ignored -> viewModel.clearPurchased()
         );
+    }
+
+    private void openMap() {
+        binding.searchInput.clearFocus();
+        InputMethodManager keyboard =
+                (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+        showMapContent(true);
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.cookMapContainer, new CookMapFragment()).commitNow();
+    }
+
+    public void closeMap() {
+        Fragment map = getChildFragmentManager().findFragmentById(R.id.cookMapContainer);
+        if (map != null) getChildFragmentManager().beginTransaction().remove(map).commitNow();
+        showMapContent(false);
+    }
+
+    private void showMapContent(boolean visible) {
+        binding.listContent.setVisibility(visible ? View.GONE : View.VISIBLE);
+        binding.cookMapContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
+        ((MainActivity) requireActivity()).setShoppingMapVisible(visible);
     }
 
     private void configureSearch() {

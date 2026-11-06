@@ -1,0 +1,9 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/cook_primary_tint">
+    <item>
+        <shape>
+            <solid android:color="@color/cook_layer_floating" />
+            <corners android:radius="@dimen/cook_radius_xlarge" />
+            <stroke android:width="@dimen/cook_border_1" android:color="@color/cook_border_subtle" />
+        </shape>
+    </item>
+</ripple>

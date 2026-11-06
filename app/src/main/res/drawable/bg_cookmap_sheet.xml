@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/cook_layer_raised" />
+    <corners android:topLeftRadius="@dimen/cook_radius_2xxlarge" android:topRightRadius="@dimen/cook_radius_2xxlarge" />
+</shape>

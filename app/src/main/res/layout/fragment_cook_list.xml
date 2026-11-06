@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/listContent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -104,7 +106,7 @@
         android:overScrollMode="never"
         android:paddingStart="@dimen/cook_padding_screen_x"
         android:paddingEnd="@dimen/cook_padding_screen_x"
-        android:paddingBottom="148dp"
+        android:paddingBottom="232dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -125,6 +127,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/priceRow" />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/whereToBuyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/cook_touch_56"
+        android:layout_marginEnd="@dimen/cook_padding_screen_x"
+        android:layout_marginBottom="@dimen/cook_spacing_12"
+        android:text="@string/cookmap_title"
+        android:textAppearance="@style/TextAppearance.CookPilot.Button"
+        android:textColor="@color/cook_dark"
+        app:backgroundTint="@color/cook_primary"
+        app:icon="@drawable/ic_cook_location"
+        app:iconTint="@color/cook_dark"
+        app:layout_constraintBottom_toTopOf="@id/clearPurchasedButton"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/clearPurchasedButton"
         style="@style/Widget.CookPilot.Button.Secondary"
@@ -138,3 +155,5 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+<androidx.fragment.app.FragmentContainerView android:id="@+id/cookMapContainer" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone" />
+</FrameLayout>

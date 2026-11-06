@@ -1,0 +1,100 @@
+
+<resources>
+    <!-- Navegación y pantalla principal -->
+    <string name="cookmap_title">Dónde comprar</string>
+    <string name="cookmap_subtitle">5 lugares cerca de ti</string>
+
+    <string name="cookmap_user">Tú</string>
+    <string name="cookmap_places">Ver lugares</string>
+    <string name="cookmap_back">Volver a compras</string>
+
+    <!-- Lista de establecimientos -->
+    <string name="cookmap_list_title">Lugares cercanos</string>
+    <string name="cookmap_list_subtitle">Encuentra dónde hacer tus próximas compras.</string>
+ 
+
+    <!-- Detalles del establecimiento -->
+    <string name="cookmap_distance">Distancia</string>
+    <string name="cookmap_ideal">Qué puedes comprar</string>
+    <string name="cookmap_price">Nivel de precios</string>
+    <string name="cookmap_status">Estado</string>
+
+
+    <!-- Ubicación y estados -->
+    <string name="cookmap_loading">Buscando tu ubicación…</string>
+    <string name="cookmap_permission">Activa tu ubicación para encontrar lugares cerca de ti.</string>
+    <string name="cookmap_allow">Activar ubicación</string>
+    <string name="cookmap_example">Explorar mapa</string>
+    <string name="cookmap_example_location">Punto de partida</string>
+    <string name="cookmap_error">No pudimos cargar el mapa.</string>
+    <string name="cookmap_retry">Reintentar</string>
+
+    <!-- Unidades -->
+    <string name="cookmap_meters">%1$d m</string>
+    <string name="cookmap_kilometers">%1$s km</string>
+
+    <!-- Mercado La Cosecha -->
+    <string name="cookmap_place_0_name">Mercado La Cosecha</string>
+    <string name="cookmap_place_0_category">Mercado de abastos</string>
+    <string name="cookmap_place_0_description">Encuentra frutas, verduras, tubérculos y productos frescos para tus comidas de la semana. Recorre sus puestos y reúne los ingredientes de tus recetas en una sola visita. Una excelente opción para abastecer tu cocina con variedad y cuidar tu presupuesto.</string>
+    <string name="cookmap_place_0_price">Económico</string>
+    <string name="cookmap_place_0_status">Abierto</string>
+    <string-array name="cookmap_place_0_chips">
+        <item>Verduras</item>
+        <item>Frutas</item>
+        <item>Tubérculos</item>
+        <item>Hierbas</item>
+    </string-array>
+
+    <!-- Super Ahorro -->
+    <string name="cookmap_place_1_name">Super Ahorro</string>
+    <string name="cookmap_place_1_category">Supermercado</string>
+    <string name="cookmap_place_1_description">Completa tus compras semanales en un solo lugar. Explora una amplia variedad de abarrotes, lácteos, bebidas y productos para el hogar. Perfecto para organizar una compra grande, encontrar tus ingredientes habituales y tener todo lo necesario para los próximos días.</string>
+    <string name="cookmap_place_1_price">Moderado</string>
+    <string name="cookmap_place_1_status">Abierto</string>
+    <string-array name="cookmap_place_1_chips">
+        <item>Abarrotes</item>
+        <item>Lácteos</item>
+        <item>Bebidas</item>
+        <item>Limpieza</item>
+    </string-array>
+
+    <!-- Bodega La Esquina -->
+    <string name="cookmap_place_2_name">Bodega La Esquina</string>
+    <string name="cookmap_place_2_category">Bodega</string>
+    <string name="cookmap_place_2_description">¿Te falta aceite, arroz o algún condimento para terminar tu receta? Aquí puedes encontrar productos esenciales sin hacer una compra grande. Una parada cómoda para resolver los imprevistos de la cocina, reponer lo necesario y continuar con tu día.</string>
+    <string name="cookmap_place_2_price">Conveniente</string>
+    <string name="cookmap_place_2_status">Abierto</string>
+    <string-array name="cookmap_place_2_chips">
+        <item>Arroz</item>
+        <item>Aceite</item>
+        <item>Condimentos</item>
+        <item>Snacks</item>
+    </string-array>
+
+    <!-- Verde Fresco -->
+    <string name="cookmap_place_3_name">Verde Fresco</string>
+    <string name="cookmap_place_3_category">Verdulería</string>
+    <string name="cookmap_place_3_description">Dale frescura a tus preparaciones con una selección de verduras, hortalizas, frutas y hierbas. Encuentra los ingredientes vegetales que necesitas para tus ensaladas, guisos y comidas diarias. Ideal para completar tu lista con productos frescos y variados.</string>
+    <string name="cookmap_place_3_price">Económico</string>
+    <string name="cookmap_place_3_status">Cierra pronto</string>
+    <string-array name="cookmap_place_3_chips">
+        <item>Verduras</item>
+        <item>Hortalizas</item>
+        <item>Frutas</item>
+        <item>Hierbas</item>
+    </string-array>
+
+    <!-- Despensa del Barrio -->
+    <string name="cookmap_place_4_name">Despensa del Barrio</string>
+    <string name="cookmap_place_4_category">Tienda local</string>
+    <string name="cookmap_place_4_description">Mantén tu cocina abastecida con los productos que siempre necesitas tener a mano. Encuentra menestras, harinas, conservas y condimentos para tus preparaciones favoritas. Una opción cercana para reponer tu despensa, completar ingredientes pendientes y simplificar tus compras cotidianas.</string>
+    <string name="cookmap_place_4_price">Conveniente</string>
+    <string name="cookmap_place_4_status">Abierto</string>
+    <string-array name="cookmap_place_4_chips">
+        <item>Menestras</item>
+        <item>Harinas</item>
+        <item>Condimentos</item>
+        <item>Conservas</item>
+    </string-array>
+</resources>

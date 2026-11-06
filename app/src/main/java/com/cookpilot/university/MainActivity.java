@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -161,7 +162,20 @@ public final class MainActivity extends AppCompatActivity {
         view.setLayoutParams(params);
     }
 
+    public void setShoppingMapVisible(boolean visible) {
+        binding.appBar.setVisibility(visible ? View.GONE : View.VISIBLE);
+        ConstraintLayout.LayoutParams params =
+                (ConstraintLayout.LayoutParams) binding.mainContainer.getLayoutParams();
+        params.topToBottom = visible ? -1 : R.id.appBar;
+        params.topToTop = visible ? 0 : -1;
+        params.bottomToBottom = visible ? -1 : 0;
+        params.bottomToTop = visible ? R.id.bottomNavigation : -1;
+        params.topMargin = visible ? 0 : getResources().getDimensionPixelSize(R.dimen.cook_spacing_12);
+        binding.mainContainer.setLayoutParams(params);
+    }
+
     private void renderDestination(CookBottomNavigationView.Item item) {
+        setShoppingMapVisible(false);
         Fragment fragment;
 
         binding.appBar.setVisibility(
