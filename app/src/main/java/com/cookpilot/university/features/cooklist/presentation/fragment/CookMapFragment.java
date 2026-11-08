@@ -52,6 +52,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -75,6 +76,7 @@ public final class CookMapFragment extends Fragment {
     private FragmentCookMapBinding binding;
     private CookMapViewModel state;
     private GoogleMap map;
+    private Snackbar mapError;
     private BottomSheetBehavior<View> sheet;
     private final Map<Integer, Marker> markers = new HashMap<>();
     private CancellationTokenSource locationRequest;
@@ -90,6 +92,7 @@ public final class CookMapFragment extends Fragment {
     private final ActivityResultLauncher<String[]> permissions = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(), result -> {
                 if (binding == null) return;
+                updateUserLocationLayer();
                 if (hasLocationPermission()) locate(); else showLocationFallback();
             });
 
@@ -133,7 +136,6 @@ public final class CookMapFragment extends Fragment {
             state.locate(-12.0464, -77.0428, true);
             renderPlaces();
         });
-        binding.mapRetry.setOnClickListener(v -> initializeMap());
         binding.mapPlaces.setOnClickListener(v -> showListing());
         binding.mapFocusLocation.setOnClickListener(v -> focusUserLocation());
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
@@ -158,20 +160,21 @@ public final class CookMapFragment extends Fragment {
 
     @Override public void onResume() {
         super.onResume();
+        updateUserLocationLayer();
         if (binding != null && state.latitude == null && hasLocationPermission() && !locating) locate();
     }
 
     private void initializeMap() {
+        if (mapError != null) mapError.dismiss();
         mapGeneration++;
         int generation = mapGeneration;
         map = null;
         markers.clear();
         mapLoaded = false;
         mapFailed = false;
-        binding.mapRetry.setVisibility(View.GONE);
         binding.mapActions.setVisibility(View.GONE);
-        binding.mapStatus.setVisibility(View.VISIBLE);
-        binding.mapStatusText.setText(R.string.cookmap_loading);
+        binding.mapNotice.setVisibility(View.GONE);
+        binding.mapLoading.setVisibility(View.VISIBLE);
         int services = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireContext());
         if (services != ConnectionResult.SUCCESS) { showMapError(); return; }
         try {
@@ -186,21 +189,29 @@ public final class CookMapFragment extends Fragment {
                 map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.cookmap_dark));
                 map.getUiSettings().setMapToolbarEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
+                updateUserLocationLayer();
+                map.setOnMyLocationClickListener(location -> {
+                    updatePadding();
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(location.getLatitude(), location.getLongitude()), 16));
+                });
                 map.getUiSettings().setCompassEnabled(false);
                 map.setOnMapClickListener(point -> dismissSheet());
                 map.setOnMarkerClickListener(marker -> {
                     if (marker.getTag() instanceof Integer) selectPlace(findPlace((Integer) marker.getTag()));
-                    else focusUserLocation();
                     return true;
                 });
                 map.setOnMapLoadedCallback(() -> {
                     if (binding == null || generation != mapGeneration) return;
+                    if (mapError != null) mapError.dismiss();
                     boolean recovered = mapFailed;
                     mapLoaded = true;
                     mapFailed = false;
                     binding.getRoot().removeCallbacks(mapTimeout);
-                    if (state.latitude != null) binding.mapStatus.setVisibility(View.GONE);
-                    else if (!locating) showLocationFallback();
+                    if (state.latitude != null) {
+                        binding.mapNotice.setVisibility(View.GONE);
+                        binding.mapLoading.setVisibility(View.GONE);
+                    } else if (!locating) showLocationFallback();
                     if (recovered && state.latitude != null) {
                         if (state.listing) showListing();
                         else if (state.selected >= 0) showDetails(findPlace(state.selected));
@@ -213,6 +224,16 @@ public final class CookMapFragment extends Fragment {
             binding.getRoot().postDelayed(mapTimeout, 25000);
         } catch (RuntimeException error) {
             showMapError();
+        }
+    }
+
+    @android.annotation.SuppressLint("MissingPermission")
+    private void updateUserLocationLayer() {
+        if (map == null) return;
+        try {
+            map.setMyLocationEnabled(hasLocationPermission() && !state.demonstration);
+        } catch (SecurityException ignored) {
+            map.setMyLocationEnabled(false);
         }
     }
 
@@ -238,9 +259,8 @@ public final class CookMapFragment extends Fragment {
         cancelLocation();
         locating = true;
         if (!mapFailed) {
-            binding.mapStatus.setVisibility(View.VISIBLE);
-            binding.mapStatusText.setText(R.string.cookmap_loading);
-            binding.mapPermission.setVisibility(View.GONE);
+            binding.mapNotice.setVisibility(View.GONE);
+            binding.mapLoading.setVisibility(View.VISIBLE);
         }
         locationRequest = new CancellationTokenSource();
         CancellationTokenSource token = locationRequest;
@@ -268,8 +288,9 @@ public final class CookMapFragment extends Fragment {
 
     private void showLocationFallback() {
         if (mapFailed) return;
-        binding.mapStatus.setVisibility(View.VISIBLE);
-        binding.mapStatusText.setText(R.string.cookmap_permission);
+        binding.mapLoading.setVisibility(View.GONE);
+        binding.mapNotice.setVisibility(View.VISIBLE);
+        binding.mapNoticeText.setText(R.string.cookmap_permission);
         binding.mapPermission.setVisibility(View.VISIBLE);
         binding.mapDemo.setVisibility(View.VISIBLE);
     }
@@ -277,13 +298,14 @@ public final class CookMapFragment extends Fragment {
     private void showMapError() {
         if (binding == null) return;
         mapFailed = true;
-        binding.mapStatus.setVisibility(View.VISIBLE);
-        binding.mapStatusText.setText(R.string.cookmap_error);
-        binding.mapPermission.setVisibility(View.GONE);
-        binding.mapDemo.setVisibility(View.GONE);
-        binding.mapRetry.setVisibility(View.VISIBLE);
+        binding.mapLoading.setVisibility(View.GONE);
+        binding.mapNotice.setVisibility(View.GONE);
         binding.mapActions.setVisibility(View.GONE);
         binding.placeSheet.setVisibility(View.INVISIBLE);
+        if (mapError != null) mapError.dismiss();
+        mapError = Snackbar.make(binding.getRoot(), R.string.cookmap_error, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.cookmap_retry, v -> initializeMap());
+        mapError.show();
     }
 
     private LatLng origin() { return new LatLng(state.latitude, state.longitude); }
@@ -291,13 +313,14 @@ public final class CookMapFragment extends Fragment {
 
     private void renderPlaces() {
         if (binding == null || map == null || state.latitude == null) return;
-        if (!mapFailed) binding.mapStatus.setVisibility(View.GONE);
+        if (!mapFailed) {
+            binding.mapNotice.setVisibility(View.GONE);
+            binding.mapLoading.setVisibility(mapLoaded ? View.GONE : View.VISIBLE);
+        }
         binding.mapSubtitle.setText(state.demonstration ? R.string.cookmap_example_location : R.string.cookmap_subtitle);
         map.clear();
         markers.clear();
-        String user = getString(state.demonstration ? R.string.cookmap_example_location : R.string.cookmap_user);
-        map.addMarker(new MarkerOptions().position(origin()).title(user)
-                .icon(userMarkerIcon()).anchor(.5f, .9f).zIndex(3));
+        updateUserLocationLayer();
         LatLngBounds.Builder bounds = new LatLngBounds.Builder().include(origin());
         for (ShoppingPlace place : state.places) {
             Marker marker = map.addMarker(new MarkerOptions().position(point(place)).title(getString(NAMES[place.profile]))
@@ -315,13 +338,6 @@ public final class CookMapFragment extends Fragment {
             if (listing) showListing();
         });
         updatePlacesButton();
-    }
-
-    private BitmapDescriptor userMarkerIcon() {
-        Bitmap image = android.graphics.BitmapFactory.decodeResource(getResources(), R.drawable.cookmap_pin);
-        int width = dp(64);
-        int height = Math.round(width * (float) image.getHeight() / image.getWidth());
-        return BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(image, width, height, true));
     }
 
     private BitmapDescriptor markerIcon(String label, int profile, boolean active) {
@@ -540,12 +556,14 @@ public final class CookMapFragment extends Fragment {
     }
 
     @Override public void onDestroyView() {
+        if (mapError != null) { mapError.dismiss(); mapError = null; }
         cancelLocation();
         mapGeneration++;
         binding.getRoot().removeCallbacks(mapTimeout);
         if (map != null) {
             map.setOnMapClickListener(null);
             map.setOnMarkerClickListener(null);
+            map.setOnMyLocationClickListener(null);
             map.setOnMapLoadedCallback(null);
         }
         map = null;

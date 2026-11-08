@@ -348,8 +348,9 @@ public final class CookModeActivity extends AppCompatActivity {
             binding.stepRail.addView(cell, params);
         }
 
-        TextView finishCell = new TextView(this);
-        finishCell.setGravity(Gravity.CENTER);
+        ImageView finishCell = new ImageView(this);
+        finishCell.setScaleType(ImageView.ScaleType.CENTER);
+        finishCell.setContentDescription(getString(R.string.cooking_finish));
         finishCell.setBackground(
                 roundedBackground(
                         ContextCompat.getColor(
@@ -359,12 +360,7 @@ public final class CookModeActivity extends AppCompatActivity {
                         dp(36)
                 )
         );
-        finishCell.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                CookIcons.flag(),
-                0,
-                0
-        );
+        finishCell.setImageResource(CookIcons.flag());
         finishCell.setOnClickListener(
                 view -> confirmFinish()
         );
