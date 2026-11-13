@@ -11,12 +11,10 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
-
 import com.cookpilot.university.R;
 
 public final class CookTextRevealShimmerView extends AppCompatTextView {

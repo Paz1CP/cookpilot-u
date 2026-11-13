@@ -12,7 +12,13 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import java.util.concurrent.TimeUnit;
-
+/*
+ * Programa la sincronización de datos en segundo plano usando WorkManager.
+ * requestSync(): solicita una sincronización cuando haya Internet.
+ * ensurePeriodicSync(): programa sincronizaciones periódicas cada 15 minutos
+ * (Android determina el momento exacto de ejecución).
+ * Delega el trabajo real a UserSyncWorker.
+ */
 public final class SyncScheduler {
 
     private static final String IMMEDIATE_WORK = "cookpilot_user_sync";

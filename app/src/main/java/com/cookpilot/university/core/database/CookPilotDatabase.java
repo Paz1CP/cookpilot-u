@@ -117,7 +117,6 @@ public abstract class CookPilotDatabase extends RoomDatabase {
     private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            // La versión anterior contenía datos de demostración sin usuario.
             database.execSQL("DROP TABLE IF EXISTS planned_recipes");
             database.execSQL(
                     "CREATE TABLE IF NOT EXISTS planned_recipes ("

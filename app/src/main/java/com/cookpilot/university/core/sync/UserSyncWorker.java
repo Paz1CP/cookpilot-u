@@ -11,7 +11,14 @@ import com.cookpilot.university.CookPilotApplication;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-
+/*
+ * Ejecuta la sincronización programada por SyncScheduler.
+ * Comprueba que el usuario haya iniciado sesión.
+ * Envía los cambios pendientes de CookPlan, CookList y recetas guardadas
+ * a Firebase/API REST mediante sus respectivos repositorios.
+ * Después actualiza los datos locales con la información remota.
+ * Si todo funciona, devuelve Result.success(); si falla, Result.retry().
+ */
 public final class UserSyncWorker extends Worker {
 
     public UserSyncWorker(
