@@ -67,7 +67,6 @@ public final class CookModeActivity extends AppCompatActivity {
     private static final String EXTRA_RECIPE_IDS = "recipe_ids";
     private static final String EXTRA_SERVINGS = "servings";
     private static final int MAX_TIMERS = 4;
-
     private ActivityCookModeBinding binding;
     private final List<CookingStep> steps = new ArrayList<>();
     private final List<ManualTimer> timers = new ArrayList<>();
